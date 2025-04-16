@@ -1,0 +1,1574 @@
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<style>
+	.debug {
+		background-color: rgba(255,0,0,0.25);
+		border: 1px red solid;
+		box-sizing: border-box;
+	}
+	body {
+		width: 800px;
+		height: 1000px;
+		background-color: black;
+		margin: 0 auto 0 auto;
+	}
+	body *::-webkit-scrollbar {
+		width: 7px;
+		margin-right: 15px !important;
+		background-color: antiquewhite;
+		border-radius: 5px;
+		outline: 1px solid black;
+	}
+	body *::-webkit-scrollbar-thumb {
+		border-radius: 5px;
+		margin-right: 15px !important;
+		background-color: dimgrey;
+	}
+	input {
+		color: orangered;
+	}
+	input:focus-visible {
+		outline: unset;
+	}
+	textarea {
+		color: orangered;
+	}
+	div.content {
+		height: calc(100% - 50px);
+		overflow: auto;
+	}
+	.psychology .content,
+	.mutation .content,
+	.wounds .content,
+	.experience_log .content {
+		height: calc(100% - 30px);
+	}
+	.pages {
+		width: 100%;
+		height: 100%;
+        position: relative;
+		margin-bottom: 10px;
+	}
+	.page_1 {
+		background: no-repeat url(https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/assets/background_1.png);
+	}
+	.page_2 {
+		background: no-repeat url(https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/assets/background_2.png);
+	}
+	.page_3 {
+		background: no-repeat url(https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/assets/background_3.png);
+	}
+
+	.details div,
+    .characteristics div,
+    .fate div,
+    .resilience div,
+    .experience div,
+    .move div,
+	.basic_skills_1 div,
+	.basic_skills_2 div:not(.content),
+	.advanced_skills div:not(.content),
+	.talents div:not(.content),
+	.personal_ambitions div,
+	.party_ambitions div,
+	.armour div:not(.content),
+	.trapping div:not(.content),
+	.psychology div:not(.content),
+	.mutation div:not(.content),
+	.money div,
+	.encumbrance div,
+	.wounds div:not(.content),
+	.weapon div:not(.content),
+	.magic div:not(.content),
+	.experience_log div:not(.content),
+	.notes div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 20px;
+		font-size: 12px;
+		box-sizing: border-box;
+        overflow: hidden;
+	}
+	.details div div>input,
+	.characteristics div>input,
+	.fate div>input,
+    .resilience div>input,
+    .experience div>input,
+    .move div>input,
+	.basic_skills_1 div>input,
+	.basic_skills_2 div>input,
+	.advanced_skills div>input,
+	.talents div>input,
+	.personal_ambitions div>textarea,
+	.party_ambitions div>textarea,
+	.armour div>input,
+	.trapping div>input,
+	.psychology div>input,
+	.mutation div>input,
+	.money div>input,
+	.encumbrance div>input,
+	.wounds div>input,
+	.weapon div>input,
+	.magic div>input,
+	.experience_log div>input,
+	.notes div>textarea {
+		width: 100%;
+		height: 20px;
+		font-size: 12px;
+		box-sizing: border-box;
+		background: unset;
+		border: unset;
+		text-align: center;
+	}
+	.details div:not(:last-child) div:has(>span),
+	.details div:not(:last-child) div:has(>input),
+	.characteristics div:not(:last-child):has(>div),
+	.characteristics div:not(:last-child):has(>input),
+	.fate div:not(:last-child):has(>div),
+	.fate div:not(:last-child):has(>input),
+	.resilience div:not(:last-child):has(>div),
+	.resilience div:not(:last-child):has(>input),
+	.experience div:not(:last-child):has(>div),
+	.move>div:first-child,
+	.basic_skills_1 div:not(:last-child):has(>div),
+	.basic_skills_2 div:not(:last-child):has(>div),
+	.advanced_skills div:not(:last-child):has(>div),
+	.talents div:not(:last-child):has(>*),
+	.personal_ambitions div:not(:last-child):has(>div),
+	.party_ambitions div:not(:last-child):has(>div),
+	.armour div:not(:last-child):has(>div),
+	.armour>div:nth-child(2),
+	.armour div:not(:last-child):has(>input),
+	.trapping div:not(:last-child):has(>div),
+	.trapping>div:nth-child(2),
+	.trapping div:not(:last-child):has(>input),
+	.psychology div:not(:last-child):has(>input),
+	.mutation div:not(:last-child):has(>input),
+	.money div:not(:last-child):has(>input),
+	.encumbrance div:not(:last-child):has(>input),
+	.wounds div:not(:last-child):has(>input),
+	.weapon div:not(:last-child):has(>div),
+	.weapon>div:nth-child(2),
+	.weapon div:not(:last-child):has(>input),
+	.magic div:not(:last-child):has(>div),
+	.magic>div:nth-child(2),
+	.magic div:not(:last-child):has(>input),
+	.experience_log div:not(:last-child):has(>input) {
+		border-bottom: 1px black solid;
+	}
+	.details div div:has(>span):has(+div),
+	.details div div:has(>input):has(+div),
+	.characteristics div div:has(+div),
+	.characteristics div div:has(+input),
+	.characteristics div input:has(+input),
+	.fate div div:has(+input),
+    .resilience div div:has(+input),
+    .experience div div:has(+div),
+    .move div:last-child div div,
+    .basic_skills_1 div div:has(+div),
+    .basic_skills_1 div input:not(:last-child),
+    .basic_skills_1 div div:has(+input),
+    .basic_skills_2 div:nth-child(2) div:has(+div),
+    .basic_skills_2 .content>div input:not(:last-child),
+    .basic_skills_2 .content>div div:has(+input),
+    .advanced_skills div:nth-child(2) div:has(+div),
+    .advanced_skills .content>div input:not(:last-child),
+    .advanced_skills .content>div div:has(+input),
+    .talents div:nth-child(2) div:has(+div),
+    .talents .content>div input:not(:last-child),
+    .personal_ambitions div div:has(+textarea),
+    .party_ambitions div div:has(+textarea),
+    .armour div:nth-child(2) div:has(+div),
+    .armour .content>div input:not(:last-child),
+    .trapping div:nth-child(2) div:has(+div),
+    .trapping .content>div input:not(:last-child),
+    .encumbrance div div:has(+input),
+    .wounds .content>div input:has(+input),
+    .weapon div:nth-child(2) div:has(+div),
+    .weapon .content>div input:not(:last-child),
+    .magic div:first-child div:has(+input),
+    .magic div:nth-child(2) div:has(+div),
+    .magic .content>div input:not(:last-child),
+    .experience_log .content>div input:has(+input) {
+		border-right: 1px black solid;
+	}
+	.characteristics>div:first-child,
+	.fate>div:first-child,
+	.resilience>div:first-child,
+	.experience>div:first-child,
+	.move>div:first-child,
+	.basic_skills_1>div:first-child,
+	.basic_skills_2>div:first-child,
+	.advanced_skills>div:first-child,
+	.talents>div:first-child,
+	.personal_ambitions>div:first-child,
+	.party_ambitions>div:first-child,
+	.armour>div:first-child,
+	.trapping>div:first-child,
+	.psychology>div:first-child,
+	.mutation>div:first-child,
+	.money>div:first-child,
+	.encumbrance>div:first-child,
+	.wounds>div:first-child,
+	.weapon>div:first-child,
+	.magic>div:first-child,
+	.experience_log>div:first-child,
+	.notes>div:first-child {
+		height: 30px;
+		font-size: 16px;
+		font-weight: bold;
+		align-items: center;
+		justify-content: center;
+		border-bottom: 1px black solid;
+	}
+	.basic_skills_2>div:not(:first-child),
+	.advanced_skills>div:not(:first-child),
+	.talents>div:not(:first-child),
+	.armour>div:not(:first-child),
+	.trapping>div:not(:first-child),
+	.psychology>div:not(:first-child),
+	.mutation>div:not(:first-child),
+	.wounds>div,
+	.weapon>div:not(:first-child),
+	.magic>div:not(:first-child),
+	.experience_log>div:not(:first-child) {
+		scrollbar-gutter: stable;
+	}
+
+	.details {
+		position: absolute;
+		top: 122px;
+		left: 60px;
+		width: 680px;
+		height: 80px;
+	}
+	.details div div>input {
+		text-align: right;
+    }
+	.details div div>span {
+		margin-left: 2px;
+		margin-right: 5px;
+		white-space: nowrap;
+	}
+
+	.characteristics {
+		position: absolute;
+		top: 210px;
+		left: 60px;
+		width: 310px;
+		height: 130px;
+	}
+	.characteristics div>div:first-child {
+		overflow: hidden;
+	}
+
+	.fate {
+		position: absolute;
+		top: 210px;
+		left: 380px;
+		width: 70px;
+		height: 70px;
+	}
+
+    .resilience {
+        position: absolute;
+        top: 210px;
+        left: 460px;
+        width: 155px;
+        height: 70px;
+    }
+	.resilience div input+div:last-child {
+		border-left: 1px black solid;
+	}
+	.resilience div div:has(input):last-child {
+        border-left: 2px black solid;
+	}
+
+    .experience {
+        position: absolute;
+        top: 210px;
+        left: 620px;
+        width: 124px;
+        height: 70px;
+    }
+
+    .move {
+        position: absolute;
+		top: 285px;
+		left: 380px;
+		width: 360px;
+		height: 55px;
+    }
+    .move div:last-child div:not(:last-child) input {
+		border-right: 2px black solid;
+	}
+
+	.basic_skills_1 {
+		position: absolute;
+		top: 345px;
+		left: 60px;
+		width: 220px;
+		height: 290px;
+	}
+	.basic_skills_2 {
+		position: absolute;
+		top: 345px;
+		left: 290px;
+		width: 220px;
+		height: 290px;
+		overflow: hidden;
+	}
+	.advanced_skills {
+		position: absolute;
+		top: 345px;
+		left: 520px;
+		width: 220px;
+		height: 290px;
+		overflow: hidden;
+	}
+	.basic_skills_1 div input:first-child,
+	.basic_skills_2 div input:first-child,
+	.advanced_skills div input:first-child {
+		text-align: left;
+		justify-content: unset;
+		font-size: 10px;
+	}
+	
+	.talents {
+		position: absolute;
+		top: 650px;
+		left: 60px;
+		width: 325px;
+		height: 300px;
+		overflow: hidden;
+	}
+	.talents div input:first-child {
+		text-align: left;
+		justify-content: unset;
+	}
+	
+	.personal_ambitions {
+		position: absolute;
+		top: 650px;
+		left: 395px;
+		width: 345px;
+		height: 115px;
+	}
+	.party_ambitions {
+		position: absolute;
+		top: 775px;
+		left: 395px;
+		width: 345px;
+		height: 175px;
+	}
+	.personal_ambitions>div:not(:first-child) {
+		height: 45px;
+	}
+	.party_ambitions>div:not(:first-child) {
+		height: 75px;
+	}
+	.personal_ambitions div>textarea,
+	.party_ambitions div>textarea {
+		resize: none;
+		text-align: right;
+	}
+	.personal_ambitions div div,
+	.party_ambitions div div {
+		font-size: 10px;
+	}
+	
+	.armour {
+		position: absolute;
+		top: 55px;
+		left: 60px;
+		width: 450px;
+		height: 150px;
+		overflow: hidden;
+	}
+	
+	.image {
+		position: absolute;
+		top: 55px;
+		left: 520px;
+		width: 225px;
+		height: 340px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.trapping {
+		position: absolute;
+		top: 215px;
+		left: 60px;
+		width: 225px;
+		height: 340px;
+		overflow: hidden;
+	}
+	
+	.psychology {
+		position: absolute;
+		top: 215px;
+		left: 290px;
+		width: 225px;
+		height: 90px;
+		overflow: hidden;
+	}
+	
+	.mutation {
+		position: absolute;
+		top: 310px;
+		left: 290px;
+		width: 225px;
+		height: 85px;
+		overflow: hidden;
+	}
+	
+	.money {
+		position: absolute;
+		top: 400px;
+		left: 290px;
+		width: 105px;
+		height: 155px;
+	}
+	.money>div:not(:first-child) {
+		height: 40px;
+	}
+	
+	.encumbrance {
+		position: absolute;
+		top: 400px;
+		left: 400px;
+		width: 115px;
+		height: 155px;
+	}
+	.encumbrance>div:not(:first-child) {
+		height: 25px;
+	}
+	
+	.wounds {
+		position: absolute;
+		top: 400px;
+		left: 520px;
+		width: 225px;
+		height: 155px;
+		overflow: hidden;
+	}
+	.wounds>div:first-child>div:first-child {
+		height: 30px;
+		font-size: 16px;
+		font-weight: bold;
+		align-items: center;
+		justify-content: center;
+		border-bottom: 1px black solid;
+		border-right: 1px black solid;
+	}
+	.wounds>div:first-child>input {
+		font-size: 16px;
+	}
+	.wounds div:not(:first-child)>input {
+		white-space: nowrap;
+	}
+	
+	.weapon {
+		position: absolute;
+		top: 560px;
+		left: 60px;
+		width: 685px;
+		height: 180px;
+		overflow: hidden;
+	}
+	
+	.magic {
+		position: absolute;
+		top: 745px;
+		left: 60px;
+		width: 685px;
+		height: 205px;
+		overflow: hidden;
+	}
+	.magic>div:first-child>div:first-child {
+		font-size: 16px;
+		font-weight: bold;
+		align-items: center;
+		justify-content: center;
+		border-bottom: 1px black solid;
+		border-right: unset;
+	}
+	.magic>div:first-child>div,
+	.magic>div:first-child>div>* {
+		height: 30px;
+	}
+
+	.experience_log {
+		position: absolute;
+		top: 55px;
+		left: 60px;
+		width: 245px;
+		height: 195px;
+		overflow: hidden;
+	}
+
+	.notes {
+		position: absolute;
+		top: 55px;
+		left: 310px;
+		width: 435px;
+		height: 195px;
+		overflow: hidden;
+	}
+	.notes div:has(textarea) {
+		height: calc(100% - 30px);
+	}
+	.notes div>textarea {
+		resize: none;
+		width: 100%;
+		height: 100%;
+	}
+	
+</style>
+		<div class="pages page_1">
+		<div class="details">
+			<div>
+				<div style="width: 37.5%;">
+					<span>Имя</span>
+					<input disabled="" value="Адельрих Клайденшмит">
+				</div>
+				<div style="width: 62.5%;">
+					<div style="width: 60%;">
+						<span>Народ</span>
+						<input disabled="" value="Человек">
+					</div>
+					<div style="width: 40%;">
+						<span>Пол</span>
+						<input disabled="" value="Муржской">
+					</div>
+				</div>
+			</div>
+			<div>
+				<div style="width: 37.5%;">
+					<span>Класс</span>
+					<input disabled="" value="Придворные">
+				</div>
+				<div style="width: 62.5%;">
+					<div style="width: 60%;">
+						<span>Карьера</span>
+						<input disabled="" value="Фехтовальщик">
+					</div>
+					<div style="width: 40%;">
+						<span>Уровень карьеры</span>
+						<input disabled="" value="1">
+					</div>
+				</div>
+			</div>
+			<div>
+				<div style="width: 75%;">
+					<span>Карьерный путь</span>
+					<input disabled="" value="Фехтовальщик">
+				</div>
+				<div style="width: 25%;">
+					<span>Статус</span>
+					<input disabled="" value="Серебро 3">
+				</div>
+			</div>
+			<div>
+				<div style="width: 25%;">
+					<span>Возраст</span>
+					<input disabled="" value="22 года">
+				</div>
+				<div style="width: 25%;">
+					<span>Рост (Вес)</span>
+					<input disabled="" value="168 (70кг)">
+				</div>
+				<div style="width: 25%;">
+					<span>Цвет волос</span>
+					<input disabled="" value="Шатен">
+				</div>
+				<div style="width: 25%;">
+					<span>Цвет глаз</span>
+					<input disabled="" value="Рыжий">
+				</div>
+			</div>
+		</div>
+
+		<div class="characteristics">
+			<div>Характеристики</div>
+			<div>
+				<div style="width: 20%;"></div>
+				<div style="width: 8%;">ББ</div>
+				<div style="width: 8%;">ДБ</div>
+				<div style="width: 8%;">С</div>
+				<div style="width: 8%;">В</div>
+				<div style="width: 8%;">И</div>
+				<div style="width: 8%;">Пр</div>
+				<div style="width: 8%;">Л</div>
+				<div style="width: 8%;">Инт</div>
+				<div style="width: 8%;">СВ</div>
+				<div style="width: 8%;">Х</div>
+			</div>
+			<div>
+				<div style="width: 20%;">Начальная</div>
+				<input style="width: 8%;" disabled="" value="37">
+				<input style="width: 8%;" disabled="" value="28">
+				<input style="width: 8%;" disabled="" value="29">
+				<input style="width: 8%;" disabled="" value="31">
+				<input style="width: 8%;" disabled="" value="37">
+				<input style="width: 8%;" disabled="" value="29">
+				<input style="width: 8%;" disabled="" value="26">
+				<input style="width: 8%;" disabled="" value="38">
+				<input style="width: 8%;" disabled="" value="31">
+				<input style="width: 8%;" disabled="" value="25">
+			</div>
+			<div>
+				<div style="width: 20%;">Разв.</div>
+				<input style="width: 8%;" disabled="" value="8">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="5">
+				<input style="width: 8%;" disabled="" value="6">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+			</div>
+			<div>
+				<div style="width: 20%;">Мод.</div>
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+				<input style="width: 8%;" disabled="" value="0">
+			</div>
+			<div>
+				<div style="width: 20%;">Текущий</div>
+				<input style="width: 8%;" disabled="" value="45">
+				<input style="width: 8%;" disabled="" value="28">
+				<input style="width: 8%;" disabled="" value="29">
+				<input style="width: 8%;" disabled="" value="31">
+				<input style="width: 8%;" disabled="" value="42">
+				<input style="width: 8%;" disabled="" value="35">
+				<input style="width: 8%;" disabled="" value="26">
+				<input style="width: 8%;" disabled="" value="38">
+				<input style="width: 8%;" disabled="" value="31">
+				<input style="width: 8%;" disabled="" value="25">
+			</div>
+		</div>
+
+		<div class="fate">
+			<div>Судьба</div>
+			<div>
+				<div style="width: 75%;">Судьба</div>
+				<input style="width: 25%;" disabled="" value="3">
+			</div>
+			<div>
+				<div style="width: 75%;">Удача</div>
+				<input style="width: 25%;" disabled="" value="4">
+			</div>
+		</div>
+        
+		<div class="resilience">
+			<div>Упорство</div>
+            <div>
+                <div style="width: 50%;">
+                    <div style="width: 75%;">Упорство</div>
+                    <input style="width: 25%;" disabled="" value="2">
+                </div>
+                <div style="width: 50%;">
+                    <input style="width: 25%;" disabled="" value="1">
+                    <div style="width: 75%; font-size: 10px;">Решимость</div>
+                </div>
+            </div>
+            <div>
+                <div style="width: 37.5%;">Мотивация</div>
+                <input style="width: 62.5%;" disabled="" value="Совершенствование мастерства фехтования (Бой с сильным противником, или учение новому)">
+            </div>
+		</div>
+        
+		<div class="experience">
+			<div>Опыт</div>
+            <div>
+                <div style="width: 33%;">Тек.</div>
+                <div style="width: 33%;">Траты</div>
+                <div style="width: 34%;">Всего</div>
+            </div>
+            <div>
+                <div style="width: 33%;">
+                    <input disabled="" value="45">
+                </div>
+                <div style="width: 33%;">
+                    <input disabled="" value="1270">
+                </div>
+                <div style="width: 34%;">
+                    <input disabled="" value="1315">
+                </div>
+            </div>
+		</div>
+        
+		<div class="move">
+			<div>Скорость</div>
+            <div>
+                <div style="width: 33%;">
+                    <div style="width: 75%;">Перемещение</div>
+                    <input style="width: 25%;" disabled="" value="4">
+                </div>
+                <div style="width: 33%;">
+                    <div style="width: 75%;">Шаг</div>
+                    <input style="width: 25%;" disabled="" value="8">
+                </div>
+                <div style="width: 34%;">
+                    <div style="width: 75%;">Бег</div>
+                    <input style="width: 25%;" disabled="" value="16">
+                </div>
+            </div>
+		</div>
+
+		<div class="basic_skills_1">
+			<div>Основные</div>
+			<div>
+				<div style="width: 40%;">Имя</div>
+				<div style="width: 30%;">Хар.</div>
+				<div style="width: 15%;">Разв.</div>
+				<div style="width: 15%;">Всего</div>
+			</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Уклонение">
+					<div style="width: 15%;">Пр</div>
+					<input style="width: 15%;" disabled="" value="35">
+					<input style="width: 15%;" disabled="" value="5">
+					<input style="width: 15%;" disabled="" value="40">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Усмирение животных">
+					<div style="width: 15%;">СВ</div>
+					<input style="width: 15%;" disabled="" value="31">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="31">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Азартные игры">
+					<div style="width: 15%;">Инт</div>
+					<input style="width: 15%;" disabled="" value="38">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="38">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Стойкость">
+					<div style="width: 15%;">В</div>
+					<input style="width: 15%;" disabled="" value="31">
+					<input style="width: 15%;" disabled="" value="9">
+					<input style="width: 15%;" disabled="" value="40">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Наблюдательность">
+					<div style="width: 15%;">И</div>
+					<input style="width: 15%;" disabled="" value="42">
+					<input style="width: 15%;" disabled="" value="15">
+					<input style="width: 15%;" disabled="" value="57">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Запугивание">
+					<div style="width: 15%;">С</div>
+					<input style="width: 15%;" disabled="" value="29">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="29">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Гребля">
+					<div style="width: 15%;">С</div>
+					<input style="width: 15%;" disabled="" value="29">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="29">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Атлетика">
+					<div style="width: 15%;">Пр</div>
+					<input style="width: 15%;" disabled="" value="35">
+					<input style="width: 15%;" disabled="" value="10">
+					<input style="width: 15%;" disabled="" value="45">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Кутёж">
+					<div style="width: 15%;">В</div>
+					<input style="width: 15%;" disabled="" value="31">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="31">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Сплетничество">
+					<div style="width: 15%;">Х</div>
+					<input style="width: 15%;" disabled="" value="25">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="25">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Интуиция">
+					<div style="width: 15%;">И</div>
+					<input style="width: 15%;" disabled="" value="42">
+					<input style="width: 15%;" disabled="" value="5">
+					<input style="width: 15%;" disabled="" value="47">
+				</div>
+				<div>
+					<input style="width: 40%;" disabled="" value="Подкуп">
+					<div style="width: 15%;">Х</div>
+					<input style="width: 15%;" disabled="" value="25">
+					<input style="width: 15%;" disabled="" value="0">
+					<input style="width: 15%;" disabled="" value="25">
+				</div>
+		</div>
+
+		<div class="basic_skills_2">
+			<div>Основные</div>
+			<div>
+				<div style="width: 40%;">Имя</div>
+				<div style="width: 30%;">Хар.</div>
+				<div style="width: 15%;">Разв.</div>
+				<div style="width: 15%;">Всего</div>
+			</div>
+			<div class="content">
+					<div>
+						<input style="width: 40%;" disabled="" value="Обаяние">
+						<div style="width: 15%;">Х</div>
+						<input style="width: 15%;" disabled="" value="25">
+						<input style="width: 15%;" disabled="" value="3">
+						<input style="width: 15%;" disabled="" value="28">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Вождение">
+						<div style="width: 15%;">Пр</div>
+						<input style="width: 15%;" disabled="" value="35">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="35">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Лидерство">
+						<div style="width: 15%;">Х</div>
+						<input style="width: 15%;" disabled="" value="25">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="25">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Выживание">
+						<div style="width: 15%;">Инт</div>
+						<input style="width: 15%;" disabled="" value="38">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="38">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Торговля">
+						<div style="width: 15%;">Х</div>
+						<input style="width: 15%;" disabled="" value="25">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="25">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Хладнокровие">
+						<div style="width: 15%;">СВ</div>
+						<input style="width: 15%;" disabled="" value="31">
+						<input style="width: 15%;" disabled="" value="5">
+						<input style="width: 15%;" disabled="" value="36">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Лазание">
+						<div style="width: 15%;">С</div>
+						<input style="width: 15%;" disabled="" value="29">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="29">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Ориентирование">
+						<div style="width: 15%;">И</div>
+						<input style="width: 15%;" disabled="" value="42">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="42">
+					</div>
+			</div>
+		</div>
+
+		<div class="advanced_skills">
+			<div>Проф. и специальные</div>
+			<div>
+				<div style="width: 40%;">Имя</div>
+				<div style="width: 30%;">Хар.</div>
+				<div style="width: 15%;">Разв.</div>
+				<div style="width: 15%;">Всего</div>
+			</div>
+			<div class="content">
+					<div>
+						<input style="width: 40%;" disabled="" value="Артистизм">
+						<div style="width: 15%;">Х</div>
+						<input style="width: 15%;" disabled="" value="25">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="25">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Рукопашный бой">
+						<div style="width: 15%;">ББ</div>
+						<input style="width: 15%;" disabled="" value="45">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="45">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Искусство">
+						<div style="width: 15%;">Л</div>
+						<input style="width: 15%;" disabled="" value="26">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="26">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Скрытность">
+						<div style="width: 15%;">Пр</div>
+						<input style="width: 15%;" disabled="" value="35">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="35">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Верховая езда">
+						<div style="width: 15%;">Пр</div>
+						<input style="width: 15%;" disabled="" value="35">
+						<input style="width: 15%;" disabled="" value="0">
+						<input style="width: 15%;" disabled="" value="35">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Оценка">
+						<div style="width: 15%;">Инт</div>
+						<input style="width: 15%;" disabled="" value="38">
+						<input style="width: 15%;" disabled="" value="3">
+						<input style="width: 15%;" disabled="" value="41">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Язык (бретонский)">
+						<div style="width: 15%;">Инт</div>
+						<input style="width: 15%;" disabled="" value="38">
+						<input style="width: 15%;" disabled="" value="3">
+						<input style="width: 15%;" disabled="" value="41">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Знание (Рейкланд)">
+						<div style="width: 15%;">Инт</div>
+						<input style="width: 15%;" disabled="" value="38">
+						<input style="width: 15%;" disabled="" value="5">
+						<input style="width: 15%;" disabled="" value="43">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Рукопашный бой (основное)">
+						<div style="width: 15%;">ББ</div>
+						<input style="width: 15%;" disabled="" value="45">
+						<input style="width: 15%;" disabled="" value="5">
+						<input style="width: 15%;" disabled="" value="50">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Лечение">
+						<div style="width: 15%;">Инт</div>
+						<input style="width: 15%;" disabled="" value="38">
+						<input style="width: 15%;" disabled="" value="15">
+						<input style="width: 15%;" disabled="" value="53">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Язык (классический)">
+						<div style="width: 15%;">Инт</div>
+						<input style="width: 15%;" disabled="" value="38">
+						<input style="width: 15%;" disabled="" value="5">
+						<input style="width: 15%;" disabled="" value="43">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<div style="width: 15%;">ББ</div>
+						<input style="width: 15%;" disabled="" value="45">
+						<input style="width: 15%;" disabled="" value="15">
+						<input style="width: 15%;" disabled="" value="60">
+					</div>
+					<div>
+						<input style="width: 40%;" disabled="" value="Артистизм (пение)">
+						<div style="width: 15%;">Х</div>
+						<input style="width: 15%;" disabled="" value="25">
+						<input style="width: 15%;" disabled="" value="5">
+						<input style="width: 15%;" disabled="" value="30">
+					</div>
+			</div>
+		</div>
+
+		<div class="talents">
+			<div>Таланты</div>
+			<div>
+				<div style="width: 30%;">Имя</div>
+				<div style="width: 15%;">Ступень</div>
+				<div style="width: 55%;">Проверки</div>
+			</div>
+			<div class="content">
+					<div>
+						<input style="width: 30%;" disabled="" value="Роковое Пророчество">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="Умереть на пике славы">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Смекалка">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Фортуна">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Абсолютный слух">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="артистизм (пение), язык (тональные языки, такие как эльтарин, катайский или магический)">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Полиглот">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="язык (все)">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Отвлекающий манёвр">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="атлетика (во время отвлекающего манёвра)">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Батман">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="рукопашный бой (при совершении батмана)">
+					</div>
+					<div>
+						<input style="width: 30%;" disabled="" value="Отвлекающий манёвр">
+						<input style="width: 15%;" disabled="" value="1">
+						<input style="width: 55%;" disabled="" value="атлетика (во время отвлекающего манёвра)">
+					</div>
+			</div>
+		</div>
+		
+		<div class="personal_ambitions">
+			<div>Личные амбиции</div>
+			<div>
+				<div style="width: 20%; height: 100%;">Краткосрочная</div>
+				<textarea style="width: 80%; height: 100%;" disabled="">Собрать комплект кожаной брони.</textarea>
+			</div>
+			<div>
+				<div style="width: 20%; height: 100%;">Долгосрочная</div>
+				<textarea style="width: 80%; height: 100%;" disabled="">Обзавестись огнестрельным оружием.</textarea>
+			</div>
+		</div>
+		
+		<div class="party_ambitions">
+			<div>Командные амбиции</div>
+			<div>
+				<div style="width: 20%; height: 100%;">Краткосрочная</div>
+				<textarea style="width: 80%; height: 100%;" disabled=""></textarea>
+			</div>
+			<div>
+				<div style="width: 20%; height: 100%;">Долгосрочная</div>
+				<textarea style="width: 80%; height: 100%;" disabled="">Первыми найти артефакт.</textarea>
+			</div>
+		</div>
+	</div>
+		<div class="pages page_2">
+		<div class="armour">
+			<div>Броня</div>
+			<div>
+				<div style="width: 30%;">Название</div>
+				<div style="width: 20%;">Зоны попадания</div>
+				<div style="width: 10%;">Вес</div>
+				<div style="width: 10%;">КБ</div>
+				<div style="width: 30%;">Качества</div>
+			</div>
+			<div class="content">
+					<div>
+						<input style="width: 30%;" disabled="" value="Кожаная куртка">
+						<input style="width: 20%;" disabled="" value="Торс, Рука">
+						<input style="width: 10%;" disabled="" value="1">
+						<input style="width: 10%;" disabled="" value="1">
+						<input style="width: 30%;" disabled="" value="">
+					</div>
+			</div>
+		</div>
+		
+		<div class="image">
+			<img style="max-width: 100%; max-height: 100%;" src="%D0%90%D0%B4%D0%B5%D0%BB%D1%8C%D1%80%D0%B8%D1%85%20%D0%9A%D0%BB%D0%B0%D0%B9%D0%B4%D0%B5%D0%BD%D1%88%D0%BC%D0%B8%D1%82.png">
+		</div>
+
+		<div class="trapping">
+			<div>Имущество</div>
+			<div>
+				<div style="width: 80%;">Название</div>
+				<div style="width: 20%;">Вес</div>
+			</div>
+			<div class="content">
+					<div>
+						<input style="width: 80%;" disabled="" value="Пинцет">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Копоушка">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Расчёска">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Одежда">
+						<input style="width: 20%;" disabled="" value="1">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Бинт">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Одежда">
+						<input style="width: 20%;" disabled="" value="1">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Ключ от 1 комнаты в таверне 'Битая бутылка'.">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Шляпа">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Паёк, 1 день">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Кошель">
+						<input style="width: 20%;" disabled="" value="0">
+					</div>
+					<div>
+						<input style="width: 80%;" disabled="" value="Наплечная сумка">
+						<input style="width: 20%;" disabled="" value="1">
+					</div>
+			</div>
+		</div>
+		
+		<div class="psychology">
+			<div>Психика</div>
+			<div class="content">
+			</div>
+		</div>
+		
+		<div class="mutation">
+			<div>Скверна и мутации</div>
+			<div class="content">
+			</div>
+		</div>
+
+		<div class="money">
+			<div>Деньги</div>
+            <div>
+                <div style="width: 50%; height: 100%;"><img height="100%" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/assets/brasspenny.png"></div>
+                <input style="width: 50%;" disabled="" value="5">
+            </div>
+            <div>
+                <div style="width: 50%; height: 100%;"><img height="100%" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/assets/silvershilling.png"></div>
+                <input style="width: 50%;" disabled="" value="0">
+            </div>
+            <div>
+                <div style="width: 50%; height: 100%;"><img height="100%" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/assets/goldcrown.png"></div>
+                <input style="width: 50%;" disabled="" value="0">
+            </div>
+		</div>
+
+		<div class="encumbrance">
+			<div>Вес</div>
+            <!--
+				<div>
+					<div style="width: 50%; height: 100%;">Оружие</div>
+					<input style="width: 50%; height: 100%;" disabled value="">
+				</div>
+				<div>
+					<div style="width: 50%; height: 100%;">Броня</div>
+					<input style="width: 50%; height: 100%;" disabled value="">
+				</div>
+				<div>
+					<div style="width: 50%; height: 100%;">Имущество</div>
+					<input style="width: 50%; height: 100%;" disabled value="">
+				</div>
+			-->
+            <div>
+                <div style="width: 50%; height: 100%;">Макс.</div>
+                <input style="width: 50%; height: 100%;" disabled="" value="5">
+            </div>
+            <div>
+                <div style="width: 50%; height: 100%;">Всего</div>
+                <input style="width: 50%; height: 100%;" disabled="" value="1.00">
+            </div>
+		</div>
+		
+		<div class="wounds">
+			<div>
+				<div style="width: 50%;">Раны</div>
+				<input style="width: 50%;" disabled="" value="6&nbsp;/&nbsp;11">
+			</div>
+			<div class="content">
+			</div>
+		</div>
+
+		<div class="weapon">
+			<div>Оружие</div>
+			<div>
+				<div style="width: 25%;">Название</div>
+				<div style="width: 10%;">Тип</div>
+				<div style="width: 5%;">Вес</div>
+				<div style="width: 10%;">Длина</div>
+				<div style="width: 20%;">Урон</div>
+				<div style="width: 30%;">Качества</div>
+			</div>
+			<div class="content">
+					<div>
+						<input style="width: 25%;" disabled="" value="Кинжал">
+						<input style="width: 10%;" disabled="" value="Основное">
+						<input style="width: 5%;" disabled="" value="0">
+						<input style="width: 10%;" disabled="" value="Очень короткое">
+						<input style="width: 20%;" disabled="" value="SB+2">
+						<input style="width: 30%;" disabled="" value="">
+					</div>
+					<div>
+						<input style="width: 25%;" disabled="" value="Шпага">
+						<input style="width: 10%;" disabled="" value="Фехтовальное">
+						<input style="width: 5%;" disabled="" value="1">
+						<input style="width: 10%;" disabled="" value="Длинное">
+						<input style="width: 20%;" disabled="" value="SB+4">
+						<input style="width: 30%;" disabled="" value="Быстрое, Пронзающее">
+					</div>
+			</div>
+		</div>
+		
+		<div class="magic">
+			<div>
+				<div style="width: 90%; text-indent: 20%;">Магия&nbsp;&amp;&nbsp;Религия</div>
+				<div style="width: 10%;">
+					<div style="width: 50%;">Грех</div>
+					<input style="width: 50%;" disabled="" value="0">
+				</div>
+			</div>
+			<div>
+				<div style="width: 35%;">Название</div>
+				<div style="width: 5%;">ПС</div>
+				<div style="width: 15%;">Дальность</div>
+				<div style="width: 15%;">Цель</div>
+				<div style="width: 15%; font-size: 10px;">Длительность</div>
+				<div style="width: 15%;">Тип</div>
+			</div>
+			<div class="content">
+			</div>
+		</div>
+	</div>
+		<div class="pages page_3">
+		<div class="experience_log">
+			<div>Журнал опыта</div>
+			<div class="content">
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за 1 встречу">
+						<input style="width: 50%;" disabled="" value="100">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Ближний бой">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Ближний бой">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Инициатива">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Инициатива">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Инициатива">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Инициатива">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Интуиция">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Интуиция">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Стойкость">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Проворство">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Проворство">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Язык (классический)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Язык (классический)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за 2 встречу">
+						<input style="width: 50%;" disabled="" value="150">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за короткую командную амбицию">
+						<input style="width: 50%;" disabled="" value="50">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за длинную амбицию">
+						<input style="width: 50%;" disabled="" value="500">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Проворство">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Проворство">
+						<input style="width: 50%;" disabled="" value="-25">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Отвлекающий манёвр">
+						<input style="width: 50%;" disabled="" value="-100">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за 3 встречу">
+						<input style="width: 50%;" disabled="" value="125">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Артистизм (пение)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Артистизм (пение)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Артистизм (пение)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Артистизм (пение)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Артистизм (пение)">
+						<input style="width: 50%;" disabled="" value="-10">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Отвлекающий манёвр">
+						<input style="width: 50%;" disabled="" value="-200">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Уклонение">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Лечение">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Лечение">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-30">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="-30">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="30">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Рукопашный бой (Фехтовальное)">
+						<input style="width: 50%;" disabled="" value="30">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за 4 сессию">
+						<input style="width: 50%;" disabled="" value="300">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Награда за короткую командную амбицию">
+						<input style="width: 50%;" disabled="" value="50">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Стойкость">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Стойкость">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Стойкость">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Наблюдательность">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Лечение">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Лечение">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Лечение">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="-20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Проворство">
+						<input style="width: 50%;" disabled="" value="-30">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Атлетика">
+						<input style="width: 50%;" disabled="" value="20">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Уклонение">
+						<input style="width: 50%;" disabled="" value="15">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Ближний бой">
+						<input style="width: 50%;" disabled="" value="-30">
+					</div>
+					<div>
+						<input style="width: 50%;" disabled="" value="Ближний бой">
+						<input style="width: 50%;" disabled="" value="-30">
+					</div>
+			</div>
+		</div>
+		
+		<div class="notes">
+			<div>Заметки</div>
+			<div>
+				<textarea disabled=""></textarea>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>
