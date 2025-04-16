@@ -1,0 +1,41 @@
+{
+  "id": "wfrp4e-print-sheet",
+  "title": "Print sheet for WFRP4e",
+  "description": "A module that allows you to export a character sheet from Foundry to an HTML file.",
+  "version": "1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "wfrp4e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "nPocTo_4eJI",
+      "url": "https://www.youtube.com/@nPocTo_4eJI",
+      "discord": "npocto_4eji"
+    }
+  ],
+  "esmodules": [
+    "/print_sheet.js"
+  ],
+  "languages": [
+		{
+		  "lang": "ru",
+		  "name": "Russian",
+		  "path": "lang/ru.json"
+		},
+		{
+		  "lang": "en",
+		  "name": "English",
+		  "path": "lang/en.json"
+		}
+  ]
+}
