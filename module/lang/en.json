@@ -1,0 +1,30 @@
+{
+    "WFRP4E.PS.Button": "Export",
+    "WFRP4E.PS.WrongActor": "Player character or NPC sheets only",
+
+    "WFRP4E.PS.Settings.Editable.Name": "Editable",
+    "WFRP4E.PS.Settings.Editable.Hint": "Enable changes to values in the exported sheet.",
+
+    "WFRP4E.PS.Settings.InputColor.Name": "Color",
+    "WFRP4E.PS.Settings.InputColor.Hint": "Сolor of character values.",
+    "WFRP4E.PS.Settings.InputColor.Red": "Red",
+    "WFRP4E.PS.Settings.InputColor.Green": "Green",
+    "WFRP4E.PS.Settings.InputColor.Blue": "Blue",
+    "WFRP4E.PS.Settings.InputColor.Black": "Black",
+    "WFRP4E.PS.Settings.InputColor.Custom": "Custom",
+    
+    "WFRP4E.PS.Settings.InputColorCustom.Name": "Color (Custom)",
+    "WFRP4E.PS.Settings.InputColorCustom.Hint": "Enter the color code perceived by css (\"white\", \"#FFFFFF\", \"rgba(255,255,255,0.5)\"...).",
+
+    "WFRP4E.PS.CareerLevel": "Career level",
+    "WFRP4E.PS.CareerPath": "Career path",
+    "WFRP4E.PS.Modifier": "Mod.",
+    "WFRP4E.PS.Experience Current": "Cur.",
+    "WFRP4E.PS.Movement": "Movement",
+    "WFRP4E.PS.AP": "AP",
+    "WFRP4E.PS.Qualities": "Qualities",
+    "WFRP4E.PS.Range": "Range",
+    "WFRP4E.PS.Duration": "Duration",
+
+    "WFRP4E.PS.NPC": "Unavailable to NPCs"
+  }
