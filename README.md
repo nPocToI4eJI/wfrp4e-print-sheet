@@ -1,3 +1,4 @@
+# Модуль не заброшен. В скором времени будет доступна новая версия с огромным функционалом и изменённым дизайном.
 <h5><span class="EzKURWReUAB5oZgtQNkl">Ru:</span></h5>
 <p><span class="EzKURWReUAB5oZgtQNkl">Модуль</span>, <span class="EzKURWReUAB5oZgtQNkl">который</span> <span class="EzKURWReUAB5oZgtQNkl">позволит</span> <span class="EzKURWReUAB5oZgtQNkl">вам</span> <span class="EzKURWReUAB5oZgtQNkl">экспортировать данные</span> листа персонажа <span class="EzKURWReUAB5oZgtQNkl">из</span> <span class="EzKURWReUAB5oZgtQNkl">Foundry</span> <span class="EzKURWReUAB5oZgtQNkl">в</span> <span class="EzKURWReUAB5oZgtQNkl">HTML</span>-<span class="EzKURWReUAB5oZgtQNkl">файл</span><span class="EzKURWReUAB5oZgtQNkl">.</span></p>
 <p>&nbsp;</p>
