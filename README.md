@@ -8,18 +8,74 @@
 </p>
 Этот модуль позволит Вам экспортировать листы персонажей из Foundry в удобный HTML-файл, чтобы всегда иметь их под рукой.
 
+<details>
+  <summary>Описание</summary>
+  
+Экспортировать лист можно через вкладку **"Переключения управления"**:
+<p align="center"><img width="250" height="300" alt="Вкладка Переключения управления" src="https://github.com/user-attachments/assets/683e429a-1a3d-4016-9ae5-5cd7736bd253"/></p>
 
+# Примеры
+<details>
+  <summary><h4>Конрад Фогель</h4></summary>
+  <p align="center">
+    <a title="Конрад Фогель (1)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Конрад%20Фогель.html" rel="nofollow"><img width="500" height="700" alt="Конрад Фогель (1)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Конрад%20Фогель%20(1).png"/></a>
+    <a title="Конрад Фогель (2)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Конрад%20Фогель.html" rel="nofollow"><img width="500" height="700" alt="Конрад Фогель (2)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Конрад%20Фогель%20(2).png"/></a>
+  </p>
+</details>
 
-<h5><span class="EzKURWReUAB5oZgtQNkl">Ru:</span></h5>
-<p><span class="EzKURWReUAB5oZgtQNkl">Модуль</span>, <span class="EzKURWReUAB5oZgtQNkl">который</span> <span class="EzKURWReUAB5oZgtQNkl">позволит</span> <span class="EzKURWReUAB5oZgtQNkl">вам</span> <span class="EzKURWReUAB5oZgtQNkl">экспортировать данные</span> листа персонажа <span class="EzKURWReUAB5oZgtQNkl">из</span> <span class="EzKURWReUAB5oZgtQNkl">Foundry</span> <span class="EzKURWReUAB5oZgtQNkl">в</span> <span class="EzKURWReUAB5oZgtQNkl">HTML</span>-<span class="EzKURWReUAB5oZgtQNkl">файл</span><span class="EzKURWReUAB5oZgtQNkl">.</span></p>
-<p>&nbsp;</p>
-<p style="text-align: center;"><span class="EzKURWReUAB5oZgtQNkl">Результат выглядит так: <a title="Пример готового листа" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/example/Бальтазар_Гельт.html" target="_blank" rel="nofollow noopener">"Бальтазар Гельт (НИП)"</a><br /><img src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/example/Image%201%20Ru.png" alt="Image 1" width="320" height="400" /><img src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/example/Image%202%20Ru.png" alt="Image 2" width="320" height="400" /></span></p>
-<p>&nbsp;</p>
-<p style="text-align: right;"><span class="EzKURWReUAB5oZgtQNkl">Идея и некоторые решения позаимствованы у <a title="Author: Jideon" href="https://foundryvtt.com/packages/dnd5e-print-sheet" target="_blank" rel="nofollow noopener">Print sheet for D&amp;D5e</a>.</span></p>
-<hr />
-<h5>En:</h5>
-<p>A module that allows you to export a character sheet from Foundry to an HTML file.</p>
-<p>&nbsp;</p>
-<p style="text-align: center;">The <span class="EzKURWReUAB5oZgtQNkl">result</span> <span class="EzKURWReUAB5oZgtQNkl">looks</span> <span class="EzKURWReUAB5oZgtQNkl">like</span> this: <a title="Example of a finished sheet" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/example/Balthasar_Gelt.html" target="_blank" rel="nofollow noopener">"Balthasar Gelt (NPC)"</a><span class="EzKURWReUAB5oZgtQNkl"><br /><img src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/example/Image%201%20En.png" alt="Image 1" width="320" height="400" /><img src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/example/Image%202%20En.png" alt="Image 2" width="320" height="400" /></span></p>
-<p>&nbsp;</p>
-<p style="text-align: right;">The idea and some solutions are borrowed from <span class="EzKURWReUAB5oZgtQNkl"><a title="Author: Jideon" href="https://foundryvtt.com/packages/dnd5e-print-sheet" target="_blank" rel="nofollow noopener">Print sheet for D&amp;D5e</a>.</span></p>
+<details>
+  <summary><h4>Гуга Ногогрыз</h4></summary>
+  <p align="center">
+    <a title="Гуга Ногогрыз (1)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Гуга%20Ногогрыз.html" rel="nofollow"><img width="500" height="700" alt="Гуга Ногогрыз (1)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Гуга%20Ногогрыз%20(1).png"/></a>
+    <a title="Гуга Ногогрыз (2)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Гуга%20Ногогрыз.html" rel="nofollow"><img width="500" height="700" alt="Гуга Ногогрыз (2)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Гуга%20Ногогрыз%20(2).png"/></a>
+  </p>
+</details>
+
+<details>
+  <summary><h4>Нит Лангрэс</h4></summary>
+  <p align="center">
+    <a title="Нит Лангрэс (1)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Нит%20Лангрэс.html" rel="nofollow"><img width="500" height="700" alt="Нит Лангрэс (1)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Нит%20Лангрэс%20(1).png"/></a>
+    <a title="Нит Лангрэс (2)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Нит%20Лангрэс.html" rel="nofollow"><img width="500" height="700" alt="Нит Лангрэс (2)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Нит%20Лангрэс%20(2).png"/></a>
+  </p>
+</details>
+
+Найденные ошибки можете присылать [сюда](https://github.com/nPocToI4eJI/wfrp4e-print-sheet/issues/1).
+
+</details>
+
+This module will allow you to export character sheets from Foundry to a convenient HTML file so that you can always have them at hand.
+
+<details>
+  <summary>Description</summary>
+
+You can export a sheet using the **"Control Switches"** tab:
+<p align="center"><img width="250" height="300" alt="Control Switches tab" src="https://github.com/user-attachments/assets/683e429a-1a3d-4016-9ae5-5cd7736bd253"/></p>
+
+# Examples
+<details>
+  <summary><h4>Konrad Vogel</h4></summary>
+  <p align="center">
+    <a title="Konrad Vogel (1)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Конрад%20Фогель.html" rel="nofollow"><img width="500" height="700" alt="Konrad Vogel (1)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Конрад%20Фогель%20(1).png"/></a>
+    <a title="Konrad Vogel (2)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Конрад%20Фогель.html" rel="nofollow"><img width="500" height="700" alt="Konrad Vogel (2)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Конрад%20Фогель%20(2).png"/></a>
+  </p>
+</details>
+
+<details>
+  <summary><h4>Guga Nibbled</h4></summary>
+  <p align="center">
+    <a title="Guga Nibbled (1)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Гуга%20Ногогрыз.html" rel="nofollow"><img width="500" height="700" alt="Guga Nibbled (1)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Гуга%20Ногогрыз%20(1).png"/></a>
+    <a title="Guga Nibbled (2)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Гуга%20Ногогрыз.html" rel="nofollow"><img width="500" height="700" alt="Guga Nibbled (2)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Гуга%20Ногогрыз%20(2).png"/></a>
+  </p>
+</details>
+
+<details>
+  <summary><h4>Neath Langres</h4></summary>
+  <p align="center">
+    <a title="Neath Langres (1)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Нит%20Лангрэс.html" rel="nofollow"><img width="500" height="700" alt="Neath Langres (1)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Нит%20Лангрэс%20(1).png"/></a>
+    <a title="Neath Langres (2)" href="http://htmlpreview.github.io/?https://github.com/nPocToI4eJI/wfrp4e-print-sheet/blob/main/Examples/Нит%20Лангрэс.html" rel="nofollow"><img width="500" height="700" alt="Neath Langres (2)" src="https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Examples/Нит%20Лангрэс%20(2).png"/></a>
+  </p>
+</details>
+
+You can report any bugs you find [here](https://github.com/nPocToI4eJI/wfrp4e-print-sheet/issues/1).
+
+</details>
