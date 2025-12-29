@@ -1,37 +1,35 @@
 {
-    "WFRP4E.PS.Button": "Export",
-    "WFRP4E.PS.WrongActor": "Player character or NPC sheets only",
+	"WFRP4E.PrintSheet": {
+		"Button": "Export Sheet",
 
-    "WFRP4E.PS.Settings.Editable.Name": "Editable",
-    "WFRP4E.PS.Settings.Editable.Hint": "Enable changes to values in the exported sheet.",
+		"ExperienceReason": "No reason specified",
+		"Empty": "nothing",
+		
+		"HTML": {
+			"HideTooltip": "Toggle visibility of element descriptions.",
+			"ScaleFont": "Increase or decrease the font size of the selected element.\nLMB: Increase font size.\nRMB: Decrease font size.",
+			"Add": "Add elements.",
+			"Delete": "Delete selected elements.",
+			"HideMagics": "Toggle visibility of \"Magic & Religion\".",
+			"HideSin": "Toggle visibility of Sin.",
+			"Save": "Save changes (to a new file).",
+			"Export": "Save character data for Foundry.\nContains only initial parameters, not saving changes in this sheet.\nVersion: ",
+			"CareerPath": "Career Path",
+			"ModifierAbbrev": "Mod.",
+			"Qualities": "Qualities",
+			"OutOf": "of",
+			"Duration": "Duration"
+		},
 
-    "WFRP4E.PS.Settings.InputColor.Name": "Color",
-    "WFRP4E.PS.Settings.InputColor.Hint": "Сolor of character values.",
-    "WFRP4E.PS.Settings.InputColor.Red": "Red",
-    "WFRP4E.PS.Settings.InputColor.Green": "Green",
-    "WFRP4E.PS.Settings.InputColor.Blue": "Blue",
-    "WFRP4E.PS.Settings.InputColor.Black": "Black",
-    "WFRP4E.PS.Settings.InputColor.Custom": "Custom",
-    
-    "WFRP4E.PS.Settings.InputColorCustom.Name": "Color (Custom)",
-    "WFRP4E.PS.Settings.InputColorCustom.Hint": "Enter the color code perceived by css (\"white\", \"#FFFFFF\", \"rgba(255,255,255,0.5)\"...).",
-    
-    "WFRP4E.PS.Settings.EmbedImages.Name": "Embed images",
-    "WFRP4E.PS.Settings.EmbedImages.Hint": "Embed images for each item on the sheet, such as talents, items, magic, and more.",
-    
-    "WFRP4E.PS.Settings.TrappingList.Name": "All items in {trapping}",
-    "WFRP4E.PS.Settings.TrappingList.Hint": "List all items in the {trapping} category, or only those that do not belong to other categories.",
-
-    "WFRP4E.PS.CareerLevel": "Career level",
-    "WFRP4E.PS.CareerPath": "Career path",
-    "WFRP4E.PS.Modifier": "Mod.",
-    "WFRP4E.PS.Experience Current": "Cur.",
-    "WFRP4E.PS.Movement": "Movement",
-    "WFRP4E.PS.Lvl": "Lvl",
-    "WFRP4E.PS.AP": "AP",
-    "WFRP4E.PS.Qualities": "Qualities",
-    "WFRP4E.PS.Range": "Range",
-    "WFRP4E.PS.Duration": "Duration",
-
-    "WFRP4E.PS.NPC": "Unavailable to NPCs"
-  }
+		"Settings": {
+			"embedimages": {
+				"Name": "Embed Images",
+				"Hint": "Embed images for each actor item, such as talents, items, magic, etc."
+			},
+			"defaultName": {
+				"Name": "Default File Name",
+				"Hint": "Leave empty to use the actor's name as the default file name."
+			}
+		}
+	}
+}
