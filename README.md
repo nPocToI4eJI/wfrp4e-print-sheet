@@ -14,7 +14,7 @@
 Экспортировать лист можно через вкладку **"Переключения управления"**:
 <p align="center"><img width="250" height="300" alt="Вкладка Переключения управления" src="https://github.com/user-attachments/assets/683e429a-1a3d-4016-9ae5-5cd7736bd253"/></p>
 
-# Примеры
+## Примеры
 <details>
   <summary><h4>Конрад Фогель</h4></summary>
   <p align="center">
@@ -51,7 +51,7 @@ This module will allow you to export character sheets from Foundry to a convenie
 You can export a sheet using the **"Control Switches"** tab:
 <p align="center"><img width="250" height="300" alt="Control Switches tab" src="https://github.com/user-attachments/assets/683e429a-1a3d-4016-9ae5-5cd7736bd253"/></p>
 
-# Examples
+## Examples
 <details>
   <summary><h4>Konrad Vogel</h4></summary>
   <p align="center">
