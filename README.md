@@ -49,6 +49,8 @@
 
 </details>
 
+<hr>
+
 This module will allow you to export character sheets from Foundry to a convenient HTML file so that you can always have them at hand.
 
 <details>
