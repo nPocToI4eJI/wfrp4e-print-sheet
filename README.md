@@ -56,8 +56,8 @@ This module will allow you to export character sheets from Foundry to a convenie
 <details>
   <summary>Description</summary>
 
-You can export a sheet using the **"Control Switches"** tab:
-<p align="center"><img width="250" height="300" alt="Control Switches tab" src="https://github.com/user-attachments/assets/683e429a-1a3d-4016-9ae5-5cd7736bd253"/></p>
+You can export a sheet using the **"Toggle Controls"** tab:
+<p align="center"><img width="250" height="300" alt="Toggle Controls tab" src="https://github.com/user-attachments/assets/683e429a-1a3d-4016-9ae5-5cd7736bd253"/></p>
 
 ## Examples
 <details>
