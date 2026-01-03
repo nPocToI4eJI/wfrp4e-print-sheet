@@ -1,0 +1,36 @@
+{
+	"id": "wfrp4e-print-sheet",
+	"title": "WFRP4e - Print sheet",
+	"description": "<p>Этот модуль позволит Вам экспортировать листы персонажей из Foundry в удобный HTML-файл, чтобы всегда иметь их под рукой.</p>",
+	"version": "13.2.1",
+	"compatibility": {
+		"minimum": "13",
+		"verified": "13"
+	},
+	"relationships": {
+		"systems": [
+			{
+				"id": "wfrp4e",
+				"type": "system",
+				"manifest": "https://github.com/moo-man/WFRP4e-FoundryVTT/releases/latest/download/system.json"
+			}
+		]
+	},
+	"authors": [
+		{
+			"name": "nPocTo_4eJI",
+			"url": "https://www.youtube.com/@nPocTo_4eJI",
+			"discord": "npocto_4eji"
+		}
+	],
+	"languages": [
+        {"lang": "en", "name": "English", "path": "lang/en.json"},
+        {"lang": "ru", "name": "Русский", "path": "lang/ru.json"}
+	],
+	"esmodules": [
+		"/print_sheet.js"
+	],
+	"url": "https://github.com/nPocToI4eJI/wfrp4e-print-sheet",
+	"manifest": "https://github.com/nPocToI4eJI/wfrp4e-print-sheet/releases/download/13.2.1/module.json",
+	"download": "https://github.com/nPocToI4eJI/wfrp4e-print-sheet/releases/download/13.2.1/wfrp4e-print-sheet.zip"
+}

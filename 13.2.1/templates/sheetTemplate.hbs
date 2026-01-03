@@ -1,0 +1,1573 @@
+	<style>
+		:root {
+			--inputcolor: {{settings.inputcolor}};
+			--tabs_gap: 2px;
+			--details_gap: 5px;
+			--color-large_border: #4a0404;
+			--color-small_border: #564d3a;
+		}
+		*::-webkit-scrollbar {
+			width: 7px;
+			background-color: antiquewhite;
+			border-radius: 5px;
+			outline: 1px solid black;
+		}
+		*::-webkit-scrollbar-thumb {
+			border-radius: 5px;
+			background-color: dimgrey;
+		}
+
+
+
+		body {
+			width: 700px;
+			height: auto;
+			background-color: black;
+			margin: 0 auto 0 auto;
+		}
+		body>section {
+			width: 700px;
+			height: 990px;
+			box-sizing: border-box;
+			padding: 25px;
+			margin-top: 25px;
+			background: no-repeat center/contain url(https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Assets/background.png);
+		}
+		body>section>div {
+			display: flex;
+			flex-wrap: wrap;
+			padding: 2px;
+			margin: 3px 1px;
+			outline: 2px dotted var(--color-large_border);
+			outline-offset: -1px;
+			border-radius: 5px;
+		}
+		body>section>div>div {
+			box-shadow: inset 0 0 0.5em #464331c4;
+		}
+
+
+
+		/*Общие*/
+		h3 {
+			height: 30px;
+			margin: unset;
+			border-radius: 5px;
+		}
+		span {
+			font-size: 12px;
+			font-weight: bold;
+		}
+		input,
+		textarea,
+		select {
+			font-size: 12px;
+			width: 100%;
+			background: unset;
+			border: unset;
+			text-align: center;
+			font-weight: bold;
+			color: var(--inputcolor);
+		}
+		select {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			background: none;
+			padding-right: 0;
+		}
+		select::-ms-expand {
+			display: none;
+		}
+		textarea {
+			resize: none;
+			height: 100%;
+			box-shadow: inset 0 0 2px #273444;
+		}
+		input:focus-visible,
+		textarea:focus-visible {
+			outline: unset;
+		}
+		@media not print {
+			input:hover,
+			input:focus,
+			textarea:hover,
+			textarea:focus {
+				box-shadow: inset 0 0 4px #273444;
+			}
+		}
+		img {
+			max-width: 100%;
+			max-height: 100%;
+			object-fit: contain;
+		}
+		.image {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		div:has(>div.tabs),
+		div:has(>div.characteristics) {
+			gap: var(--tabs_gap);
+		}
+		div.tabs,
+		div.characteristics,
+		div.image {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			outline: 1px dashed var(--color-small_border);
+			outline-offset: -1px;
+			border-radius: 5px;
+			box-sizing: border-box;
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+		}
+		div.status h3 {
+			margin-bottom: auto;
+		}
+		div.table-input {
+			display: flex;
+			align-items: center;
+			white-space: nowrap;
+			box-sizing: border-box;
+			height: 15px;
+			padding: 2px;
+			gap: 2px;
+			text-align: center;
+		}
+		div.table-input input,
+		div.table-input textarea {
+			text-align: right;
+			border-radius: 5px;
+		}
+		div.revers>span {
+			text-align: right;
+		}
+		div.revers>input {
+			text-align: left;
+		}
+		div.tabs>div.table-input:not(:last-child),
+		div.table-input-container:not(:last-child),
+		div.line:not(:last-child) {
+			border-bottom: 1px dashed var(--color-small_border);
+		}
+		div.table-input-container>div.table-input:not(:last-child) {
+			border-right: 1px dashed var(--color-small_border);
+		}
+		div.content {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+		div.skills:has(+div.content>div:nth-child(13)),
+		div.skills+div.content:has(>div:nth-child(13)),
+		div.talents:has(+div.content>div:nth-child(10)),
+		div.talents+div.content:has(>div:nth-child(10)),
+		div.experience:has(+div.content>div:nth-child(6)),
+		div.experience+div.content:has(>div:nth-child(6)),
+		body:not(:has(.settings input#hideMagics:checked)) div.armours:has(+div.content>div:nth-child(6)),
+		body:not(:has(.settings input#hideMagics:checked)) div.armours+div.content:has(>div:nth-child(6)),
+		div.armours:has(+div.content>div:nth-child(7)),
+		div.armours+div.content:has(>div:nth-child(7)),
+		body:not(:has(.settings input#hideMagics:checked)) div.trappings:has(+div.content>div:nth-child(16)),
+		body:not(:has(.settings input#hideMagics:checked)) div.trappings+div.content:has(>div:nth-child(16)),
+		div.trappings:has(+div.content>div:nth-child(19)),
+		div.trappings+div.content:has(>div:nth-child(19)),
+		body:not(:has(.settings input#hideMagics:checked)) div.content:has(>div.psychologys:nth-child(4)),
+		body:not(:has(.settings input#hideMagics:checked)) div.content:has(>div.mutations:nth-child(4)),
+		div.content:has(>div.psychologys:nth-child(5)),
+		div.content:has(>div.mutations:nth-child(5)),
+		body:not(:has(.settings input#hideMagics:checked)) div.wounds+div.content:has(>div:nth-child(11)),
+		div.wounds+div.content:has(>div:nth-child(13)),
+		body:not(:has(.settings input#hideMagics:checked)) div.weapons:has(+div.content>div:nth-child(8)),
+		body:not(:has(.settings input#hideMagics:checked)) div.weapons+div.content:has(>div:nth-child(8)),
+		div.weapons:has(+div.content>div:nth-child(14)),
+		div.weapons+div.content:has(>div:nth-child(14)),
+		div.magics:has(+div.content>div:nth-child(8)),
+		div.magics+div.content:has(>div:nth-child(8)) {
+			overflow: hidden;
+			overflow-y: auto;
+			scrollbar-gutter: stable;
+		}
+
+		/*Детали*/
+		div:has(>div.details) {
+			gap: var(--details_gap);
+		}
+		div.details {
+			display: flex;
+			align-items: center;
+			white-space: nowrap;
+			box-sizing: border-box;
+			outline: 1px dashed var(--color-small_border);
+			outline-offset: -1px;
+			border-radius: 5px;
+			height: 20px;
+			gap: 5px;
+			padding: 2px;
+		}
+		div.details>span {
+			font-size: 14px;
+		}
+
+		/*Статус*/
+		body>section>div.status {
+			display: grid;
+			grid-template:
+				"c f r r r s" 50%
+				"c e e e m m" calc(50% - var(--tabs_gap))
+				/ 50% calc(12.5% - var(--tabs_gap)) calc(12.5% - var(--tabs_gap)) calc(5% - var(--tabs_gap)) calc(10% - var(--tabs_gap)) calc(10% - var(--tabs_gap));
+		}
+		/*Характеристики*/
+		div.characteristics>div {
+			display: flex;
+			height: 20px;
+			width: 100%;
+		}
+		div.characteristics>div>* {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			box-sizing: border-box;
+			overflow: hidden;
+		}
+		div.characteristics>div>*:first-child {
+			width: 20%;
+		}
+		div.characteristics>div>*:not(:first-child) {
+			width: 8%;
+		}
+		div.characteristics>div>*:first-child {
+			border-right: 2px solid var(--color-small_border);
+		}
+		div.characteristics>div>*:not(:first-child):not(:last-child) {
+			border-right: 1px dashed var(--color-small_border);
+		}
+		div.characteristics>div:first-of-type>* {
+			border-bottom: 2px solid var(--color-small_border);
+		}
+		div.characteristics>div:not(:first-of-type):not(:last-child)>* {
+			border-bottom: 1px dashed var(--color-small_border);
+		}
+		/*Основное*/
+		body>section>div.main {
+			display: grid;
+			grid-template:
+				"a a a i" 30%
+				"t p p i" calc(20% - var(--tabs_gap))
+				"t m m w" calc(20% - var(--tabs_gap))
+				"t c e w" calc(30% - var(--tabs_gap))
+				/ 35% calc(15% - var(--tabs_gap)) calc(15% - var(--tabs_gap)) calc(35% - var(--tabs_gap));
+		}
+		/*Навыки, Таланты, Амбиции, Журнал опыта и Биография*/
+		div.tabs .item {
+			display: flex;
+			align-items: center;
+			text-align: center;
+			box-sizing: border-box;
+			width: 100%;
+			min-height: 20px;
+		}
+		div.tabs .item>* {
+			height: 100%;
+			box-sizing: border-box;
+		}
+		div.tabs .item>span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		div.tabs .item:not(.coins):not(.encumbrance):not(.wounds)>*:first-of-type:not(:last-child):not(select):not(img) {
+			border-right: 2px solid var(--color-small_border);
+		}
+		div.tabs .item>*:not(img):not(:first-of-type):not(:last-child),
+		div.tabs .item>select {
+			border-right: 1px dashed var(--color-small_border);
+		}
+		div.tabs>.item:not(.coins):not(.encumbrance) {
+			border-bottom: 2px solid var(--color-small_border);
+		}
+		div.tabs .content>.item:not(:last-child) {
+			border-bottom: 1px dashed var(--color-small_border);
+		}
+		div.tabs .item:not(.experience):not(.coins):not(.encumbrance):not(.wounds)>input:first-of-type {
+			text-align: left;
+		}
+		div.tabs .item:not(.coins):not(.wounds)>input,
+		div.tabs .item>select {
+			font-size: 10px;
+		}
+		div.ambitions {
+			gap: unset;
+		}
+		div.ambitions .table-input {
+			width: 100%;
+			height: 100%;
+		}
+		div.trappings.layer::before {
+			content: "•";
+			width: 10px;
+			font-size: 14px;
+		}
+		div.coins {
+			height: calc((100% - 30px) / 3);
+		}
+		div.coins > input {
+			text-align: center;
+			font-size: 18px;
+		}
+		div.encumbrance {
+			height: calc((100% - 30px) / 5);
+		}
+		div.encumbrance > span {
+			justify-content: flex-start !important;
+			font-size: 10px;
+		}
+		div.wounds > * {
+			font-size: 14px;
+		}
+		div.wounds >input:first-of-type {
+			text-align: right;
+		}
+		div.wounds >input:last-of-type {
+			text-align: left;
+		}
+
+
+
+		/*Всплывающие подсказки*/
+		.tooltip {
+			position: absolute;
+			z-index: 10;
+			padding: 2px;
+			background: repeat url(https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Assets/tooltip.png);
+			border: 2px solid #736953;
+			border-radius: 5px;
+			opacity: 0;
+			visibility: hidden;
+			transition: visibility 0.15s 0.25s, opacity 0.15s 0.25s;
+			max-height: 75vh;
+			max-width: 50vw;
+			font-size: 12px;
+			overflow: hidden;
+			overflow-y: auto;
+			transform: translate(-50%);
+		}
+		.tooltip.active {
+			visibility: visible;
+			opacity: 1;
+			transition-delay: 0s;
+		}
+		.tooltip h1 {
+			margin: 0.5em 0 0.5em;
+			font-size: 24px;
+			text-transform: uppercase;
+			font-weight: bold;
+			text-align: center;
+			border: none;
+			letter-spacing: 2px;
+			color: black;
+			text-align: center;
+		}
+		.tooltip h2 {
+			margin: 0px 0 0.5em;
+			font-size: 20px;
+			text-transform: uppercase;
+			font-weight: bold;
+			border-bottom: 1px solid black;
+			color: black;
+			line-height: normal;
+			text-align: center;
+		}
+		.tooltip h3 {
+			margin: 0 0 0.5rem;
+			border: none;
+			background: none;
+			font-variant: small-caps;
+			font-weight: bold;
+			font-size: 18px;
+			color: black;
+			text-align: center;
+		}
+		.tooltip h4 {
+			margin: 0.5rem 0;
+			font-weight: bold;
+			font-size: 16px;
+			color: black;
+			text-align: center;
+		}
+		.tooltip h5 {
+			margin: 0 0 0.5rem;
+			font-weight: bold;
+			font-size: 14px;
+			color: black;
+		}
+		.tooltip h6 {
+			font-size: 14px;
+			font-weight: bold;
+			border: none;
+			background: none;
+			color: black;
+		}
+		.tooltip figure img {
+			box-shadow: none;
+		}
+		.tooltip .content-embed .embed-caption {
+			color: black;
+			margin: 0px 1rem;
+		}
+		.tooltip .content-embed figcaption cite {
+			font-style: normal;
+		}
+		.tooltip p code {
+			font-family: "Lucida Console";
+		}
+		.tooltip p {
+			margin: 0.5em 0;
+			background: none;
+			border: none;
+			width: 100%;
+		}
+		.tooltip .inline-roll,
+		.tooltip .action-link,
+		.tooltip .content-link {
+			all: revert;
+		}
+		.tooltip .inline-roll>i,
+		.tooltip .action-link>i,
+		.tooltip .content-link>i {
+			display: none;
+		}
+		.tooltip .action-link img {
+			display: inline;
+			height: 1rem;
+			width: 1rem;
+			margin-bottom: -0.2rem;
+			margin-right: 0.1rem;
+		}
+		.tooltip ol li,
+		.tooltip ul li {
+			font-size: 12px;
+			background: none;
+			border: none;
+			width: 100%;
+			padding-left: 10px;
+		}
+		.tooltip blockquote {
+			margin: 0.5em 0 0.5em 5px;
+		}
+		.tooltip blockquote em {
+			font-style: normal;
+		}
+		.tooltip blockquote.sidebar {
+			border-left: 0px;
+			border: 2px ridge rgba(130, 93, 75, 0.5294117647);
+			padding: 10px;
+			background-color: rgba(130, 93, 75, 0.2196078431);
+		}
+		.tooltip table {
+			background: none;
+		}
+		.tooltip div {
+			margin: 0.5em 0;
+			background: none;
+			border: none;
+		}
+		.tooltip ul li::marker {
+			content: "•";
+			font-style: normal;
+			font-size: 14px;
+		}
+		.tooltip *:first-child {
+			margin-top: 0px;
+		}
+		.tooltip *:last-child {
+			margin-bottom: 0px;
+		}
+
+		/*Настройки*/
+		body>.settings {
+			width: 700px;
+			height: 30px;
+			margin-top: 10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.settings div {
+			width: 30px;
+			height: 30px;
+			padding: 2px;
+		}
+		.settings div > label {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+			color: white;
+		}
+		.settings div > input[type=checkbox] {
+			display: none;
+		}
+		.settings div > label>i {
+			font-size: 18px;
+			cursor: pointer;
+		}
+		.settings div > label>i:hover {
+			color: darkred !important;
+		}
+		.settings div.icons > label>i:first-of-type {
+			display: none;
+		}
+		.settings div.icons > label>i:last-of-type {
+			color: darkgreen;
+		}
+		.settings div.icons > input[type=checkbox]:checked + label>i:last-of-type {
+			display: none;
+		}
+		.settings div.icons > input[type=checkbox]:checked + label>i:first-of-type {
+			color: darkorange;
+			display: inline-block;
+		}
+		.settings div.colors > input[type=checkbox]:checked + label>i {
+			color: darkgreen;
+		}
+
+		body:has(.settings input#tooltipDisable:checked) > .tooltip,
+		body:has(.settings input#scaleFont:checked) > .tooltip,
+		body:has(.settings input#delete:checked) > .tooltip,
+		body:has(.settings input#add:checked) > .tooltip {
+			display: none !important;
+		}
+		body:has(.settings input#scaleFont:checked) input:not([type=checkbox]),
+		body:has(.settings input#scaleFont:checked) textarea,
+		body:has(.settings input#delete:checked) .content>div.item *,
+		body:has(.settings input#add:checked) .content:has(>div.item *) {
+			cursor: pointer !important;
+		}
+		@media not print {
+			body:has(.settings input#scaleFont:checked) input,
+			body:has(.settings input#scaleFont:checked) textarea,
+			body:has(.settings input#delete:checked) .content>div.item,
+			body:has(.settings input#add:checked) h3:has(~.content>div.item) {
+				box-shadow: inset 0 0 10px darkred;
+			}
+		}
+		body:has(.settings input#hideMagics:checked) div:has(>div.tabs>.magics) {
+			display: none;
+		}
+		body:has(.settings input#hideMagics:checked) div.main {
+			height: 614px !important;
+		}
+		body:has(.settings input#hideMagics:checked) div:has(>div.tabs>.weapons) {
+			height: 310px !important;
+		}
+		body:has(.settings input#hideSin:checked) div.status {
+			grid-template:
+				"c f r r r r" 50%
+				"c e e e m m" calc(50% - var(--tabs_gap))
+				/ 50% calc(12.5% - var(--tabs_gap)) calc(10% - var(--tabs_gap)) calc(5% - var(--tabs_gap)) calc(10% - var(--tabs_gap)) calc(12.5% - var(--tabs_gap));
+		}
+
+
+
+		/*Стили для печати*/
+		@media print {
+			@page {
+				size: A4 portrait;
+			}
+			*::-webkit-scrollbar {
+				display: none !important;
+			}
+			.tooltip,
+			.settings {
+				display: none !important;
+			}
+			body {
+				margin: auto !important;
+				zoom: 113%
+			}
+			section {
+				break-after: page;
+				margin: 0 !important;
+			}
+			.content>.skills:nth-child(n+13),
+			.content>.talents:nth-child(n+10),
+			.content>.traits:nth-child(n+10),
+			.content>.experience:nth-child(n+6),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.armours:nth-child(n+6),
+			.content>.armours:nth-child(n+7),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.trappings:nth-child(n+16),
+			.content>.trappings:nth-child(n+20),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.psychologys:nth-child(n+4),
+			.content>.psychologys:nth-child(n+5),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.mutations:nth-child(n+4),
+			.content>.mutations:nth-child(n+5),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.criticals:nth-child(n+11),
+			.content>.criticals:nth-child(n+13),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.effects:nth-child(n+11),
+			.content>.effects:nth-child(n+13),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.weapons:nth-child(n+8),
+			.content>.weapons:nth-child(n+14),
+			.content>.magics:nth-child(n+8) {
+				display: none;
+			}
+			.content>.skills:nth-child(12),
+			.content>.talents:nth-child(9),
+			.content>.traits:nth-child(9),
+			.content>.experience:nth-child(5),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.armours:nth-child(5),
+			.content>.armours:nth-child(6),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.trappings:nth-child(15),
+			.content>.trappings:nth-child(19),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.psychologys:nth-child(3),
+			.content>.psychologys:nth-child(4),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.mutations:nth-child(3),
+			.content>.mutations:nth-child(4),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.criticals:nth-child(10),
+			.content>.criticals:nth-child(12),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.effects:nth-child(10),
+			.content>.effects:nth-child(12),
+			body:not(:has(.settings input#hideMagics:checked)) .content>.weapons:nth-child(7),
+			.content>.weapons:nth-child(13),
+			.content>.magics:nth-child(7) {
+				border-bottom: unset !important;
+			}
+		}
+	</style>
+
+	<div class="tooltip" id="tooltip"></div>
+	<div class="settings" id="settings">
+		<div class="icons" title="{{localize "WFRP4E.PrintSheet.HTML.HideTooltip"}}">
+			<input type="checkbox" id="tooltipDisable">
+			<label for="tooltipDisable">
+				<i class="fas fa-eye-slash"></i>
+				<i class="fas fa-info-circle"></i>
+			</label>
+		</div>
+		<div class="icons" title="{{localize "WFRP4E.PrintSheet.HTML.HideMagics"}}">
+			<input type="checkbox" id="hideMagics">
+			<label for="hideMagics">
+				<i class="fas fa-eye-slash"></i>
+				<i class="fas fa-scroll"></i>
+			</label>
+		</div>
+		<div class="icons" title="{{localize "WFRP4E.PrintSheet.HTML.HideSin"}}">
+			<input type="checkbox" id="hideSin">
+			<label for="hideSin">
+				<i class="fas fa-eye-slash"></i>
+				<i class="fas fa-star"></i>
+			</label>
+		</div>
+		<div class="colors" title="{{localize "WFRP4E.PrintSheet.HTML.ScaleFont"}}">
+			<input type="checkbox" id="scaleFont">
+			<label for="scaleFont">
+				<i class="fas fa-maximize"></i>
+			</label>
+		</div>
+		<div class="colors" title="{{localize "WFRP4E.PrintSheet.HTML.Add"}}">
+			<input type="checkbox" id="add">
+			<label for="add">
+				<i class="fas fa-plus"></i>
+			</label>
+		</div>
+		<div class="colors" title="{{localize "WFRP4E.PrintSheet.HTML.Delete"}}">
+			<input type="checkbox" id="delete">
+			<label for="delete">
+				<i class="fas fa-trash"></i>
+			</label>
+		</div>
+		<div title="{{localize "WFRP4E.PrintSheet.HTML.Save"}}">
+			<input type="checkbox" id="save">
+			<label for="save">
+				<i class="fas fa-save"></i>
+			</label>
+		</div>
+		<!--
+			<div title="{{localize "WFRP4E.PrintSheet.HTML.Export"}} {{settings.version}}">
+				<input type="checkbox" id="export">
+				<label for="export">
+					<i class="fas fa-file-export"></i>
+				</label>
+			</div>
+		-->
+	</div>
+
+	<section>
+		<div style="height: 95px;">
+			<div class="details table-input" style="width: calc(37.5% - var(--details_gap));">
+				<span>{{localize "Name"}}</span>
+				<input id="name" value="{{name}}" {{#player}}class="tooltip-target" data-tooltip="<p>{{localize "Owner"}}: {{this}}</p>"{{/player}}>
+			</div>
+			<div class="details table-input" style="width: calc(37.5% - var(--details_gap));">
+				<span>{{localize "Species"}}</span>
+				<input id="details.race" value="{{details.race}}">
+			</div>
+			<div class="details table-input" style="width: 25%;">
+				<span>{{localize "Gender"}}</span>
+				<input id="details.gender" value="{{details.gender}}">
+			</div>
+			<div class="details table-input" style="width: calc(37.5% - var(--details_gap));">
+				<span>{{localize "Class"}}</span>
+				<input id="career.class" value="{{career.class}}">
+			</div>
+			<div class="details table-input" style="width: calc(37.5% - var(--details_gap));">
+				<span>{{localize "Career"}}</span>
+				<input id="career.name" value="{{career.name}}">
+			</div>
+			<div class="details table-input" style="width: 25%;">
+				<span>{{localize "Career Level"}}</span>
+				<input id="career.level" value="{{career.level}}">
+			</div>
+			<div class="details table-input" style="width: calc(80% - var(--details_gap));">
+				<span>{{localize "WFRP4E.PrintSheet.HTML.CareerPath"}}</span>
+				<input id="career.path" value="{{career.path}}">
+			</div>
+			<div class="details table-input" style="width: 20%;">
+				<span>{{localize "Status"}}</span>
+				<input id="career.status" value="{{career.status}}">
+			</div>
+			<div class="details table-input" style="width: calc(15% - var(--details_gap));">
+				<span>{{localize "Age"}}</span>
+				<input id="details.age" value="{{details.age}}">
+			</div>
+			<div class="details table-input" style="width: calc(25% - var(--details_gap));">
+				<span>{{localize "CharacterHeight"}} ({{localize "Weight"}})</span>
+				<input id="details.height_weight" value="{{details.height}} ({{details.weight}})">
+			</div>
+			<div class="details table-input" style="width: calc(30% - var(--details_gap));">
+				<span>{{localize "Hair Colour"}}</span>
+				<input id="details.haircolour" value="{{details.haircolour}}">
+			</div>
+			<div class="details table-input" style="width: 30%;">
+				<span>{{localize "Eye Colour"}}</span>
+				<input id="details.eyecolour" value="{{details.eyecolour}}">
+			</div>
+		</div>
+
+		<div class="status" style="height: 130px;">
+			<div class="characteristics" style="grid-area: c;">
+				<h3>{{localize "Characteristics"}}</h3>
+				<div>
+					<div></div>
+					<div><span>{{localize "CHARAbbrev.WS"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.BS"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.S"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.T"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.I"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.Ag"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.Dex"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.Int"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.WP"}}</span></div>
+					<div><span>{{localize "CHARAbbrev.Fel"}}</span></div>
+				</div>
+				<div>
+					<div><span>{{localize "Initial"}}</span></div>
+					<input id="characteristics.ws.initial" value="{{characteristics.ws.initial}}">
+					<input id="characteristics.bs.initial" value="{{characteristics.bs.initial}}">
+					<input id="characteristics.s.initial" value="{{characteristics.s.initial}}">
+					<input id="characteristics.t.initial" value="{{characteristics.t.initial}}">
+					<input id="characteristics.i.initial" value="{{characteristics.i.initial}}">
+					<input id="characteristics.ag.initial" value="{{characteristics.ag.initial}}">
+					<input id="characteristics.dex.initial" value="{{characteristics.dex.initial}}">
+					<input id="characteristics.int.initial" value="{{characteristics.int.initial}}">
+					<input id="characteristics.wp.initial" value="{{characteristics.wp.initial}}">
+					<input id="characteristics.fel.initial" value="{{characteristics.fel.initial}}">
+				</div>
+				<div>
+					<div><span>{{localize "SHEET.AdvAbbrev"}}</span></div>
+					<input id="characteristics.ws.advances" value="{{characteristics.ws.advances}}">
+					<input id="characteristics.bs.advances" value="{{characteristics.bs.advances}}">
+					<input id="characteristics.s.advances" value="{{characteristics.s.advances}}">
+					<input id="characteristics.t.advances" value="{{characteristics.t.advances}}">
+					<input id="characteristics.i.advances" value="{{characteristics.i.advances}}">
+					<input id="characteristics.ag.advances" value="{{characteristics.ag.advances}}">
+					<input id="characteristics.dex.advances" value="{{characteristics.dex.advances}}">
+					<input id="characteristics.int.advances" value="{{characteristics.int.advances}}">
+					<input id="characteristics.wp.advances" value="{{characteristics.wp.advances}}">
+					<input id="characteristics.fel.advances" value="{{characteristics.fel.advances}}">
+				</div>
+				<div>
+					<div><span>{{localize "WFRP4E.PrintSheet.HTML.ModifierAbbrev"}}</span></div>
+					<input id="characteristics.ws.modifier" value="{{characteristics.ws.modifier}}">
+					<input id="characteristics.bs.modifier" value="{{characteristics.bs.modifier}}">
+					<input id="characteristics.s.modifier" value="{{characteristics.s.modifier}}">
+					<input id="characteristics.t.modifier" value="{{characteristics.t.modifier}}">
+					<input id="characteristics.i.modifier" value="{{characteristics.i.modifier}}">
+					<input id="characteristics.ag.modifier" value="{{characteristics.ag.modifier}}">
+					<input id="characteristics.dex.modifier" value="{{characteristics.dex.modifier}}">
+					<input id="characteristics.int.modifier" value="{{characteristics.int.modifier}}">
+					<input id="characteristics.wp.modifier" value="{{characteristics.wp.modifier}}">
+					<input id="characteristics.fel.modifier" value="{{characteristics.fel.modifier}}">
+				</div>
+				<div>
+					<div><span>{{localize "Current"}}</span></div>
+					<input id="characteristics.ws.current" value="{{characteristics.ws.current}}">
+					<input id="characteristics.bs.current" value="{{characteristics.bs.current}}">
+					<input id="characteristics.s.current" value="{{characteristics.s.current}}">
+					<input id="characteristics.t.current" value="{{characteristics.t.current}}">
+					<input id="characteristics.i.current" value="{{characteristics.i.current}}">
+					<input id="characteristics.ag.current" value="{{characteristics.ag.current}}">
+					<input id="characteristics.dex.current" value="{{characteristics.dex.current}}">
+					<input id="characteristics.int.current" value="{{characteristics.int.current}}">
+					<input id="characteristics.wp.current" value="{{characteristics.wp.current}}">
+					<input id="characteristics.fel.current" value="{{characteristics.fel.current}}">
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: f;">
+				<h3>{{localize "Fate"}}</h3>
+				<div class="table-input" style="width: 100%;">
+					<span>{{localize "Fate"}}</span>
+					<input id="status.fate.value" value="{{status.fate.value}}">
+				</div>
+				<div class="table-input" style="width: 100%;">
+					<span>{{localize "Fortune"}}</span>
+					<input id="status.fate.fortune" value="{{status.fate.fortune}}">
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: r;">
+				<h3>{{localize "Resilience"}}</h3>
+				<div class="table-input-container" style="display: flex; width: 100%;">
+					<div class="table-input" style="width: 50%;">
+						<span>{{localize "Resilience"}}</span>
+						<input id="status.resilience.value" value="{{status.resilience.value}}">
+					</div>
+					<div class="table-input revers" style="width: 50%;">
+						<input id="status.resilience.resolve" value="{{status.resilience.resolve}}">
+						<span>{{localize "Resolve"}}</span>
+					</div>
+				</div>
+				<div class="table-input" style="width: 100%;">
+					<span>{{localize "Motivation"}}</span>
+					<input id="status.resilience.motivation" value="{{status.resilience.motivation}}">
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: e;">
+				<h3>{{localize "Experience"}}</h3>
+				<div class="table-input" style="width: 100%;">
+					<span>{{localize "Current"}}</span>
+					<input id="status.experience.value" value="{{status.experience.value}}">
+				</div>
+				<div class="table-input-container" style="display: flex; width: 100%;">
+					<div class="table-input" style="width: 50%;">
+						<span>{{localize "Spent"}}</span>
+						<input id="status.experience.spent" value="{{status.experience.spent}}">
+					</div>
+					<div class="table-input revers" style="width: 50%;">
+						<input id="status.experience.total" value="{{status.experience.total}}">
+						<span>{{localize "Total"}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: m;">
+				<h3>{{localize "Move"}}</h3>
+				<div class="table-input" style="width: 100%;">
+					<span>{{localize "Move"}}</span>
+					<input id="status.move.value" value="{{status.move.value}}">
+				</div>
+				<div class="table-input-container" style="display: flex; width: 100%;">
+					<div class="table-input" style="width: 50%;">
+						<span>{{localize "Walk"}}</span>
+						<input id="status.move.walk" value="{{status.move.walk}}">
+					</div>
+					<div class="table-input" style="width: 50%;">
+						<span>{{localize "Run"}}</span>
+						<input id="status.move.run" value="{{status.move.run}}">
+					</div>
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: s;">
+				<h3>{{localize "Sin"}}</h3>
+				<div class="line" style="width: 100%;">
+					<input id="status.sin" value="{{status.religion.god}}">
+				</div>
+				<div class="line" style="width: 100%;">
+					<input id="status.sin" value="{{status.religion.sin}}">
+				</div>
+			</div>
+		</div>
+
+		<div style="height: 290px; gap: 0.5%;">
+			<div class="tabs" style="width: 33%;">
+				<h3>{{localize "Basic Skills"}}</h3>
+				<div class="item skills">
+					<span style="width: 40%;">{{localize "Name"}}</span>
+					<span style="width: 30%;">{{localize "SHEET.CharAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "SHEET.AdvAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "Total"}}</span>
+				</div>
+				<div class="content">
+					{{#each skills.bsc as |skill|}}
+					{{#if (lt @index 12)}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}">
+						<input style="width: 40%;" id="skills.bsc_{{@index}}.name" value="{{skill.name}}">
+						<select style="width: 15%;" id="skills.bsc_{{@index}}.characteristic" value="{{skill.characteristic}}">
+							<option {{#if (eq skill.characteristic "ws")}}selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+							<option {{#if (eq skill.characteristic "bs")}}selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+							<option {{#if (eq skill.characteristic "s")}}selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+							<option {{#if (eq skill.characteristic "t")}}selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+							<option {{#if (eq skill.characteristic "i")}}selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+							<option {{#if (eq skill.characteristic "ag")}}selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+							<option {{#if (eq skill.characteristic "dex")}}selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+							<option {{#if (eq skill.characteristic "int")}}selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+							<option {{#if (eq skill.characteristic "wp")}}selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+							<option {{#if (eq skill.characteristic "fel")}}selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+						</select>
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.advances" value="{{skill.advances}}">
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.value" value="{{skill.value}}">
+					</div>	
+					{{/if}}
+					{{/each}}
+				</div>
+			</div>
+			<div class="tabs" style="width: 33%;">
+				<h3>{{localize "Basic Skills"}}</h3>
+				<div class="item skills">
+					<span style="width: 40%;">{{localize "Name"}}</span>
+					<span style="width: 30%;">{{localize "SHEET.CharAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "SHEET.AdvAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "Total"}}</span>
+				</div>
+				<div class="content">
+					{{#each skills.bsc as |skill|}}
+					{{#if (gt @index 11)}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}">
+						<input style="width: 40%;" id="skills.bsc_{{@index}}.name" value="{{skill.name}}">
+						<select style="width: 15%;" id="skills.bsc_{{@index}}.characteristic" value="{{skill.characteristic}}">
+							<option {{#if (eq skill.characteristic "ws")}}selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+							<option {{#if (eq skill.characteristic "bs")}}selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+							<option {{#if (eq skill.characteristic "s")}}selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+							<option {{#if (eq skill.characteristic "t")}}selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+							<option {{#if (eq skill.characteristic "i")}}selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+							<option {{#if (eq skill.characteristic "ag")}}selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+							<option {{#if (eq skill.characteristic "dex")}}selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+							<option {{#if (eq skill.characteristic "int")}}selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+							<option {{#if (eq skill.characteristic "wp")}}selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+							<option {{#if (eq skill.characteristic "fel")}}selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+						</select>
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.advances" value="{{skill.advances}}">
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.value" value="{{skill.value}}">
+					</div>	
+					{{/if}}
+					{{/each}}
+				</div>
+			</div>
+			<div class="tabs" style="width: 33%;">
+				<h3>{{localize "Grouped & Advanced Skills"}}</h3>
+				<div class="item skills">
+					<span style="width: 40%;">{{localize "Name"}}</span>
+					<span style="width: 30%;">{{localize "SHEET.CharAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "SHEET.AdvAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "Total"}}</span>
+				</div>
+				<div class="content">
+					{{#each skills.adv as |skill|}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}">
+						<input style="width: 40%;" id="skills.bsc_{{@index}}.name" value="{{skill.name}}">
+						<select style="width: 15%;" id="skills.bsc_{{@index}}.characteristic" value="{{skill.characteristic}}">
+							<option {{#if (eq skill.characteristic "ws")}}selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+							<option {{#if (eq skill.characteristic "bs")}}selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+							<option {{#if (eq skill.characteristic "s")}}selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+							<option {{#if (eq skill.characteristic "t")}}selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+							<option {{#if (eq skill.characteristic "i")}}selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+							<option {{#if (eq skill.characteristic "ag")}}selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+							<option {{#if (eq skill.characteristic "dex")}}selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+							<option {{#if (eq skill.characteristic "int")}}selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+							<option {{#if (eq skill.characteristic "wp")}}selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+							<option {{#if (eq skill.characteristic "fel")}}selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+						</select>
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.advances" value="{{skill.advances}}">
+						<input style="width: 15%;" id="skills.bsc_{{@index}}.value" value="{{skill.value}}">
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+
+		<div style="height: 230px; gap: 1%;">
+			<div class="tabs" style="width: 49.5%;">
+				<h3>{{localize "Talents"}}</h3>
+				<div class="item talents">
+					<span style="width: 35%;">{{localize "Name"}}</span>
+					<span style="width: 10%;">{{localize "SHEET.AdvAbbrev"}}</span>
+					<span style="width: 55%;">{{localize "Tests"}}</span>
+				</div>
+				<div class="content">
+					{{#each talents as |talent|}}
+					<div class="item talents tooltip-target" data-tooltip="{{talent.description}}">
+						{{#talent.image}}
+						<img style="width: 20px;" src="{{talent.image}}">
+						<input style="width: calc(35% - 20px);" id="talent.{{@index}}.name" value="{{talent.name}}">
+						{{else}}
+						<input style="width: 35%;" id="talent.{{@index}}.name" value="{{talent.name}}">
+						{{/talent.image}}
+						<input style="width: 10%;" id="talent.{{@index}}.advances" value="{{talent.advances}}">
+						<input style="width: 55%;" id="talent.{{@index}}.tests" value="{{talent.tests}}">
+					</div>
+					{{/each}}
+					{{#each traits as |trait|}}
+					<div class="item traits tooltip-target" data-tooltip="{{trait.description}}">
+						{{#trait.image}}
+						<img style="width: 20px;" src="{{trait.image}}">
+						<input style="width: calc(35% - 20px);" id="trait.{{@index}}.name" value="{{trait.name}}">
+						{{else}}
+						<input style="width: 35%" id="trait.{{@index}}.name" value="{{trait.name}}">
+						{{/trait.image}}
+						<input style="width: 10%;" id="trait.{{@index}}.advances" value="{{trait.advances}}">
+						<input style="width: 55%;" id="trait.{{@index}}.tests" value="{{trait.tests}}">
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			<div class="tabs ambitions" style="width: 49.5%;">
+				<div class="tabs" style="width: 100%; height: 50%;">
+					<h3>{{localize "Personal Ambitions"}}</h3>
+					<div class="table-input">
+						<span style="width: 30%; font-size: 10px;">{{localize "Short Term"}}</span>
+						<textarea style="width: 70%;" id="status.ambitions.personal.short">{{status.ambitions.personal.short}}</textarea>
+					</div>
+					<div class="table-input">
+						<span style="width: 30%; font-size: 10px;">{{localize "Long Term"}}</span>
+						<textarea style="width: 70%;" id="status.ambitions.personal.long">{{status.ambitions.personal.long}}</textarea>
+					</div>
+				</div>
+				<div class="tabs" style="width: 100%; height: 50%;">
+					<h3>{{localize "Party Ambitions"}}</h3>
+					<div class="table-input">
+						<span style="width: 30%; font-size: 10px;">{{localize "Short Term"}}</span>
+						<textarea style="width: 70%;" id="status.ambitions.party.short">{{status.ambitions.party.short}}</textarea>
+					</div>
+					<div class="table-input">
+						<span style="width: 30%; font-size: 10px;">{{localize "Long Term"}}</span>
+						<textarea style="width: 70%;" id="status.ambitions.party.long">{{status.ambitions.party.long}}</textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div style="height: 156px; gap: 1%;">
+			<div class="tabs" style="width: 49.5%;">
+				<h3>{{localize "SHEET.ExperienceLog"}}</h3>
+				<div class="item experience">
+					<span style="width: 30%;">{{localize "Experience"}}</span>
+					<span style="width: 70%;">{{localize "Reason"}}</span>
+				</div>
+				<div class="content" style="width: 100%;">
+					{{#each status.experience.log as |experience|}}
+					<div class="item experience">
+						<input style="width: 30%;" id="experience.{{@index}}.value" value="{{experience.value}}">
+						<input style="width: 70%;" id="experience.{{@index}}.reason" value="{{experience.reason}}">
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			<div class="tabs" style="width: 49.5%;">
+				<div class="tabs" style="width: 100%;">
+					<h3>{{localize "Biography"}}</h3>
+					<textarea id="details.biography">{{details.biography}}</textarea>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="main" style="height: 514px;">
+			<div class="tabs" style="grid-area: a;">
+				<h3>{{localize "WFRP4E.TrappingType.Armour"}}</h3>
+				<div class="item armours">
+					<span style="width: 30%;">{{localize "Name"}}</span>
+					<span style="width: 30%;">{{localize "Location"}} ({{localize "AP"}})</span>
+					<span style="width: 10%;">{{localize "SHEET.EncAbbrev"}}</span>
+					<span style="width: 30%;">{{localize "WFRP4E.PrintSheet.HTML.Qualities"}}</span>
+				</div>
+				<div class="content">
+					{{#each armours as |armour|}}
+					<div class="item armours tooltip-target" data-tooltip="{{armour.description}}">
+						{{#armour.image}}
+						<img style="width: 20px;" src="{{armour.image}}">
+						<input style="width: calc(30% - 20px);" id="armour.{{@index}}.name" value="{{armour.name}}">
+						{{else}}
+						<input style="width: 30%;" id="armour.{{@index}}.name" value="{{armour.name}}">
+						{{/armour.image}}
+						<input style="width: 30%;" id="armour.{{@index}}.locations" value="{{armour.locations}}">
+						<input style="width: 10%;" id="armour.{{@index}}.encumbrance" value="{{armour.encumbrance}}">
+						<input style="width: 30%;" id="armour.{{@index}}.qualities" data-type="qualities" value="{{armour.qualities}}">
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			<div class="image" style="grid-area: i; justify-content: center; padding: 5px;"><img src="{{image}}"></div>
+			<div class="tabs" style="grid-area: t;">
+				<h3>{{localize "Trapping"}}</h3>
+				<div class="item trappings">
+					<span style="width: 80%;">{{localize "Name"}}</span>
+					<span style="width: 20%;">{{localize "SHEET.EncAbbrev"}}</span>
+				</div>
+				<div class="content">
+				{{#if trappings}}
+				{{createTrappingsElem trappings}}
+				{{/if}}
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: p;">
+				<h3>{{localize "Psychology"}}</h3>
+				<div class="content">
+					{{#each psychologys as |psychology|}}
+					<div class="item psychologys tooltip-target" data-tooltip="{{psychology.description}}">
+						{{#psychology.image}}
+						<img style="width: 20px;" src="{{psychology.image}}">
+						<input style="width: calc(100% - 20px);" id="psychology.{{@index}}.name" value="{{psychology.name}}">
+						{{else}}
+						<input style="width: 100%;" id="psychology.{{@index}}.name" value="{{psychology.name}}">
+						{{/psychology.image}}
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: m;">
+				<h3>{{localize "Mutations"}}</h3>
+				<div class="content">
+					{{#each mutations as |mutation|}}
+					<div class="item mutations tooltip-target" data-tooltip="{{mutation.description}}">
+						{{#mutation.image}}
+						<img style="width: 20px;" src="{{mutation.image}}">
+						<input style="width: calc(100% - 20px);" id="mutation.{{@index}}.name" value="{{mutation.name}}">
+						{{else}}
+						<input style="width: 100%;" id="mutation.{{@index}}.name" value="{{mutation.name}}">
+						{{/mutation.image}}
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: c;">
+				<h3>{{localize "WFRP4E.TrappingType.Money"}}</h3>
+				<div class="item table-input coins tooltip-target" data-tooltip="<p><strong>{{localize "SHEET.EncAbbrev"}}</strong>: {{coins.bp.encumbrance}}</p>">
+					<input style="width: 50%;" id="coins.bp" value="{{coins.bp.value}}">
+					<!--Здесь находится изображение Медного пенни, потому что я - молодец :)-->
+					<img style="width: 50%;" src="{{settings.coins.bp}}">
+				</div>
+				<div class="item table-input coins tooltip-target" data-tooltip="<p><strong>{{localize "SHEET.EncAbbrev"}}</strong>: {{coins.ss.encumbrance}}</p>">
+					<input style="width: 50%;" id="coins.ss" value="{{coins.ss.value}}">
+					<!--Здесь находится изображение Серебрянного шиллинга, потому что я - молодец :)-->
+					<img style="width: 50%;" src="{{settings.coins.ss}}">
+				</div>
+				<div class="item table-input coins tooltip-target" data-tooltip="<p><strong>{{localize "SHEET.EncAbbrev"}}</strong>: {{coins.gc.encumbrance}}</p>">
+					<input style="width: 50%;" id="coins.gc" value="{{coins.gc.value}}">
+					<!--Здесь находится изображение Золотой кроны, потому что я - молодец :)-->
+					<img style="width: 50%;" src="{{settings.coins.gc}}">
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: e;">
+				<h3>{{localize "SHEET.Encumbrance"}}</h3>
+				<div class="item table-input encumbrance">
+					<span style="width: 65%;">{{localize "WFRP4E.TrappingType.Weapon"}}</span>
+					<input style="width: 35%;" id="encumbrance.weapons" value="{{encumbrance.weapons}}">
+				</div>
+				<div class="item table-input encumbrance">
+					<span style="width: 65%;">{{localize "WFRP4E.TrappingType.Armour"}}</span>
+					<input style="width: 35%;" id="encumbrance.armours" value="{{encumbrance.armours}}">
+				</div>
+				<div class="item table-input encumbrance">
+					<span style="width: 65%;">{{localize "Trapping"}}</span>
+					<input style="width: 35%;" id="encumbrance.trappings" value="{{encumbrance.trappings}}">
+				</div>
+				<div class="item table-input encumbrance">
+					<span style="width: 65%;">{{localize "Max"}}</span>
+					<input style="width: 35%;" id="encumbrance.max" value="{{encumbrance.max}}">
+				</div>
+				<div class="item table-input encumbrance">
+					<span style="width: 65%;">{{localize "Total"}}</span>
+					<input style="width: 35%;" id="encumbrance.current" value="{{encumbrance.current}}">
+				</div>
+			</div>
+			<div class="tabs" style="grid-area: w;">
+				<h3>{{localize "Wounds"}}</h3>
+				<div class="item table-input wounds">
+					<input id="status.wounds.value" value="{{status.wounds.value}}">
+					<span>&nbsp;{{localize "WFRP4E.PrintSheet.HTML.OutOf"}}&nbsp;</span>
+					<input id="status.wounds.max" value="{{status.wounds.max}}">
+				</div>
+				<div class="content">
+					{{#each status.criticals as |critical|}}
+					<div class="item criticals tooltip-target" data-tooltip="{{critical.description}}">
+						{{#critical.image}}
+						<img style="width: 20px;" src="{{critical.image}}">
+						<input style="width: calc(100% - 20px);" id="critical.{{@index}}.name" value="{{critical.name}}">
+						{{else}}
+						<input style="width: 100%;" id="critical.{{@index}}.name" value="{{critical.name}}">
+						{{/critical.image}}
+					</div>
+					{{/each}}
+					{{#each status.effects as |effect|}}
+					<div class="item effects tooltip-target" data-tooltip="{{effect.description}}">
+						{{#effect.image}}
+						<img style="width: 20px;" src="{{effect.image}}">
+						<input style="width: calc(100% - 20px);" id="effect.{{@index}}.name" value="{{effect.name}}">
+						{{else}}
+						<input style="width: 100%;" id="effect.{{@index}}.name" value="{{effect.name}}">
+						{{/effect.image}}
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+
+		<div style="height: 200px;">
+			<div class="tabs">
+				<h3>{{localize "WFRP4E.TrappingType.Weapon"}}</h3>
+				<div class="item weapons">
+					<span style="width: 27.5%;">{{localize "Name"}}</span>
+					<span style="width: 15%;">{{localize "Group"}}</span>
+					<span style="width: 7.5%;">{{localize "SHEET.EncAbbrev"}}</span>
+					<span style="width: 15%;">{{localize "Reach"}}</span>
+					<span style="width: 7.5%;">{{localize "Damage"}}</span>
+					<span style="width: 27.5%;">{{localize "WFRP4E.PrintSheet.HTML.Qualities"}}</span>
+				</div>
+				<div class="content">
+					{{#each weapons as |weapon|}}
+					<div class="item weapons tooltip-target" data-tooltip="{{weapon.description}}">
+						{{#weapon.image}}
+						<img style="width: 20px;" src="{{weapon.image}}">
+						<input style="width: calc(27.5% - 20px);" id="weapon.{{@index}}.name" value="{{weapon.name}}">
+						{{else}}
+						<input style="width: 27.5%;" id="weapon.{{@index}}.name" value="{{weapon.name}}">
+						{{/weapon.image}}
+						<input style="width: 15%;" id="weapon.{{@index}}.group" value="{{weapon.group}}">
+						<input style="width: 7.5%;" id="weapon.{{@index}}.encumbrance" value="{{weapon.encumbrance}}">
+						<input style="width: 15%;" id="weapon.{{@index}}.reach" value="{{weapon.reach}}">
+						<input style="width: 7.5%;" id="weapon.{{@index}}.damage" value="{{weapon.damage}}">
+						<input style="width: 27.5%;" id="weapon.{{@index}}.qualities" data-type="qualities" value="{{weapon.qualities}}">
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+
+		<div style="height: 200px;">
+			<div class="tabs">
+				<h3>{{localize "Magic"}}&nbsp;&&nbsp;{{localize "Religion"}}</h3>
+				<div class="item magics">
+					<span style="width: 35%;">{{localize "Name"}}</span>
+					<span style="width: 5%;">{{localize "CN"}}</span>
+					<span style="width: 15%;">{{localize "Range"}}</span>
+					<span style="width: 15%;">{{localize "Target"}}</span>
+					<span style="width: 15%;">{{localize "WFRP4E.PrintSheet.HTML.Duration"}}</span>
+					<span style="width: 15%;">{{localize "Type"}}</span>
+				</div>
+				<div class="content">
+					{{#each magics as |magic|}}
+					<div class="item magics tooltip-target top" data-tooltip="{{magic.description}}">
+						{{#magic.image}}
+						<img style="width: 20px;" src="{{magic.image}}">
+						<input style="width: calc(35% - 20px);" id="magic.{{@index}}.name" value="{{magic.name}}">
+						{{else}}
+						<input style="width: 35%;" id="magic.{{@index}}.name" value="{{magic.name}}">
+						{{/magic.image}}
+						<input style="width: 5%;" id="magic.{{@index}}.cn" value="{{magic.cn}}">
+						<input style="width: 15%;" id="magic.{{@index}}.range" value="{{magic.range}}">
+						<input style="width: 15%;" id="magic.{{@index}}.target" value="{{magic.target}}">
+						<input style="width: 15%;" id="magic.{{@index}}.duration" value="{{magic.duration}}">
+						<input style="width: 15%;" id="magic.{{@index}}.lore" value="{{magic.lore}}">
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		let isHovered = false;
+		let tooltipTarget;
+		const tooltip = document.getElementById("tooltip");
+		tooltip.classList.remove("active");
+		tooltip.addEventListener("mouseenter", (event) => {
+			isHovered = true;
+			tooltip.classList.add("active");
+		});
+		tooltip.addEventListener("mouseleave", (event) => {hideTooltip()});
+
+		document.getElementsByTagName("section")[0].scrollIntoView();
+
+		{{#if magics}}
+		document.getElementById("hideMagics").checked = false;
+		{{else}}
+		document.getElementById("hideMagics").checked = true;
+		{{/if}}
+		{{#if status.religion.god}}
+		document.getElementById("hideSin").checked = false;
+		{{else}}
+		document.getElementById("hideSin").checked = true;
+		{{/if}}
+
+		let props = {};
+		{{#each settings.props as |prop|}}
+		Object.assign(props, {["{{prop.name}}"]: "{{{prop.description}}}"});
+		{{/each}}
+
+		function showTooltip(target) {
+			setTimeout(() => {
+				if (isHovered && tooltipTarget == target) {
+					let position = target.getBoundingClientRect();
+					
+					position = {x: Math.round(window.scrollX + position.left + (position.right - position.left) / 2), y: Math.round(window.scrollY + position.bottom)};
+
+					let qualities = "";
+					if (target.querySelector("input[data-type='qualities']")) {
+						qualitiesList = target.querySelector("input[data-type='qualities']").value;
+						if (qualitiesList) {qualitiesList = qualitiesList.split(", " || ",")};
+						if (qualitiesList.length) {
+							qualities = "<h4>{{localize 'Qualities'}} & {{localize 'Flaws'}}</h4>";
+							for (let i = 0; i < qualitiesList.length; i++) {
+								qualities += `<p><strong>${qualitiesList[i]}</strong>: ${props[qualitiesList[i].replace(/ \d+/g, "")] || "<em>{{localize 'WFRP4E.PrintSheet.Empty'}}</em>"}</p>`;
+							};
+						};
+					}
+
+					tooltip.innerHTML = qualities + target.dataset.tooltip;
+					if (target.classList.contains("top") || (target.classList.contains("weapons") && document.getElementById("hideMagics").checked)) {
+						tooltip.setAttribute("style", `top: ${position.y - 1 - tooltip.offsetHeight - target.offsetHeight + "px"}; left: ${position.x + "px"};`);
+					} else {
+						tooltip.setAttribute("style", `top: ${position.y - 1 + "px"}; left: ${position.x + "px"};`);
+					};
+					tooltip.classList.add("active");
+				};
+			}, 500);
+		};
+		function hideTooltip() {
+			isHovered = false;
+			tooltipTarget = "";
+			setTimeout(() => {
+				if (!isHovered) {
+					tooltip.classList.remove("active");
+				};
+			}, 500);
+		};
+
+		let tooltipTargets = document.getElementsByClassName("tooltip-target");
+		for (let i = 0; i < tooltipTargets.length; i++) {
+			tooltipTargets[i].addEventListener("mouseenter", () => {
+				isHovered = true;
+				tooltipTarget = tooltipTargets[i];
+				showTooltip(tooltipTargets[i]);
+			});
+			tooltipTargets[i].addEventListener("mouseleave", () => {hideTooltip()});
+		};
+
+		document.getElementById("scaleFont").addEventListener("click", () => {
+			document.getElementById("delete").checked = false;
+			document.getElementById("add").checked = false;
+		});
+		document.getElementById("delete").addEventListener("click", () => {
+			document.getElementById("scaleFont").checked = false;
+			document.getElementById("add").checked = false;
+		});
+		document.getElementById("add").addEventListener("click", () => {
+			document.getElementById("delete").checked = false;
+			document.getElementById("scaleFont").checked = false;
+		});
+
+		let inputs = document.querySelectorAll("input:not([type=checkbox]), textarea");
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].addEventListener("click", (event) => {
+				if (document.getElementById("scaleFont").checked) {
+					let computedStyle = window.getComputedStyle(inputs[i]);
+					inputs[i].style.fontSize = parseInt(computedStyle.getPropertyValue("font-size")) + 1 + "px";
+				};
+			});
+			inputs[i].addEventListener("contextmenu", (event) => {
+				if (document.getElementById("scaleFont").checked) {
+					event.preventDefault();
+					let computedStyle = window.getComputedStyle(inputs[i]);
+					inputs[i].style.fontSize = parseInt(computedStyle.getPropertyValue("font-size")) - 1 + "px";
+				};
+			});
+		};
+		let items = document.querySelectorAll(".content>div.item");
+		for (let i = 0; i < items.length; i++) {
+			items[i].addEventListener("click", () => {
+				if (document.getElementById("delete").checked) {items[i].remove()};
+			});
+		};
+		let contents = document.querySelectorAll("h3:has(~.content>div.item)");
+		for (let i = 0; i < contents.length; i++) {
+			contents[i].addEventListener("click", () => {
+				if (document.getElementById("add").checked) {
+					let element;
+					let parent = contents[i].nextElementSibling;
+					if (parent.classList.value.includes("skills")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item skills">
+						<input style="width: 40%;" value="">
+						<select style="width: 15%;">
+							<option selected>{{characteristics.ws.name}}</option>
+							<option selected>{{characteristics.bs.name}}</option>
+							<option selected>{{characteristics.s.name}}</option>
+							<option selected>{{characteristics.t.name}}</option>
+							<option selected>{{characteristics.i.name}}</option>
+							<option selected>{{characteristics.ag.name}}</option>
+							<option selected>{{characteristics.dex.name}}</option>
+							<option selected>{{characteristics.int.name}}</option>
+							<option selected>{{characteristics.wp.name}}</option>
+							<option selected>{{characteristics.fel.name}}</option>
+						</select>
+						<input style="width: 15%;" value="0">
+						<input style="width: 15%;" value="0">
+						<input style="width: 15%;" value="0">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("talents")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item talents" data-tooltip="${description}">
+						<input style="width: 35%;" value="">
+						<input style="width: 10%;" value="">
+						<input style="width: 55%;" value="">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("experience")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item experience">
+						<input style="width: 30%;" value="">
+						<input style="width: 70%;" value="">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("armours")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item armours">
+						<input style="width: 30%;" value="">
+						<input style="width: 30%;" value="">
+						<input style="width: 10%;" value="">
+						<input style="width: 30%;" data-type="qualities" value="">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("trappings")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item trappings">
+						<input style="width: 80%;" value="">
+						<input style="width: 20%;" value="">
+					</div>
+						`;
+					} else if (window.getComputedStyle(contents[i].closest(".tabs")).gridArea == "p") {
+						element = `
+					<div class="item psychologys">
+						<input style="width: 100%;" value="">
+					</div>
+						`;
+					} else if (window.getComputedStyle(contents[i].closest(".tabs")).gridArea == "m") {
+						element = `
+					<div class="item mutations">
+						<input style="width: 100%;" value="">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("wounds")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item criticals">
+						<input style="width: 100%;" value="">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("weapons")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item weapons">
+						<input style="width: 27.5%;" value="">
+						<input style="width: 15%;" value="">
+						<input style="width: 7.5%;" value="">
+						<input style="width: 15%;" value="">
+						<input style="width: 7.5%;" value="">
+						<input style="width: 27.5%;" data-type="qualities" value="">
+					</div>
+						`;
+					} else if (parent.classList.value.includes("magics")) {
+						parent = parent.nextElementSibling;
+						element = `
+					<div class="item magics">
+						<input style="width: 35%;" value="">
+						<input style="width: 5%;" value="">
+						<input style="width: 15%;" value="">
+						<input style="width: 15%;" value="">
+						<input style="width: 15%;" value="">
+						<input style="width: 15%;" value="">
+					</div>
+						`;
+					};
+					parent.insertAdjacentHTML("beforeend", element);
+					let newElement = parent.lastElementChild;
+					newElement.addEventListener("click", () => {
+						if (document.getElementById("delete").checked) {newElement.remove()};
+					});
+					let newElements = newElement.querySelectorAll("input");
+					for (let i = 0; i < newElements.length; i++) {
+						newElements[i].addEventListener("click", (event) => {
+							if (document.getElementById("scaleFont").checked) {
+								let computedStyle = window.getComputedStyle(newElements[i]);
+								newElements[i].style.fontSize = parseInt(computedStyle.getPropertyValue("font-size")) + 1 + "px";
+							};
+						});
+						newElements[i].addEventListener("contextmenu", (event) => {
+							if (document.getElementById("scaleFont").checked) {
+								event.preventDefault();
+								let computedStyle = window.getComputedStyle(newElements[i]);
+								newElements[i].style.fontSize = parseInt(computedStyle.getPropertyValue("font-size")) - 1 + "px";
+							};
+						});
+					};
+				};
+			});
+		};
+
+		document.getElementById("save").addEventListener("click", () => {
+			let html = document.documentElement.outerHTML;
+			let file = new Blob([html], {type: "text/html"});
+			let filename = window.location.pathname.split("/").pop();
+
+			if (window.navigator.msSaveOrOpenBlob)
+				window.navigator.msSaveOrOpenBlob(file, filename);
+			else {
+				let a = document.createElement("a"),
+				url = URL.createObjectURL(file);
+				a.href = url;
+				a.download = filename;
+				document.body.appendChild(a);
+				a.click();
+				setTimeout(function() {
+					document.body.removeChild(a);
+					window.URL.revokeObjectURL(url);  
+				}, 0); 
+			};
+		});
+
+		/*
+			document.getElementById("export").addEventListener("click", () => {
+				let data = `{{settings.export}}`;
+				let file = new Blob([data], {type: "text/json"});
+				let filename = "{{name}}";
+
+				if (window.navigator.msSaveOrOpenBlob)
+					window.navigator.msSaveOrOpenBlob(file, filename);
+				else {
+					let a = document.createElement("a"),
+					url = URL.createObjectURL(file);
+					a.href = url;
+					a.download = filename;
+					document.body.appendChild(a);
+					a.click();
+					setTimeout(function() {
+						document.body.removeChild(a);
+						window.URL.revokeObjectURL(url);  
+					}, 0); 
+				};
+			});
+		*/
+	</script>
