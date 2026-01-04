@@ -32,7 +32,7 @@
 			},
 			"conection": {
 				"Name": "Server IP address",
-				"Hint": "Required for embedding images. Use the format \"http://IP:PORT/\"."
+				"Hint": "Required for embedding images. Use the format \"http://IP:PORT/\".\nIf you are the server host, use \"http://localhost:PORT/\"."
 			},
 			"defaultName": {
 				"Name": "Default File Name",
