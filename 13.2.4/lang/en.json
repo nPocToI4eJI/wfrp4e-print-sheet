@@ -1,0 +1,42 @@
+{
+	"WFRP4E.PrintSheet": {
+		"Button": "Print Sheet",
+		"ExperienceReason": "No reason specified",
+		"Empty": "nothing",
+		"Blank": "Blank sheet",
+		"HTML": {
+			"HideTooltip": "Toggle visibility of element descriptions.",
+			"ScaleFont": "Increase or decrease the font size of the selected element.\nLMB: Increase font size.\nRMB: Decrease font size.",
+			"Add": "Add elements.",
+			"Delete": "Delete selected elements.",
+			"HideMagics": "Toggle visibility of \"Magic & Religion\".",
+			"HideSin": "Toggle visibility of Sin.",
+			"Save": "Save changes (to a new file).",
+			"Export": "Save character data for Foundry.\nContains only initial parameters, not saving changes in this sheet.\nVersion: ",
+			"CareerPath": "Career Path",
+			"ModifierAbbrev": "Mod.",
+			"Qualities": "Qualities",
+			"OutOf": "of",
+			"Duration": "Duration"
+		},
+		"Settings": {
+			"inputcolor": {
+				"Name": "Сolor of character values",
+				"Hint": "Enter the color code perceived by CSS (\"white\", \"#FFFFFF\", \"rgba(255,255,255,0.5)\"...)."
+			},
+			"embedimages": {
+				"Name": "Embed Images",
+				"Hint": "Embed images for each actor item, such as talents, items, magic, etc."
+			},
+			"defaultName": {
+				"Name": "Default File Name",
+				"Hint": "Leave empty to use the actor's name as the default file name."
+			},
+			"printEmptySheet": {
+				"Name": "Get an empty sheet",
+				"Label": "Print",
+				"Hint": "Allows you to get a completely empty character sheet in HTML format."
+			}
+		}
+	}
+}
