@@ -1,0 +1,1371 @@
+<style>
+	:root {
+		--inputcolor: {{settings.inputcolor}};
+		--ui-scale: 1;
+		--gap: 0.6rem;
+		--color-large-border: #4a0404;
+		--color-small-border: #6c5e44;
+		--parchment-bg: #f3ead3;
+		--parchment-card: rgba(255, 251, 238, 0.72);
+		--ink: #1d1711;
+		--gold: #d4a84f;
+	}
+	*, *::before, *::after {
+		box-sizing: border-box;
+	}
+	html {
+		font-size: clamp(13px, 1vw, 16px);
+		font-family: "Georgia", "Times New Roman", serif;
+		background: #181410;
+		color: var(--ink);
+	}
+	body {
+		margin: 0;
+		padding: 0 0 2.5rem;
+		min-height: 100vh;
+		font-size: calc(0.95rem * var(--ui-scale));
+		background-color: #181410;
+	}
+
+
+
+	.topbar {
+		position: sticky;
+		top: 0;
+		z-index: 60;
+		background: rgba(24, 20, 16, 0.96);
+		border-bottom: 2px solid var(--color-large-border);
+		box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.6);
+		padding: 0.5rem clamp(0.5rem, 2vw, 1.5rem);
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+	.topbar-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.45rem;
+		max-width: 92rem;
+		width: 100%;
+		margin: 0 auto;
+	}
+	.nav-tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+	}
+	.nav-tab {
+		padding: 0.35rem 0.7rem;
+		border: 1px solid #6b5f4a;
+		border-radius: 0.3rem;
+		background: #2b241d;
+		color: #e8dcc4;
+		font-family: inherit;
+		font-size: 0.85rem;
+		font-weight: bold;
+		cursor: pointer;
+		transition: background 0.15s, border-color 0.15s, color 0.15s;
+	}
+	.nav-tab:hover { background: #3e3328; border-color: var(--gold); }
+	.nav-tab.active { background: var(--color-large-border); border-color: var(--gold); color: #ffd700; }
+	.search-wrap {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		background: #2b241d;
+		border: 1px solid #6b5f4a;
+		border-radius: 0.3rem;
+		padding: 0.15rem 0.5rem;
+		flex: 1 1 12rem;
+		max-width: 22rem;
+		color: #c9bca5;
+	}
+	.search-wrap input {
+		background: transparent;
+		border: none;
+		color: #f7efe0;
+		text-align: left;
+		font-weight: normal;
+		font-size: 0.88rem;
+		padding: 0.2rem;
+	}
+	.search-wrap input:focus { background: transparent; outline: none; box-shadow: none; }
+	.tools-group {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.3rem;
+	}
+	.tool-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 2rem;
+		height: 2rem;
+		padding: 0 0.45rem;
+		border: 1px solid #6b5f4a;
+		border-radius: 0.3rem;
+		background: #2b241d;
+		color: #f0e6d2;
+		cursor: pointer;
+		font-size: 0.88rem;
+		user-select: none;
+		transition: background 0.15s, border-color 0.15s, color 0.15s;
+	}
+	.tool-btn:hover { background: #42352a; border-color: var(--gold); color: #ffd700; }
+	.tools-group input[type="checkbox"] { display: none; }
+	.tools-group input[type="checkbox"]:checked + label.tool-btn { background: var(--color-large-border); border-color: var(--gold); color: #ffd700; }
+	.tool-sep { width: 1px; height: 1.35rem; background: #5a4f3d; margin: 0 0.1rem; }
+
+
+
+	.sheet-container {
+		max-width: min(92rem, 96vw);
+		margin: 1rem auto 0;
+		padding: clamp(0.65rem, 1.6vw, 1.3rem);
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		background-color: var(--parchment-bg);
+		background-image: radial-gradient(circle at 50% 25%, #f7f1df 0%, #e7d7b2 100%);
+		border: 3px double var(--color-large-border);
+		border-radius: 0.5rem;
+		box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.7);
+	}
+
+
+
+	.hero-bar {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.85rem;
+		align-items: stretch;
+		padding: 0.55rem;
+		border: 2px dotted var(--color-large-border);
+		border-radius: 0.45rem;
+		background: rgba(255, 251, 238, 0.45);
+	}
+	.hero-portrait {
+		width: clamp(5.5rem, 10vw, 8.5rem);
+		height: clamp(5.5rem, 10vw, 8.5rem);
+		border: 2px solid var(--color-small-border);
+		border-radius: 0.4rem;
+		background: rgba(0, 0, 0, 0.08);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		align-self: center;
+	}
+	.hero-portrait img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; padding: 0.15rem; }
+	.hero-portrait.empty { display: none; }
+	.hero-details {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+		gap: 0.35rem;
+	}
+	.detail-field {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.2rem 0.45rem;
+		border: 1px dashed var(--color-small-border);
+		border-radius: 0.3rem;
+		background: var(--parchment-card);
+	}
+	.detail-field > span { font-weight: bold; font-size: 0.85em; white-space: nowrap; color: #3a2a1a; }
+	.detail-field > input { text-align: right; flex: 1; }
+	.detail-field.wide { grid-column: span 2; }
+
+
+
+	.tab-section { display: flex; flex-direction: column; gap: 0.85rem; }
+	.tab-section[hidden], .card[hidden], .grid-2[hidden], .grid-3[hidden], .grid-status[hidden] { display: none !important; }
+	.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr)); gap: var(--gap); }
+	.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); gap: var(--gap); }
+	.grid-status { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12.5rem, 100%), 1fr)); gap: var(--gap); }
+	.card {
+		display: flex;
+		flex-direction: column;
+		border: 1px dashed var(--color-small-border);
+		border-radius: 0.4rem;
+		background: var(--parchment-card);
+		box-shadow: inset 0 0 0.45rem rgba(70, 67, 49, 0.35);
+		overflow: hidden;
+		min-width: 0;
+	}
+	.card > h3 {
+		margin: 0;
+		padding: 0.4rem 0.65rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.4rem;
+		font-size: 1em;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: #2b130a;
+		border-bottom: 2px solid var(--color-small-border);
+		background: rgba(74, 4, 4, 0.1);
+	}
+	.card > h3 .badge {
+		font-size: 0.78em;
+		padding: 0.05rem 0.4rem;
+		border-radius: 999px;
+		background: rgba(74, 4, 4, 0.16);
+		color: #4a0404;
+	}
+
+
+
+	input, textarea, select {
+		font-family: inherit;
+		font-size: 0.92em;
+		font-weight: bold;
+		color: var(--inputcolor);
+		background: transparent;
+		border: none;
+		text-align: center;
+		min-width: 0;
+		width: 100%;
+		padding: 0.2rem 0.25rem;
+	}
+	select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+	textarea { resize: vertical; text-align: left; line-height: 1.4; padding: 0.4rem 0.55rem; min-height: 8rem; }
+	.card > textarea { flex: 1 1 auto; height: 100%; min-height: 12rem; }
+	input:hover, textarea:hover, select:hover { background: rgba(255, 255, 255, 0.4); }
+	input:focus, textarea:focus, select:focus { outline: none; background: rgba(255, 255, 255, 0.7); box-shadow: inset 0 0 0 1px var(--color-small-border); }
+
+
+
+	.char-wrap { overflow-x: auto; }
+	.char-table { width: 100%; border-collapse: collapse; min-width: 30rem; table-layout: fixed; }
+	.char-table th, .char-table td { border-bottom: 1px dashed var(--color-small-border); border-right: 1px dashed var(--color-small-border); padding: 0.25rem 0.15rem; text-align: center; }
+	.char-table th:first-child, .char-table td:first-child { width: 16%; font-weight: bold; border-right: 2px solid var(--color-small-border); }
+	.char-table thead th { border-bottom: 2px solid var(--color-small-border); background: rgba(74, 4, 4, 0.05); }
+	.char-table tr.bonus-row td { background: rgba(74, 4, 4, 0.04); font-size: 0.85em; }
+	.char-table tr:last-child td { border-bottom: none; }
+	.char-table td:last-child, .char-table th:last-child { border-right: none; }
+
+
+
+	.stat-row { display: flex; align-items: center; justify-content: space-between; gap: 0.35rem; padding: 0.25rem 0.5rem; border-bottom: 1px dashed var(--color-small-border); }
+	.stat-row:last-child { border-bottom: none; }
+	.stat-row > span { font-size: 0.88em; font-weight: bold; white-space: nowrap; }
+	.stat-row > input { text-align: right; flex: 1; }
+	.stepper { display: inline-flex; align-items: center; gap: 0.2rem; }
+	.stepper input { width: 3.4rem; text-align: center; }
+	.step-btn {
+		width: 1.5rem;
+		height: 1.5rem;
+		padding: 0;
+		border: 1px solid var(--color-small-border);
+		border-radius: 0.25rem;
+		background: rgba(74, 4, 4, 0.1);
+		color: #2b130a;
+		font-weight: bold;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.step-btn:hover { background: var(--color-large-border); color: #fff; }
+
+
+
+	.list-head {
+		display: grid;
+		align-items: stretch;
+		width: 100%;
+		font-weight: bold;
+		font-size: 0.84em;
+		text-align: center;
+		border-bottom: 2px solid var(--color-small-border);
+		background: rgba(74, 4, 4, 0.05);
+	}
+	.list-head > span {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.28rem 0.2rem;
+		border-right: 1px dashed var(--color-small-border);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.list-head > span:last-child { border-right: none; }
+	.content { display: flex; flex-direction: column; width: 100%; }
+	.content > .item { display: flex; flex-direction: column; border-bottom: 1px dashed var(--color-small-border); }
+	.content > .item:last-child { border-bottom: none; }
+	.content > .item[hidden] { display: none !important; }
+	.item > .row-main { display: grid; align-items: stretch; width: 100%; }
+	.item > .row-main > * { border-right: 1px dashed var(--color-small-border); min-width: 0; }
+	.item > .row-main > *:last-child { border-right: none; }
+	.name-cell { display: flex; align-items: center; gap: 0.3rem; padding-left: 0.3rem; min-width: 0; overflow: hidden; }
+	.name-cell > input { text-align: left; flex: 1 1 auto; min-width: 0; }
+	.item-icon { width: 1.45rem; height: 1.45rem; object-fit: contain; flex: 0 0 1.45rem; border-radius: 0.2rem; }
+	.expand-btn {
+		border: none;
+		background: transparent;
+		color: #6b583c;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.9em;
+		padding: 0;
+	}
+	.expand-btn:hover, .item.expanded .expand-btn { color: var(--color-large-border); }
+	.inline-desc { padding: 0.45rem 0.75rem; background: rgba(235, 222, 189, 0.65); border-top: 1px dotted var(--color-small-border); font-size: 0.88em; line-height: 1.4; }
+	.inline-desc[hidden] { display: none !important; }
+	.inline-desc h4 { margin: 0.3rem 0 0.2rem; font-size: 0.95em; color: var(--color-large-border); }
+	.inline-desc p { margin: 0.25rem 0; }
+	.inline-desc .range-table-wrap { display: flex; justify-content: center; margin: 0.35rem 0; }
+	.inline-desc .range-table { border-collapse: collapse; border: 1px solid var(--color-large-border); font-size: 0.88em; }
+	.inline-desc .range-table th, .inline-desc .range-table td { border: 1px dashed var(--color-small-border); padding: 0.2rem 0.4rem; text-align: center; }
+
+
+
+	.list-head.skills { grid-template-columns: 1fr 26% 13% 13% 1.85rem; }
+	.item.skills > .row-main { grid-template-columns: 1fr 13% 13% 13% 13% 1.85rem; }
+	.item.skills > .row-main > .col-name { text-align: left; padding-left: 0.4rem; }
+	.talents-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr)); gap: 0 0.75rem; }
+	.talents-columns > .item { border-bottom: 1px dashed var(--color-small-border); }
+	.list-head.talents, .item.talents > .row-main { grid-template-columns: 38% 14% 1fr 1.85rem; }
+	.list-head.armours, .item.armours > .row-main { grid-template-columns: 28% 28% 10% 1fr 1.85rem; }
+	.list-head.weapons, .item.weapons > .row-main { grid-template-columns: 25% 15% 8% 13% 9% 1fr 1.85rem; }
+	.list-head.trappings, .item.trappings > .row-main { grid-template-columns: 1fr 16% 1.85rem; }
+	.item.trappings.layer .name-cell { padding-left: calc(0.3rem + var(--indent, 1) * 0.9rem); }
+	.item.trappings.layer .name-cell::before { content: "•"; flex: 0 0 auto; font-weight: bold; color: #4a0404; }
+	.list-head.magics, .item.magics > .row-main { grid-template-columns: 28% 7% 15% 15% 14% 1fr 1.85rem; }
+	.list-head.experience, .item.experience > .row-main { grid-template-columns: 18% 1fr; }
+	.item.experience .col-rsn { text-align: left; padding-left: 0.4rem; }
+	.item.simple > .row-main { grid-template-columns: 1fr 1.85rem; }
+	.coin-icon { width: 1.5rem; height: 1.5rem; object-fit: contain; }
+
+
+
+	body.hide-sin .sin-card { display: none !important; }
+	body.hide-magic .magic-section { display: none !important; }
+	body.hide-exp .exp-section { display: none !important; }
+	body.mode-scale input, body.mode-scale textarea { cursor: ns-resize !important; box-shadow: inset 0 0 0.35rem rgba(139, 0, 0, 0.7); }
+	body.mode-add .card[data-add-type] > h3 { cursor: pointer !important; box-shadow: inset 0 0 0.45rem rgba(0, 110, 0, 0.75); }
+	body.mode-delete .content > .item { cursor: pointer !important; box-shadow: inset 0 0 0.35rem rgba(160, 0, 0, 0.65); }
+
+
+
+	.tooltip {
+		position: fixed;
+		z-index: 100;
+		padding: 0.55rem 0.7rem;
+		max-width: min(34rem, 90vw);
+		max-height: 65vh;
+		overflow-y: auto;
+		background-color: #f3ead3;
+		background-image: url("https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Assets/tooltip.png");
+		border: 2px solid #736953;
+		border-radius: 0.4rem;
+		box-shadow: 0 0.35rem 1.2rem rgba(0, 0, 0, 0.55);
+		font-size: 0.88rem;
+		line-height: 1.4;
+		color: var(--ink);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.15s ease, visibility 0.15s ease;
+	}
+	.tooltip.active { opacity: 1; visibility: visible; pointer-events: auto; }
+	.tooltip h4 { margin: 0.35rem 0 0.25rem; text-align: center; border-bottom: 1px solid #736953; }
+	.tooltip p { margin: 0.25rem 0; }
+	.tooltip .range-table-wrap { display: flex; justify-content: center; margin: 0.3rem 0; }
+	.tooltip .range-table { border-collapse: collapse; border: 1px solid var(--color-large-border); font-size: 0.85em; }
+	.tooltip .range-table th, .tooltip .range-table td { border: 1px dashed var(--color-small-border); padding: 0.15rem 0.3rem; text-align: center; }
+	body.no-tooltips .tooltip, body.mode-scale .tooltip, body.mode-add .tooltip, body.mode-delete .tooltip { display: none !important; }
+	@media (max-width: 48rem) {
+		.hero-bar { grid-template-columns: 1fr; }
+		.hero-portrait { margin: 0 auto; }
+		.detail-field.wide { grid-column: span 1; }
+	}
+	@media print {
+		.topbar, .tooltip, .expand-btn, .step-btn { display: none !important; }
+		html, body { background: #fff; padding: 0; }
+		.sheet-container { max-width: 100%; margin: 0; border: none; box-shadow: none; }
+		.tab-section { display: flex !important; }
+	}
+</style>
+
+<div class="tooltip" id="tooltip"></div>
+
+<header class="topbar">
+	<div class="topbar-row">
+		<nav class="nav-tabs" id="navTabs">
+			<button type="button" class="nav-tab active" data-tab="all">{{localize "WFRP4E.PrintSheet.HTML.Tabs.All"}}</button>
+			<button type="button" class="nav-tab" data-tab="main">{{localize "WFRP4E.PrintSheet.HTML.Tabs.Main"}}</button>
+			<button type="button" class="nav-tab" data-tab="talents">{{localize "WFRP4E.PrintSheet.HTML.Tabs.Talents"}}</button>
+			<button type="button" class="nav-tab" data-tab="combat">{{localize "WFRP4E.PrintSheet.HTML.Tabs.Combat"}}</button>
+			<button type="button" class="nav-tab" data-tab="magic">{{localize "WFRP4E.PrintSheet.HTML.Tabs.Magic"}}</button>
+		</nav>
+		<div class="search-wrap">
+			<i class="fas fa-search"></i>
+			<input type="search" id="sheetSearch" placeholder="{{localize 'WFRP4E.PrintSheet.HTML.SearchPlaceholder'}}">
+		</div>
+		<div class="tools-group">
+			<button type="button" class="tool-btn" id="btnSave" title="{{localize 'WFRP4E.PrintSheet.HTML.Save'}}"><i class="fas fa-save"></i></button>
+			<button type="button" class="tool-btn" id="btnPrint" title="{{localize 'WFRP4E.PrintSheet.HTML.Print'}}"><i class="fas fa-print"></i></button>
+			<span class="tool-sep"></span>
+			<input type="checkbox" id="toggleTooltips">
+			<label class="tool-btn" for="toggleTooltips" title="{{localize 'WFRP4E.PrintSheet.HTML.HideTooltip'}}"><i class="fas fa-info-circle"></i></label>
+			<input type="checkbox" id="toggleMagic"{{#unless settings.showMagic}} checked{{/unless}}>
+			<label class="tool-btn" for="toggleMagic" title="{{localize 'WFRP4E.PrintSheet.HTML.HideMagics'}}"><i class="fas fa-scroll"></i></label>
+			<input type="checkbox" id="toggleSin"{{#unless settings.showSin}} checked{{/unless}}>
+			<label class="tool-btn" for="toggleSin" title="{{localize 'WFRP4E.PrintSheet.HTML.HideSin'}}"><i class="fas fa-star"></i></label>
+			<input type="checkbox" id="toggleExp"{{#unless settings.showExperience}} checked{{/unless}}>
+			<label class="tool-btn" for="toggleExp" title="{{localize 'WFRP4E.PrintSheet.HTML.HideExperience'}}"><i class="fas fa-book"></i></label>
+			<span class="tool-sep"></span>
+			<button type="button" class="tool-btn" id="btnScaleDown" title="{{localize 'WFRP4E.PrintSheet.HTML.ScaleGlobalDown'}}">A-</button>
+			<button type="button" class="tool-btn" id="btnScaleUp" title="{{localize 'WFRP4E.PrintSheet.HTML.ScaleGlobalUp'}}">A+</button>
+			<input type="checkbox" id="modeScale">
+			<label class="tool-btn" for="modeScale" title="{{localize 'WFRP4E.PrintSheet.HTML.ScaleFont'}}"><i class="fas fa-text-height"></i></label>
+			<input type="checkbox" id="modeAdd">
+			<label class="tool-btn" for="modeAdd" title="{{localize 'WFRP4E.PrintSheet.HTML.Add'}}"><i class="fas fa-plus"></i></label>
+			<input type="checkbox" id="modeDelete">
+			<label class="tool-btn" for="modeDelete" title="{{localize 'WFRP4E.PrintSheet.HTML.Delete'}}"><i class="fas fa-trash"></i></label>
+		</div>
+	</div>
+</header>
+
+<main class="sheet-container">
+	<div class="hero-bar">
+		<div class="hero-portrait{{#unless image}} empty{{/unless}}">
+			{{#if image}}<img src="{{image}}" alt="{{name}}">{{/if}}
+		</div>
+		<div class="hero-details">
+			<div class="detail-field"><span>{{localize "Name"}}</span><input id="name" value="{{name}}"{{#if player}} class="tooltip-target" data-tooltip="<p>{{localize 'Owner'}}: {{player}}</p>"{{/if}}></div>
+			<div class="detail-field"><span>{{localize "Species"}}</span><input id="details.race" value="{{details.race}}"></div>
+			<div class="detail-field"><span>{{localize "Gender"}}</span><input id="details.gender" value="{{details.gender}}"></div>
+			<div class="detail-field"><span>{{localize "Class"}}</span><input id="career.class" value="{{career.class}}"></div>
+			<div class="detail-field"><span>{{localize "Career"}}</span><input id="career.name" value="{{career.name}}"></div>
+			<div class="detail-field"><span>{{localize "Career Level"}}</span><input id="career.level" value="{{career.level}}"></div>
+			<div class="detail-field wide"><span>{{localize "WFRP4E.PrintSheet.HTML.CareerPath"}}</span><input id="career.path" value="{{career.path}}"></div>
+			<div class="detail-field"><span>{{localize "Status"}}</span><input id="career.status" value="{{career.status}}"></div>
+			<div class="detail-field"><span>{{localize "Age"}}</span><input id="details.age" value="{{details.age}}"></div>
+			<div class="detail-field"><span>{{localize "CharacterHeight"}} ({{localize "Weight"}})</span><input id="details.height_weight" value="{{details.heightWeight}}"></div>
+			<div class="detail-field"><span>{{localize "Hair Colour"}}</span><input id="details.haircolour" value="{{details.haircolour}}"></div>
+			<div class="detail-field"><span>{{localize "Eye Colour"}}</span><input id="details.eyecolour" value="{{details.eyecolour}}"></div>
+		</div>
+	</div>
+
+	<section class="tab-section" data-section="main">
+		<div class="card">
+			<h3>{{localize "Characteristics"}}</h3>
+			<div class="char-wrap">
+				<table class="char-table">
+					<thead>
+						<tr>
+							<th></th>
+							{{#each characteristicsList}}
+							<th>{{this.name}}</th>
+							{{/each}}
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{localize "Initial"}}</td>
+							{{#each characteristicsList}}
+							<td><input class="char-part" data-char="{{this.key}}" data-part="initial" id="characteristics.{{this.key}}.initial" value="{{this.initial}}"></td>
+							{{/each}}
+						</tr>
+						<tr>
+							<td>{{localize "SHEET.AdvAbbrev"}}</td>
+							{{#each characteristicsList}}
+							<td><input class="char-part" data-char="{{this.key}}" data-part="advances" id="characteristics.{{this.key}}.advances" value="{{this.advances}}"></td>
+							{{/each}}
+						</tr>
+						<tr>
+							<td>{{localize "WFRP4E.PrintSheet.HTML.ModifierAbbrev"}}</td>
+							{{#each characteristicsList}}
+							<td><input class="char-part" data-char="{{this.key}}" data-part="modifier" id="characteristics.{{this.key}}.modifier" value="{{this.modifier}}"></td>
+							{{/each}}
+						</tr>
+						<tr>
+							<td>{{localize "Current"}}</td>
+							{{#each characteristicsList}}
+							<td><input class="char-current" data-char="{{this.key}}" id="characteristics.{{this.key}}.current" value="{{this.current}}"></td>
+							{{/each}}
+						</tr>
+						<tr class="bonus-row">
+							<td>{{localize "WFRP4E.PrintSheet.HTML.BonusAbbrev"}}</td>
+							{{#each characteristicsList}}
+							<td><input class="char-bonus" data-char="{{this.key}}" id="characteristics.{{this.key}}.bonus" value="{{this.bonus}}" readonly></td>
+							{{/each}}
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="grid-status">
+			<div class="card">
+				<h3>{{localize "Wounds"}}</h3>
+				<div class="stat-row">
+					<span>{{localize "Current"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="status.wounds.value">-</button>
+						<input id="status.wounds.value" value="{{status.wounds.value}}">
+						<button type="button" class="step-btn" data-step="1" data-target="status.wounds.value">+</button>
+					</div>
+				</div>
+				<div class="stat-row"><span>{{localize "Max"}}</span><input id="status.wounds.max" value="{{status.wounds.max}}"></div>
+			</div>
+
+			<div class="card">
+				<h3>{{localize "Fate"}}</h3>
+				<div class="stat-row">
+					<span>{{localize "Fate"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="status.fate.value">-</button>
+						<input id="status.fate.value" value="{{status.fate.value}}">
+						<button type="button" class="step-btn" data-step="1" data-target="status.fate.value">+</button>
+					</div>
+				</div>
+				<div class="stat-row">
+					<span>{{localize "Fortune"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="status.fate.fortune">-</button>
+						<input id="status.fate.fortune" value="{{status.fate.fortune}}">
+						<button type="button" class="step-btn" data-step="1" data-target="status.fate.fortune">+</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<h3>{{localize "Resilience"}}</h3>
+				<div class="stat-row">
+					<span>{{localize "Resilience"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="status.resilience.value">-</button>
+						<input id="status.resilience.value" value="{{status.resilience.value}}">
+						<button type="button" class="step-btn" data-step="1" data-target="status.resilience.value">+</button>
+					</div>
+				</div>
+				<div class="stat-row">
+					<span>{{localize "Resolve"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="status.resilience.resolve">-</button>
+						<input id="status.resilience.resolve" value="{{status.resilience.resolve}}">
+						<button type="button" class="step-btn" data-step="1" data-target="status.resilience.resolve">+</button>
+					</div>
+				</div>
+				<div class="stat-row"><span>{{localize "Motivation"}}</span><input id="status.resilience.motivation" value="{{status.resilience.motivation}}"></div>
+			</div>
+
+			<div class="card">
+				<h3>{{localize "Experience"}}</h3>
+				<div class="stat-row"><span>{{localize "Current"}}</span><input id="status.experience.value" value="{{status.experience.value}}"></div>
+				<div class="stat-row"><span>{{localize "Spent"}}</span><input id="status.experience.spent" value="{{status.experience.spent}}"></div>
+				<div class="stat-row"><span>{{localize "Total"}}</span><input id="status.experience.total" value="{{status.experience.total}}"></div>
+			</div>
+
+			<div class="card">
+				<h3>{{localize "Move"}}</h3>
+				<div class="stat-row"><span>{{localize "Move"}}</span><input id="status.move.value" value="{{status.move.value}}"></div>
+				<div class="stat-row"><span>{{localize "Walk"}}</span><input id="status.move.walk" value="{{status.move.walk}}"></div>
+				<div class="stat-row"><span>{{localize "Run"}}</span><input id="status.move.run" value="{{status.move.run}}"></div>
+			</div>
+
+			<div class="card sin-card">
+				<h3>{{localize "Sin"}}</h3>
+				<div class="stat-row"><span>{{localize "God"}}</span><input id="status.religion.god" value="{{status.religion.god}}"></div>
+				<div class="stat-row">
+					<span>{{localize "Sin"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="status.religion.sin">-</button>
+						<input id="status.religion.sin" value="{{status.religion.sin}}">
+						<button type="button" class="step-btn" data-step="1" data-target="status.religion.sin">+</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="grid-2">
+			<div class="card" data-add-type="skill">
+				<h3>{{localize "Basic Skills"}} <span class="badge">{{skills.bsc.length}}</span></h3>
+				<div class="list-head skills">
+					<span>{{localize "Name"}}</span>
+					<span>{{localize "SHEET.CharAbbrev"}}</span>
+					<span>{{localize "SHEET.AdvAbbrev"}}</span>
+					<span>{{localize "Total"}}</span>
+					<span></span>
+				</div>
+				<div class="content">
+					{{#each skills.bsc as |skill|}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}" data-search="{{skill.name}}">
+						<div class="row-main">
+							<input class="col-name" id="skills.bsc_{{@index}}.name" value="{{skill.name}}">
+							<select class="skill-char" id="skills.bsc_{{@index}}.characteristic">
+								<option value="ws"{{#if (eq skill.characteristic "ws")}} selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+								<option value="bs"{{#if (eq skill.characteristic "bs")}} selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+								<option value="s"{{#if (eq skill.characteristic "s")}} selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+								<option value="t"{{#if (eq skill.characteristic "t")}} selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+								<option value="i"{{#if (eq skill.characteristic "i")}} selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+								<option value="ag"{{#if (eq skill.characteristic "ag")}} selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+								<option value="dex"{{#if (eq skill.characteristic "dex")}} selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+								<option value="int"{{#if (eq skill.characteristic "int")}} selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+								<option value="wp"{{#if (eq skill.characteristic "wp")}} selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+								<option value="fel"{{#if (eq skill.characteristic "fel")}} selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+							</select>
+							<input class="skill-cval" id="skills.bsc_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+							<input class="skill-adv" id="skills.bsc_{{@index}}.advances" value="{{skill.advances}}">
+							<input class="skill-tot" id="skills.bsc_{{@index}}.value" value="{{skill.value}}">
+							<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+						</div>
+						<div class="inline-desc" hidden></div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" data-add-type="skill">
+				<h3>{{localize "Grouped & Advanced Skills"}} <span class="badge">{{skills.adv.length}}</span></h3>
+				<div class="list-head skills">
+					<span>{{localize "Name"}}</span>
+					<span>{{localize "SHEET.CharAbbrev"}}</span>
+					<span>{{localize "SHEET.AdvAbbrev"}}</span>
+					<span>{{localize "Total"}}</span>
+					<span></span>
+				</div>
+				<div class="content">
+					{{#each skills.adv as |skill|}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}" data-search="{{skill.name}}">
+						<div class="row-main">
+							<input class="col-name" id="skills.adv_{{@index}}.name" value="{{skill.name}}">
+							<select class="skill-char" id="skills.adv_{{@index}}.characteristic">
+								<option value="ws"{{#if (eq skill.characteristic "ws")}} selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+								<option value="bs"{{#if (eq skill.characteristic "bs")}} selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+								<option value="s"{{#if (eq skill.characteristic "s")}} selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+								<option value="t"{{#if (eq skill.characteristic "t")}} selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+								<option value="i"{{#if (eq skill.characteristic "i")}} selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+								<option value="ag"{{#if (eq skill.characteristic "ag")}} selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+								<option value="dex"{{#if (eq skill.characteristic "dex")}} selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+								<option value="int"{{#if (eq skill.characteristic "int")}} selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+								<option value="wp"{{#if (eq skill.characteristic "wp")}} selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+								<option value="fel"{{#if (eq skill.characteristic "fel")}} selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+							</select>
+							<input class="skill-cval" id="skills.adv_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+							<input class="skill-adv" id="skills.adv_{{@index}}.advances" value="{{skill.advances}}">
+							<input class="skill-tot" id="skills.adv_{{@index}}.value" value="{{skill.value}}">
+							<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+						</div>
+						<div class="inline-desc" hidden></div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="tab-section" data-section="talents">
+		<div class="card" data-add-type="talent">
+			<h3>{{localize "WFRP4E.PrintSheet.HTML.TalentsAndTraits"}} <span class="badge">{{talents.length}}{{#if traits.length}} + {{traits.length}}{{/if}}</span></h3>
+			<div class="content talents-columns">
+				{{#each talents as |talent|}}
+				<div class="item talents tooltip-target" data-tooltip="{{talent.description}}" data-search="{{talent.name}} {{talent.tests}}">
+					<div class="row-main">
+						<div class="name-cell">
+							{{#if talent.image}}<img class="item-icon" src="{{talent.image}}" alt="">{{/if}}
+							<input id="talent.{{@index}}.name" value="{{talent.name}}">
+						</div>
+						<input id="talent.{{@index}}.advances" value="{{talent.advances}}">
+						<input id="talent.{{@index}}.tests" value="{{talent.tests}}">
+						<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+					</div>
+					<div class="inline-desc" hidden></div>
+				</div>
+				{{/each}}
+				{{#each traits as |trait|}}
+				<div class="item traits talents tooltip-target" data-tooltip="{{trait.description}}" data-search="{{trait.name}} {{trait.tests}}">
+					<div class="row-main">
+						<div class="name-cell">
+							{{#if trait.image}}<img class="item-icon" src="{{trait.image}}" alt="">{{/if}}
+							<input id="trait.{{@index}}.name" value="{{trait.name}}">
+						</div>
+						<input id="trait.{{@index}}.advances" value="{{trait.advances}}">
+						<input id="trait.{{@index}}.tests" value="{{trait.tests}}">
+						<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+					</div>
+					<div class="inline-desc" hidden></div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="grid-3">
+			<div class="card" data-add-type="simple">
+				<h3>{{localize "Wounds"}} / {{localize "Criticals"}}</h3>
+				<div class="content">
+					{{#each status.criticals as |critical|}}
+					<div class="item simple criticals tooltip-target" data-tooltip="{{critical.description}}" data-search="{{critical.name}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if critical.image}}<img class="item-icon" src="{{critical.image}}" alt="">{{/if}}
+								<input id="critical.{{@index}}.name" value="{{critical.name}}">
+							</div>
+							<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+						</div>
+						<div class="inline-desc" hidden></div>
+					</div>
+					{{/each}}
+					{{#each status.effects as |effect|}}
+					<div class="item simple effects tooltip-target" data-tooltip="{{effect.description}}" data-search="{{effect.name}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if effect.image}}<img class="item-icon" src="{{effect.image}}" alt="">{{/if}}
+								<input id="effect.{{@index}}.name" value="{{effect.name}}">
+							</div>
+							<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+						</div>
+						<div class="inline-desc" hidden></div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" data-add-type="simple">
+				<h3>{{localize "Psychology"}}</h3>
+				<div class="content">
+					{{#each psychologys as |psychology|}}
+					<div class="item simple psychologys tooltip-target" data-tooltip="{{psychology.description}}" data-search="{{psychology.name}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if psychology.image}}<img class="item-icon" src="{{psychology.image}}" alt="">{{/if}}
+								<input id="psychology.{{@index}}.name" value="{{psychology.name}}">
+							</div>
+							<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+						</div>
+						<div class="inline-desc" hidden></div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" data-add-type="simple">
+				<h3>{{localize "Mutations"}}</h3>
+				<div class="content">
+					{{#each mutations as |mutation|}}
+					<div class="item simple mutations tooltip-target" data-tooltip="{{mutation.description}}" data-search="{{mutation.name}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if mutation.image}}<img class="item-icon" src="{{mutation.image}}" alt="">{{/if}}
+								<input id="mutation.{{@index}}.name" value="{{mutation.name}}">
+							</div>
+							<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+						</div>
+						<div class="inline-desc" hidden></div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="tab-section" data-section="combat">
+		<div class="card" data-add-type="weapon">
+			<h3>{{localize "WFRP4E.TrappingType.Weapon"}} <span class="badge">{{weapons.length}}</span></h3>
+			<div class="list-head weapons">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "Group"}}</span>
+				<span>{{localize "SHEET.EncAbbrev"}}</span>
+				<span>{{localize "Reach"}}</span>
+				<span>{{localize "Damage"}}</span>
+				<span>{{localize "WFRP4E.PrintSheet.HTML.Qualities"}}</span>
+				<span></span>
+			</div>
+			<div class="content">
+				{{#each weapons as |weapon|}}
+				<div class="item weapons tooltip-target" data-tooltip="{{weapon.description}}" data-search="{{weapon.name}} {{weapon.group}} {{weapon.qualities}}">
+					<div class="row-main">
+						<div class="name-cell">
+							{{#if weapon.image}}<img class="item-icon" src="{{weapon.image}}" alt="">{{/if}}
+							<input id="weapon.{{@index}}.name" value="{{weapon.name}}">
+						</div>
+						<input id="weapon.{{@index}}.group" value="{{weapon.group}}">
+						<input class="col-enc" id="weapon.{{@index}}.encumbrance" value="{{weapon.encumbrance}}">
+						<input id="weapon.{{@index}}.reach" value="{{weapon.reach}}">
+						<input id="weapon.{{@index}}.damage" value="{{weapon.damage}}">
+						<input id="weapon.{{@index}}.qualities" data-type="qualities" value="{{weapon.qualities}}">
+						<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+					</div>
+					<div class="inline-desc" hidden></div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="card" data-add-type="armour">
+			<h3>{{localize "WFRP4E.TrappingType.Armour"}} <span class="badge">{{armours.length}}</span></h3>
+			<div class="list-head armours">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "Location"}} ({{localize "AP"}})</span>
+				<span>{{localize "SHEET.EncAbbrev"}}</span>
+				<span>{{localize "WFRP4E.PrintSheet.HTML.Qualities"}}</span>
+				<span></span>
+			</div>
+			<div class="content">
+				{{#each armours as |armour|}}
+				<div class="item armours tooltip-target" data-tooltip="{{armour.description}}" data-search="{{armour.name}} {{armour.locations}} {{armour.qualities}}">
+					<div class="row-main">
+						<div class="name-cell">
+							{{#if armour.image}}<img class="item-icon" src="{{armour.image}}" alt="">{{/if}}
+							<input id="armour.{{@index}}.name" value="{{armour.name}}">
+						</div>
+						<input id="armour.{{@index}}.locations" value="{{armour.locations}}">
+						<input class="col-enc" id="armour.{{@index}}.encumbrance" value="{{armour.encumbrance}}">
+						<input id="armour.{{@index}}.qualities" data-type="qualities" value="{{armour.qualities}}">
+						<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+					</div>
+					<div class="inline-desc" hidden></div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="grid-2">
+			<div class="card">
+				<h3>{{localize "WFRP4E.TrappingType.Money"}}</h3>
+				<div class="stat-row tooltip-target" data-tooltip="<p><strong>{{localize 'SHEET.EncAbbrev'}}</strong>: {{coins.gc.encumbrance}}</p>">
+					<span style="display: flex; align-items: center; gap: 0.35rem;">{{#if settings.coins.gc}}<img class="coin-icon" src="{{settings.coins.gc}}" alt="">{{/if}}{{localize "MARKET.Abbrev.GC"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="coins.gc">-</button>
+						<input id="coins.gc" value="{{coins.gc.value}}">
+						<button type="button" class="step-btn" data-step="1" data-target="coins.gc">+</button>
+					</div>
+				</div>
+				<div class="stat-row tooltip-target" data-tooltip="<p><strong>{{localize 'SHEET.EncAbbrev'}}</strong>: {{coins.ss.encumbrance}}</p>">
+					<span style="display: flex; align-items: center; gap: 0.35rem;">{{#if settings.coins.ss}}<img class="coin-icon" src="{{settings.coins.ss}}" alt="">{{/if}}{{localize "MARKET.Abbrev.SS"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="coins.ss">-</button>
+						<input id="coins.ss" value="{{coins.ss.value}}">
+						<button type="button" class="step-btn" data-step="1" data-target="coins.ss">+</button>
+					</div>
+				</div>
+				<div class="stat-row tooltip-target" data-tooltip="<p><strong>{{localize 'SHEET.EncAbbrev'}}</strong>: {{coins.bp.encumbrance}}</p>">
+					<span style="display: flex; align-items: center; gap: 0.35rem;">{{#if settings.coins.bp}}<img class="coin-icon" src="{{settings.coins.bp}}" alt="">{{/if}}{{localize "MARKET.Abbrev.BP"}}</span>
+					<div class="stepper">
+						<button type="button" class="step-btn" data-step="-1" data-target="coins.bp">-</button>
+						<input id="coins.bp" value="{{coins.bp.value}}">
+						<button type="button" class="step-btn" data-step="1" data-target="coins.bp">+</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<h3>{{localize "SHEET.Encumbrance"}}</h3>
+				<div class="stat-row"><span>{{localize "WFRP4E.TrappingType.Weapon"}}</span><input id="encumbrance.weapons" value="{{encumbrance.weapons}}"></div>
+				<div class="stat-row"><span>{{localize "WFRP4E.TrappingType.Armour"}}</span><input id="encumbrance.armours" value="{{encumbrance.armours}}"></div>
+				<div class="stat-row"><span>{{localize "Trapping"}}</span><input id="encumbrance.trappings" value="{{encumbrance.trappings}}"></div>
+				<div class="stat-row"><span>{{localize "Max"}}</span><input id="encumbrance.max" value="{{encumbrance.max}}"></div>
+				<div class="stat-row"><span>{{localize "Total"}}</span><input id="encumbrance.current" value="{{encumbrance.current}}"></div>
+			</div>
+		</div>
+
+		<div class="card" data-add-type="trapping">
+			<h3>{{localize "Trapping"}}</h3>
+			<div class="list-head trappings">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "SHEET.EncAbbrev"}}</span>
+				<span></span>
+			</div>
+			<div class="content">
+				{{#if trappings}}{{createTrappingsElem trappings interactive=true}}{{/if}}
+			</div>
+		</div>
+	</section>
+
+	<section class="tab-section" data-section="magic">
+		<div class="card magic-section" data-add-type="magic">
+			<h3>{{localize "Magic"}} &amp; {{localize "Religion"}} <span class="badge">{{magics.length}}</span></h3>
+			<div class="list-head magics">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "CN"}}</span>
+				<span>{{localize "Range"}}</span>
+				<span>{{localize "Target"}}</span>
+				<span>{{localize "WFRP4E.PrintSheet.HTML.Duration"}}</span>
+				<span>{{localize "Type"}}</span>
+				<span></span>
+			</div>
+			<div class="content">
+				{{#each magics as |magic|}}
+				<div class="item magics tooltip-target" data-tooltip="{{magic.description}}" data-search="{{magic.name}} {{magic.lore}}">
+					<div class="row-main">
+						<div class="name-cell">
+							{{#if magic.image}}<img class="item-icon" src="{{magic.image}}" alt="">{{/if}}
+							<input id="magic.{{@index}}.name" value="{{magic.name}}">
+						</div>
+						<input id="magic.{{@index}}.cn" value="{{magic.cn}}">
+						<input id="magic.{{@index}}.range" value="{{magic.range}}">
+						<input id="magic.{{@index}}.target" value="{{magic.target}}">
+						<input id="magic.{{@index}}.duration" value="{{magic.duration}}">
+						<input id="magic.{{@index}}.lore" value="{{magic.lore}}">
+						<button type="button" class="expand-btn" title="{{localize 'WFRP4E.PrintSheet.HTML.ExpandDetails'}}"><i class="fas fa-circle-info"></i></button>
+					</div>
+					<div class="inline-desc" hidden></div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="grid-2">
+			<div class="card">
+				<h3>{{localize "Personal Ambitions"}}</h3>
+				<div class="stat-row"><span>{{localize "Short Term"}}</span><input id="status.ambitions.personal.short" value="{{status.ambitions.personal.short}}"></div>
+				<div class="stat-row"><span>{{localize "Long Term"}}</span><input id="status.ambitions.personal.long" value="{{status.ambitions.personal.long}}"></div>
+			</div>
+			<div class="card">
+				<h3>{{localize "Party Ambitions"}}</h3>
+				<div class="stat-row"><span>{{localize "Short Term"}}</span><input id="status.ambitions.party.short" value="{{status.ambitions.party.short}}"></div>
+				<div class="stat-row"><span>{{localize "Long Term"}}</span><input id="status.ambitions.party.long" value="{{status.ambitions.party.long}}"></div>
+			</div>
+		</div>
+
+		<div class="grid-2">
+			<div class="card">
+				<h3>{{localize "Biography"}}</h3>
+				<textarea id="details.biography">{{details.biography}}</textarea>
+			</div>
+			<div class="card exp-section" data-add-type="experience">
+				<h3>{{localize "SHEET.ExperienceLog"}} <span class="badge">{{status.experience.log.length}}</span></h3>
+				<div class="list-head experience">
+					<span>{{localize "Experience"}}</span>
+					<span>{{localize "Reason"}}</span>
+				</div>
+				<div class="content">
+					{{#each status.experience.log as |experience|}}
+					<div class="item experience" data-search="{{experience.reason}}">
+						<div class="row-main">
+							<input id="experience.{{@index}}.value" value="{{experience.value}}">
+							<input class="col-rsn" id="experience.{{@index}}.reason" value="{{experience.reason}}">
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<script type="application/json" id="props-data">{{{settings.propsJson}}}</script>
+<script>
+(() => {
+	let debug = {{#if settings.debug}}true{{else}}false{{/if}};
+	let debugMessage = ["%cWFRP4e - Print sheet %c[debug]%c.", "font-weight: bold;", "color: orange;", ""];
+	let propsEl = document.getElementById("props-data");
+	let props = {};
+	try {props = JSON.parse(propsEl?.textContent || "{}")} catch {};
+	let tooltip = document.getElementById("tooltip");
+	let hoverTarget = null;
+	let showTimer = null;
+	let hideTimer = null;
+	let mouseX = 0;
+	let mouseY = 0;
+	//Переключение вкладок
+	let currentTab = document.querySelector(".nav-tab.active")?.dataset.tab || "all";
+	function applyTab(tab) {
+		currentTab = tab;
+		document.querySelectorAll(".nav-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+		document.querySelectorAll(".tab-section").forEach(sec => {
+			sec.hidden = tab !== "all" && sec.dataset.section !== tab;
+		});
+	};
+	document.getElementById("navTabs").addEventListener("click", (e) => {
+		let btn = e.target.closest(".nav-tab");
+		if (btn) {
+			let searchInput = document.getElementById("sheetSearch");
+			if (searchInput.value) {
+				searchInput.value = "";
+				applySearch("");
+			};
+			applyTab(btn.dataset.tab);
+		}
+	});
+	//Живой поиск по листу (скрывает пустые и несовпавшие блоки, оставляя шапку)
+	function applySearch(rawQuery) {
+		let q = String(rawQuery || "").trim().toLowerCase();
+		if (!q) {
+			document.querySelectorAll(".content > .item").forEach(item => { item.hidden = false; });
+			document.querySelectorAll(".tab-section .card, .tab-section .grid-2, .tab-section .grid-3, .tab-section .grid-status").forEach(el => { el.hidden = false; });
+			applyTab(currentTab);
+			return;
+		}
+		document.querySelectorAll(".tab-section").forEach(sec => { sec.hidden = false; });
+		document.querySelectorAll(".tab-section .card").forEach(card => {
+			if (card.classList.contains("magic-section") && document.body.classList.contains("hide-magic")) { card.hidden = true; return; }
+			if (card.classList.contains("sin-card") && document.body.classList.contains("hide-sin")) { card.hidden = true; return; }
+			if (card.classList.contains("exp-section") && document.body.classList.contains("hide-exp")) { card.hidden = true; return; }
+			let listContent = card.querySelector(":scope > .content");
+			if (listContent) {
+				let items = Array.from(listContent.querySelectorAll(":scope > .item"));
+				let visibleCount = 0;
+				for (let item of items) {
+					let values = Array.from(item.querySelectorAll("input")).map(i => i.value).join(" ");
+					let hay = `${item.dataset.search || ""} ${values}`.toLowerCase();
+					let match = hay.includes(q);
+					item.hidden = !match;
+					if (match) {visibleCount++};
+				};
+				card.hidden = visibleCount === 0;
+			} else {
+				let textParts = [card.textContent || ""];
+				card.querySelectorAll("input, textarea").forEach(f => textParts.push(f.value || ""));
+				card.hidden = !textParts.join(" ").toLowerCase().includes(q);
+			}
+		});
+		document.querySelectorAll(".tab-section .grid-2, .tab-section .grid-3, .tab-section .grid-status").forEach(grid => {
+			grid.hidden = !grid.querySelector(".card:not([hidden])");
+		});
+		document.querySelectorAll(".tab-section").forEach(sec => {
+			sec.hidden = !sec.querySelector(".card:not([hidden])");
+		});
+	};
+	document.getElementById("sheetSearch").addEventListener("input", (e) => {
+		applySearch(e.target.value);
+	});
+	//Переключатели разделов и режимов редактирования
+	let modeIds = ["modeScale", "modeAdd", "modeDelete"];
+	let syncToggles = () => {
+		document.body.classList.toggle("no-tooltips", document.getElementById("toggleTooltips").checked);
+		document.body.classList.toggle("hide-magic", document.getElementById("toggleMagic").checked);
+		document.body.classList.toggle("hide-sin", document.getElementById("toggleSin").checked);
+		document.body.classList.toggle("hide-exp", document.getElementById("toggleExp").checked);
+		document.body.classList.toggle("mode-scale", document.getElementById("modeScale").checked);
+		document.body.classList.toggle("mode-add", document.getElementById("modeAdd").checked);
+		document.body.classList.toggle("mode-delete", document.getElementById("modeDelete").checked);
+	};
+	for (let id of modeIds) {
+		document.getElementById(id).addEventListener("change", (e) => {
+			if (e.target.checked) {
+				for (let other of modeIds) {
+					if (other !== id) {document.getElementById(other).checked = false};
+				};
+			};
+			syncToggles();
+		});
+	};
+	for (let id of ["toggleTooltips", "toggleMagic", "toggleSin", "toggleExp"]) {
+		document.getElementById(id).addEventListener("change", () => {
+			syncToggles();
+			let q = document.getElementById("sheetSearch").value;
+			if (q) {applySearch(q)};
+		});
+	};
+	syncToggles();
+	//Общее масштабирование шрифта
+	let uiScale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ui-scale")) || 1;
+	document.getElementById("btnScaleDown").addEventListener("click", () => {
+		uiScale = Math.max(0.75, Math.round((uiScale - 0.05) * 100) / 100);
+		document.documentElement.style.setProperty("--ui-scale", uiScale);
+	});
+	document.getElementById("btnScaleUp").addEventListener("click", () => {
+		uiScale = Math.min(1.45, Math.round((uiScale + 0.05) * 100) / 100);
+		document.documentElement.style.setProperty("--ui-scale", uiScale);
+	});
+	document.getElementById("btnPrint").addEventListener("click", () => window.print());
+	//Живой пересчёт характеристик, навыков, веса и счётчиков в заголовках
+	function round2(n) {return Math.round((Number(n) || 0) * 100) / 100};
+	//Обновление числового счётчика в заголовке карточки при добавлении/удалении строк
+	function updateCardBadge(card) {
+		if (!card) {return};
+		let badge = card.querySelector(":scope > h3 > .badge");
+		let content = card.querySelector(":scope > .content");
+		if (!badge || !content) {return};
+		if (card.dataset.addType === "talent") {
+			let traitsCount = content.querySelectorAll(":scope > .item.traits").length;
+			let talentsCount = content.querySelectorAll(":scope > .item:not(.traits)").length;
+			badge.textContent = traitsCount ? `${talentsCount} + ${traitsCount}` : String(talentsCount);
+		} else {badge.textContent = String(content.querySelectorAll(":scope > .item").length)};
+		if (debug) {
+			console.debug(...debugMessage, "updateCardBadge", card.dataset.addType, badge.textContent);
+		};
+	};
+	function recalcEncumbrance(sourceInput = null) {
+		let wEl = document.getElementById("encumbrance.weapons");
+		let aEl = document.getElementById("encumbrance.armours");
+		let tEl = document.getElementById("encumbrance.trappings");
+		let totEl = document.getElementById("encumbrance.current");
+		if (!wEl || !aEl || !tEl || !totEl) {return};
+		if (sourceInput && [wEl, aEl, tEl].includes(sourceInput)) {
+			totEl.value = round2((parseFloat(wEl.value) || 0) + (parseFloat(aEl.value) || 0) + (parseFloat(tEl.value) || 0));
+			return;
+		};
+		let sumSel = (sel) => round2(Array.from(document.querySelectorAll(sel)).reduce((s, inp) => s + (parseFloat(inp.value) || 0), 0));
+		let wSum = sumSel(".item.weapons .col-enc");
+		let aSum = sumSel(".item.armours .col-enc");
+		let coinsTotal = (parseInt(document.getElementById("coins.gc")?.value) || 0)
+			+ (parseInt(document.getElementById("coins.ss")?.value) || 0)
+			+ (parseInt(document.getElementById("coins.bp")?.value) || 0);
+		let coinsEnc = Math.floor(Math.max(0, coinsTotal) / 100);
+		let tSum = round2(sumSel(".item.trappings:not(.layer) .col-enc") + coinsEnc);
+		wEl.value = wSum;
+		aEl.value = aSum;
+		tEl.value = tSum;
+		totEl.value = round2(wSum + aSum + tSum);
+		if (debug) {
+			console.debug(...debugMessage, "recalcEncumbrance", {weapons: wSum, armours: aSum, trappings: tSum, total: totEl.value});
+		};
+	};
+	function recalcCharacteristic(charKey) {
+		let init = parseInt(document.getElementById(`characteristics.${charKey}.initial`)?.value) || 0;
+		let adv = parseInt(document.getElementById(`characteristics.${charKey}.advances`)?.value) || 0;
+		let mod = parseInt(document.getElementById(`characteristics.${charKey}.modifier`)?.value) || 0;
+		let cur = init + adv + mod;
+		let curEl = document.getElementById(`characteristics.${charKey}.current`);
+		let bonusEl = document.getElementById(`characteristics.${charKey}.bonus`);
+		if (curEl) { curEl.value = cur; }
+		if (bonusEl) { bonusEl.value = Math.floor(cur / 10); }
+		document.querySelectorAll(".item.skills").forEach(row => {
+			let sel = row.querySelector(".skill-char");
+			if (sel && sel.value === charKey) {
+				let cvalEl = row.querySelector(".skill-cval");
+				let advEl = row.querySelector(".skill-adv");
+				let totEl = row.querySelector(".skill-tot");
+				if (cvalEl) { cvalEl.value = cur; }
+				if (totEl) {totEl.value = cur + (parseInt(advEl?.value) || 0)};
+			};
+		});
+	};
+	document.addEventListener("input", (e) => {
+		if (e.target.classList.contains("char-part")) {recalcCharacteristic(e.target.dataset.char)}
+		else if (e.target.classList.contains("char-current")) {
+			let charKey = e.target.dataset.char;
+			let cur = parseInt(e.target.value) || 0;
+			let bonusEl = document.getElementById(`characteristics.${charKey}.bonus`);
+			if (bonusEl) {bonusEl.value = Math.floor(cur / 10)};
+			document.querySelectorAll(".item.skills").forEach(row => {
+				let sel = row.querySelector(".skill-char");
+				if (sel && sel.value === charKey) {
+					let cvalEl = row.querySelector(".skill-cval");
+					let advEl = row.querySelector(".skill-adv");
+					let totEl = row.querySelector(".skill-tot");
+					if (cvalEl) {cvalEl.value = cur};
+					if (totEl) {totEl.value = cur + (parseInt(advEl?.value) || 0)};
+				};
+			});
+		} else if (e.target.classList.contains("skill-adv") || e.target.classList.contains("skill-cval")) {
+			let row = e.target.closest(".item.skills");
+			if (row) {
+				let cval = parseInt(row.querySelector(".skill-cval")?.value) || 0;
+				let adv = parseInt(row.querySelector(".skill-adv")?.value) || 0;
+				let totEl = row.querySelector(".skill-tot");
+				if (totEl) {totEl.value = cval + adv};
+			};
+		} else if (e.target.classList.contains("col-enc") || ["coins.gc", "coins.ss", "coins.bp"].includes(e.target.id)) {recalcEncumbrance()}
+		else if (["encumbrance.weapons", "encumbrance.armours", "encumbrance.trappings"].includes(e.target.id)) {recalcEncumbrance(e.target)};
+	});
+	document.addEventListener("change", (e) => {
+		if (e.target.classList.contains("skill-char")) {
+			let row = e.target.closest(".item.skills");
+			let cur = parseInt(document.getElementById(`characteristics.${e.target.value}.current`)?.value) || 0;
+			let cvalEl = row?.querySelector(".skill-cval");
+			let advEl = row?.querySelector(".skill-adv");
+			let totEl = row?.querySelector(".skill-tot");
+			if (cvalEl) {cvalEl.value = cur};
+			if (totEl) {totEl.value = cur + (parseInt(advEl?.value) || 0)};
+		};
+	});
+	//Всплывающие подсказки у курсора и раскрывающиеся описания
+	function buildDetailsHtml(target) {
+		let html = "";
+		let qualInput = target.querySelector("input[data-type='qualities']");
+		let qualStr = (qualInput ? qualInput.value : (target.dataset.qualities || "")).trim();
+		if (qualStr) {
+			let list = qualStr.split(/\s*,\s*/).filter(Boolean);
+			if (list.length) {
+				html += "<h4>{{localize 'Qualities'}} &amp; {{localize 'Flaws'}}</h4>";
+				for (let q of list) {
+					let base = q.replace(/\s+\d+$/, "").trim();
+					html += `<p><strong>${q}</strong>: ${props[base] || props[q] || "<em>{{localize 'WFRP4E.PrintSheet.Empty'}}</em>"}</p>`;
+				};
+			};
+		};
+		if (target.dataset.tooltip) {html += target.dataset.tooltip};
+		return html;
+	};
+	function positionTooltip(x, y) {
+		let pad = 10;
+		let offset = 14;
+		tooltip.style.left = "0px";
+		tooltip.style.top = "0px";
+		let tw = tooltip.offsetWidth;
+		let th = tooltip.offsetHeight;
+		let left = x + offset;
+		if (left + tw > window.innerWidth - pad) {left = Math.max(pad, x - tw - offset)};
+		left = Math.max(pad, Math.min(left, window.innerWidth - tw - pad));
+		let top = y + offset;
+		if (top + th > window.innerHeight - pad) {top = Math.max(pad, y - th - offset)};
+		tooltip.style.left = `${Math.round(left)}px`;
+		tooltip.style.top = `${Math.round(top)}px`;
+	};
+	document.addEventListener("mousemove", (e) => {
+		mouseX = e.clientX;
+		mouseY = e.clientY;
+	});
+	document.addEventListener("mouseover", (e) => {
+		mouseX = e.clientX;
+		mouseY = e.clientY;
+		if (document.body.classList.contains("no-tooltips") || document.body.classList.contains("mode-scale") || document.body.classList.contains("mode-add") || document.body.classList.contains("mode-delete")) { return; }
+		let target = e.target.closest(".tooltip-target");
+		if (!target || target === hoverTarget || target.classList.contains("expanded")) {return};
+		hoverTarget = target;
+		clearTimeout(hideTimer);
+		clearTimeout(showTimer);
+		showTimer = setTimeout(() => {
+			if (hoverTarget !== target) {return};
+			let content = buildDetailsHtml(target);
+			if (!content) {return};
+			tooltip.innerHTML = content;
+			tooltip.classList.add("active");
+			positionTooltip(mouseX, mouseY);
+		}, 350);
+	});
+	document.addEventListener("mouseout", (e) => {
+		let target = e.target.closest(".tooltip-target");
+		if (!target || target.contains(e.relatedTarget)) {return};
+		if (e.relatedTarget && tooltip.contains(e.relatedTarget)) {return};
+		clearTimeout(showTimer);
+		hoverTarget = null;
+		hideTimer = setTimeout(() => {
+			if (!hoverTarget) {tooltip.classList.remove("active")};
+		}, 250);
+	});
+	tooltip.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+	tooltip.addEventListener("mouseleave", () => {
+		hoverTarget = null;
+		tooltip.classList.remove("active");
+	});
+	//Обработка кликов: кнопки +/-, раскрытие описаний, масштаб, добавление и удаление строк
+	let charOptions = `
+		<option value="ws" selected>{{localize "CHARAbbrev.WS"}}</option>
+		<option value="bs">{{localize "CHARAbbrev.BS"}}</option>
+		<option value="s">{{localize "CHARAbbrev.S"}}</option>
+		<option value="t">{{localize "CHARAbbrev.T"}}</option>
+		<option value="i">{{localize "CHARAbbrev.I"}}</option>
+		<option value="ag">{{localize "CHARAbbrev.Ag"}}</option>
+		<option value="dex">{{localize "CHARAbbrev.Dex"}}</option>
+		<option value="int">{{localize "CHARAbbrev.Int"}}</option>
+		<option value="wp">{{localize "CHARAbbrev.WP"}}</option>
+		<option value="fel">{{localize "CHARAbbrev.Fel"}}</option>`;
+	let rowTemplates = {
+		skill: () => `<div class="item skills"><div class="row-main"><input class="col-name" value=""><select class="skill-char">${charOptions}</select><input class="skill-cval" value="0"><input class="skill-adv" value="0"><input class="skill-tot" value="0"><span></span></div><div class="inline-desc" hidden></div></div>`,
+		talent: () => `<div class="item talents"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input value=""><span></span></div><div class="inline-desc" hidden></div></div>`,
+		armour: () => `<div class="item armours"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input class="col-enc" value="0"><input data-type="qualities" value=""><span></span></div><div class="inline-desc" hidden></div></div>`,
+		weapon: () => `<div class="item weapons"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input class="col-enc" value="0"><input value=""><input value=""><input data-type="qualities" value=""><span></span></div><div class="inline-desc" hidden></div></div>`,
+		trapping: () => `<div class="item trappings"><div class="row-main"><div class="name-cell"><input value=""></div><input class="col-enc" value="0"><span></span></div><div class="inline-desc" hidden></div></div>`,
+		magic: () => `<div class="item magics"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input value=""><input value=""><input value=""><input value=""><span></span></div><div class="inline-desc" hidden></div></div>`,
+		experience: () => `<div class="item experience"><div class="row-main"><input value=""><input class="col-rsn" value=""></div></div>`,
+		simple: () => `<div class="item simple"><div class="row-main"><div class="name-cell"><input value=""></div><span></span></div><div class="inline-desc" hidden></div></div>`
+	};
+	document.addEventListener("click", (e) => {
+		let stepBtn = e.target.closest(".step-btn");
+		if (stepBtn) {
+			let inp = document.getElementById(stepBtn.dataset.target);
+			if (inp) {
+				let cur = parseInt(inp.value) || 0;
+				inp.value = Math.max(0, cur + (parseInt(stepBtn.dataset.step) || 0));
+				if (["coins.gc", "coins.ss", "coins.bp"].includes(inp.id)) {recalcEncumbrance()};
+			};
+			return;
+		};
+		let expBtn = e.target.closest(".expand-btn");
+		if (expBtn) {
+			let item = expBtn.closest(".item");
+			let drawer = item?.querySelector(".inline-desc");
+			if (item && drawer) {
+				let willOpen = drawer.hidden;
+				if (willOpen) {
+					drawer.innerHTML = buildDetailsHtml(item) || "<em>{{localize 'WFRP4E.PrintSheet.Empty'}}</em>";
+					tooltip.classList.remove("active");
+				}
+				drawer.hidden = !willOpen;
+				item.classList.toggle("expanded", willOpen);
+			}
+			return;
+		}
+		if (document.body.classList.contains("mode-scale")) {
+			let field = e.target.closest("input:not([type=checkbox]):not([type=search]), textarea");
+			if (field) {
+				let size = parseFloat(getComputedStyle(field).fontSize) || 14;
+				field.style.fontSize = `${Math.min(30, size + 1)}px`;
+				return;
+			}
+		}
+		if (document.body.classList.contains("mode-delete")) {
+			let row = e.target.closest(".content > .item");
+			if (row) {
+				let card = row.closest(".card");
+				let affectsEnc = Boolean(row.querySelector(".col-enc"));
+				row.remove();
+				updateCardBadge(card);
+				if (affectsEnc) {recalcEncumbrance()};
+				return;
+			};
+		};
+		if (document.body.classList.contains("mode-add")) {
+			let heading = e.target.closest(".card[data-add-type] > h3");
+			if (heading) {
+				let card = heading.closest(".card");
+				let type = card.dataset.addType;
+				let container = card.querySelector(":scope > .content");
+				if (container && rowTemplates[type]) {
+					container.insertAdjacentHTML("beforeend", rowTemplates[type]());
+					updateCardBadge(card);
+				};
+			};
+		};
+	});
+	document.addEventListener("contextmenu", (e) => {
+		if (!document.body.classList.contains("mode-scale")) { return; }
+		let field = e.target.closest("input:not([type=checkbox]):not([type=search]), textarea");
+		if (field) {
+			e.preventDefault();
+			let size = parseFloat(getComputedStyle(field).fontSize) || 14;
+			field.style.fontSize = `${Math.max(8, size - 1)}px`;
+		};
+	});
+	//Сохранение изменённого листа в новый HTML-файл
+	document.getElementById("btnSave").addEventListener("click", () => {
+		tooltip.classList.remove("active");
+		document.getElementById("sheetSearch").value = "";
+		applySearch("");
+		for (let id of modeIds) {document.getElementById(id).checked = false};
+		syncToggles();
+		document.querySelectorAll("input").forEach(inp => {
+			if (inp.type === "checkbox" || inp.type === "radio") {
+				if (inp.checked) {inp.setAttribute("checked", "")}
+				else {inp.removeAttribute("checked")};
+			} else {inp.setAttribute("value", inp.value)};
+		});
+		document.querySelectorAll("textarea").forEach(ta => {ta.textContent = ta.value});
+		document.querySelectorAll("select").forEach(sel => {
+			Array.from(sel.options).forEach(opt => {
+				if (opt.selected) {opt.setAttribute("selected", "")}
+				else {opt.removeAttribute("selected")};
+			});
+		});
+		let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+		let blob = new Blob([html], {type: "text/html;charset=utf-8"});
+		let filename = decodeURIComponent(window.location.pathname.split("/").pop() || "");
+		if (!filename || !filename.toLowerCase().endsWith(".html")) {
+			filename = ((document.getElementById("name")?.value || "character-sheet").replace(/[\/|\\:*?"<>]/g, "_")) + ".html";
+		}
+		let a = document.createElement("a");
+		let url = URL.createObjectURL(blob);
+		a.href = url;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 100);
+	});
+})();
+</script>

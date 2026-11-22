@@ -1,0 +1,1531 @@
+<style>
+	:root {
+		--inputcolor: {{settings.inputcolor}};
+		--ui-scale: 1;
+		--gap: 0.25rem;
+		--page-w: min(210mm, 96vw);
+		--page-h: calc(var(--page-w) * 297 / 210);
+		--color-large-border: #4a0404;
+		--color-small-border: #564d3a;
+		--parchment-bg: #f3ead3;
+		--parchment-grad: radial-gradient(circle at 50% 40%, #f7f1df 0%, #eadcb9 100%);
+	}
+	*, *::before, *::after {
+		box-sizing: border-box;
+	}
+	html {
+		font-size: clamp(10.5px, 0.95vw, 13.5px);
+		font-family: "Georgia", "Times New Roman", serif;
+		background: #1b1815;
+		color: #1c1610;
+	}
+	body {
+		margin: 0 auto;
+		padding: 0.75rem 0 2rem;
+		width: var(--page-w);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		font-size: calc(0.84rem * var(--ui-scale));
+	}
+
+
+
+	.toolbar {
+		position: sticky;
+		top: 0.4rem;
+		z-index: 50;
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.4rem 0.65rem;
+		background: rgba(24, 20, 17, 0.94);
+		border: 1px solid #736953;
+		border-radius: 0.45rem;
+		box-shadow: 0 0.25rem 0.9rem rgba(0, 0, 0, 0.55);
+	}
+	.toolbar .tool-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.3rem;
+		min-width: 2rem;
+		height: 2rem;
+		padding: 0 0.5rem;
+		border: 1px solid #6b5f4a;
+		border-radius: 0.3rem;
+		background: #2b241d;
+		color: #f0e6d2;
+		cursor: pointer;
+		font-size: 0.9rem;
+		user-select: none;
+		transition: background 0.15s, border-color 0.15s, color 0.15s;
+	}
+	.toolbar .tool-btn:hover {
+		background: #42352a;
+		border-color: #c8a253;
+		color: #ffd700;
+	}
+	.toolbar input[type="checkbox"] {
+		display: none;
+	}
+	.toolbar input[type="checkbox"]:checked + label.tool-btn {
+		background: #4a0404;
+		border-color: #d4a84f;
+		color: #ffd700;
+	}
+	.toolbar .tool-sep {
+		width: 1px;
+		height: 1.4rem;
+		background: #5a4f3d;
+		margin: 0 0.15rem;
+	}
+
+
+
+	section.sheet-page {
+		width: var(--page-w);
+		height: var(--page-h);
+		padding: 7.5mm 8mm;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		background-color: var(--parchment-bg);
+		background-image:
+			url("https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Assets/background.png"),
+			var(--parchment-grad);
+		background-size: 100% 100%, cover;
+		background-repeat: no-repeat;
+		box-shadow: 0 0.4rem 1.5rem rgba(0, 0, 0, 0.65);
+		border-radius: 0.25rem;
+		overflow: hidden;
+	}
+
+
+
+	.frame {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--gap);
+		padding: 0.22rem;
+		border: 2px dotted var(--color-large-border);
+		border-radius: 0.35rem;
+		flex-shrink: 0;
+	}
+	.frame.grow {
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		border: 1px dashed var(--color-small-border);
+		border-radius: 0.3rem;
+		background: rgba(255, 252, 240, 0.32);
+		box-shadow: inset 0 0 0.4rem rgba(70, 67, 49, 0.42);
+		overflow: hidden;
+		min-width: 0;
+		width: 100%;
+	}
+	.card > h3 {
+		margin: 0;
+		padding: 0.2rem 0.4rem;
+		text-align: center;
+		font-size: 0.92em;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+		color: #2b130a;
+		border-bottom: 2px solid var(--color-small-border);
+		background: rgba(74, 4, 4, 0.08);
+		flex-shrink: 0;
+	}
+
+
+
+	input, textarea, select {
+		font-family: inherit;
+		font-size: 0.88em;
+		font-weight: bold;
+		color: var(--inputcolor);
+		background: transparent;
+		border: none;
+		text-align: center;
+		min-width: 0;
+		width: 100%;
+		padding: 0.08rem 0.18rem;
+	}
+	select {
+		appearance: none;
+		-webkit-appearance: none;
+		cursor: pointer;
+	}
+	textarea {
+		resize: none;
+		text-align: left;
+		line-height: 1.3;
+		padding: 0.25rem 0.35rem;
+		height: 100%;
+	}
+	input:focus, textarea:focus, select:focus {
+		outline: none;
+		background: rgba(255, 255, 255, 0.45);
+	}
+	@media not print {
+		input:hover, textarea:hover, select:hover {
+			background: rgba(255, 255, 255, 0.3);
+		}
+	}
+
+
+
+	.details-grid {
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		gap: var(--gap);
+		width: 100%;
+	}
+	.detail-field {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.12rem 0.28rem;
+		border: 1px dashed var(--color-small-border);
+		border-radius: 0.25rem;
+		background: rgba(255, 252, 240, 0.32);
+		min-height: 1.45rem;
+	}
+	.detail-field > span {
+		font-weight: bold;
+		font-size: 0.84em;
+		white-space: nowrap;
+		color: #2c2015;
+	}
+	.detail-field > input {
+		text-align: right;
+		flex: 1;
+	}
+	.span-2 { grid-column: span 2; }
+	.span-3 { grid-column: span 3; }
+	.span-4 { grid-column: span 4; }
+	.span-5 { grid-column: span 5; }
+	.span-9 { grid-column: span 9; }
+
+
+
+	.status-grid {
+		display: grid;
+		grid-template-columns: 52% 1fr 1fr 1fr;
+		grid-template-areas:
+			"chars fate res sin"
+			"chars exp exp move";
+		gap: var(--gap);
+		width: 100%;
+	}
+	body.hide-sin .status-grid {
+		grid-template-areas:
+			"chars fate res res"
+			"chars exp exp move";
+	}
+	body.hide-sin .sin-card {
+		display: none !important;
+	}
+	.char-table {
+		width: 100%;
+		border-collapse: collapse;
+		table-layout: fixed;
+		flex: 1;
+	}
+	.char-table th, .char-table td {
+		border-bottom: 1px dashed var(--color-small-border);
+		border-right: 1px dashed var(--color-small-border);
+		padding: 0.08rem 0.05rem;
+		text-align: center;
+		font-size: 0.82em;
+	}
+	.char-table th:first-child, .char-table td:first-child {
+		width: 18%;
+		font-weight: bold;
+		border-right: 2px solid var(--color-small-border);
+	}
+	.char-table thead th {
+		border-bottom: 2px solid var(--color-small-border);
+		font-weight: bold;
+	}
+	.char-table tr:last-child td { border-bottom: none; }
+	.char-table td:last-child, .char-table th:last-child { border-right: none; }
+	.stat-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.2rem;
+		padding: 0.12rem 0.28rem;
+		border-bottom: 1px dashed var(--color-small-border);
+		flex: 1;
+	}
+	.stat-row:last-child { border-bottom: none; }
+	.stat-row > span { font-size: 0.8em; font-weight: bold; white-space: nowrap; }
+	.stat-row > input { text-align: right; flex: 1; }
+	.stat-split {
+		display: flex;
+		flex: 1;
+		border-bottom: 1px dashed var(--color-small-border);
+	}
+	.stat-split:last-child { border-bottom: none; }
+	.stat-split > .stat-row {
+		border-bottom: none;
+		border-right: 1px dashed var(--color-small-border);
+		flex: 1;
+	}
+	.stat-split > .stat-row:last-child { border-right: none; }
+
+
+
+	.list-head {
+		display: grid;
+		align-items: stretch;
+		width: 100%;
+		font-weight: bold;
+		font-size: 0.8em;
+		text-align: center;
+		border-bottom: 2px solid var(--color-small-border);
+		background: rgba(74, 4, 4, 0.05);
+		flex-shrink: 0;
+	}
+	.list-head > span {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.16rem 0.15rem;
+		border-right: 1px dashed var(--color-small-border);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.list-head > span:last-child { border-right: none; }
+	.content {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		flex: 1;
+	}
+	.content > .item {
+		border-bottom: 1px dashed var(--color-small-border);
+		width: 100%;
+	}
+	.content > .item:last-child { border-bottom: none; }
+	.item > .row-main {
+		display: grid;
+		align-items: stretch;
+		width: 100%;
+		min-height: 1.42rem;
+	}
+	.item > .row-main > * {
+		border-right: 1px dashed var(--color-small-border);
+		min-width: 0;
+	}
+	.item > .row-main > *:last-child { border-right: none; }
+	.item > .row-main input,
+	.item > .row-main select {
+		font-size: 0.82em;
+	}
+
+
+
+	.name-cell {
+		display: flex;
+		align-items: center;
+		gap: 0.18rem;
+		padding-left: 0.15rem;
+		min-width: 0;
+		overflow: hidden;
+	}
+	.name-cell > input {
+		text-align: left;
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+	.item-icon {
+		width: 1.18rem;
+		height: 1.18rem;
+		object-fit: contain;
+		flex: 0 0 1.18rem;
+	}
+
+
+
+	.skills-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--gap);
+		width: 100%;
+		align-items: stretch;
+	}
+	.list-head.skills {
+		grid-template-columns: 44% 28% 14% 14%;
+	}
+	.item.skills > .row-main {
+		grid-template-columns: 44% 14% 14% 14% 14%;
+	}
+	.item.skills > .row-main > .col-name { text-align: left; padding-left: 0.22rem; }
+	.list-head.armours,
+	.item.armours > .row-main {
+		grid-template-columns: 28% 32% 10% 30%;
+	}
+	.list-head.weapons,
+	.item.weapons > .row-main {
+		grid-template-columns: 26% 15% 8% 14% 9% 28%;
+	}
+	.list-head.trappings,
+	.item.trappings > .row-main {
+		grid-template-columns: 84% 16%;
+	}
+	.item.trappings.layer .name-cell {
+		padding-left: calc(0.15rem + var(--indent, 1) * 0.7rem);
+	}
+	.item.trappings.layer .name-cell::before {
+		content: "•";
+		flex: 0 0 auto;
+		font-weight: bold;
+		color: #4a0404;
+	}
+	.list-head.magics,
+	.item.magics > .row-main {
+		grid-template-columns: 30% 7% 15% 15% 15% 18%;
+	}
+	.list-head.experience,
+	.item.experience > .row-main {
+		grid-template-columns: 16% 84%;
+	}
+	.item.experience .col-rsn { text-align: left; padding-left: 0.3rem; }
+	.item.simple > .row-main {
+		grid-template-columns: 100%;
+	}
+
+
+
+	.talents-head-pair {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		border-bottom: 2px solid var(--color-small-border);
+		background: rgba(74, 4, 4, 0.05);
+	}
+	.talents-head-pair > .list-head.talents {
+		border-bottom: none;
+		background: transparent;
+	}
+	.talents-head-pair > .list-head.talents:first-child {
+		border-right: 2px solid var(--color-small-border);
+	}
+	.list-head.talents,
+	.item.talents > .row-main {
+		grid-template-columns: 40% 13% 47%;
+	}
+	.content.talents-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-content: start;
+	}
+	.content.talents-grid > .item {
+		border-bottom: 1px dashed var(--color-small-border);
+	}
+	.content.talents-grid > .item:nth-child(odd) {
+		border-right: 2px solid var(--color-small-border);
+	}
+
+
+
+	.amb-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--gap);
+		width: 100%;
+	}
+	.bio-card {
+		flex: 1 1 auto;
+		height: 100%;
+	}
+	.bio-card > textarea {
+		flex: 1 1 auto;
+		min-height: 4rem;
+	}
+	.amb-row {
+		display: flex;
+		align-items: stretch;
+		border-bottom: 1px dashed var(--color-small-border);
+		flex: 1;
+	}
+	.amb-row:last-child { border-bottom: none; }
+	.amb-row > span {
+		width: 30%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		font-size: 0.78em;
+		font-weight: bold;
+		padding: 0.2rem;
+		border-right: 1px dashed var(--color-small-border);
+	}
+	.amb-row > textarea {
+		width: 70%;
+		min-height: 2.2rem;
+	}
+
+
+
+	.combat-top-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr 32%;
+		grid-template-areas:
+			"armour armour portrait"
+			"psych mut wounds"
+			"coins enc wounds";
+		gap: var(--gap);
+		width: 100%;
+	}
+	.portrait-card {
+		grid-area: portrait;
+		align-items: center;
+		justify-content: center;
+		padding: 0.35rem;
+		min-height: 10.5rem;
+	}
+	.portrait-card img {
+		max-width: 100%;
+		max-height: 11.5rem;
+		object-fit: contain;
+		border-radius: 0.25rem;
+	}
+	.coin-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.18rem 0.45rem;
+		border-bottom: 1px dashed var(--color-small-border);
+		flex: 1;
+	}
+	.coin-row:last-child { border-bottom: none; }
+	.coin-row input { font-size: 1.12em; width: 55%; }
+	.coin-row img { width: 1.55rem; height: 1.55rem; object-fit: contain; }
+	.coin-row span { font-weight: bold; }
+	.wounds-header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.25rem;
+		padding: 0.18rem 0.4rem;
+		border-bottom: 2px solid var(--color-small-border);
+		font-weight: bold;
+		font-size: 0.98em;
+	}
+	.wounds-header input { width: 3.2rem; font-size: 1.08em; }
+
+
+
+	body.mode-scale input, body.mode-scale textarea {
+		cursor: ns-resize !important;
+		box-shadow: inset 0 0 0.35rem rgba(139, 0, 0, 0.7);
+	}
+	body.mode-add .card[data-add-type] > h3 {
+		cursor: pointer !important;
+		box-shadow: inset 0 0 0.45rem rgba(0, 110, 0, 0.75);
+	}
+	body.mode-delete .content > .item {
+		cursor: pointer !important;
+		box-shadow: inset 0 0 0.35rem rgba(160, 0, 0, 0.65);
+	}
+
+
+
+	.tooltip {
+		position: fixed;
+		z-index: 100;
+		padding: 0.5rem 0.65rem;
+		max-width: min(32rem, 90vw);
+		max-height: 65vh;
+		overflow-y: auto;
+		background-color: #f3ead3;
+		background-image: url("https://raw.githubusercontent.com/nPocToI4eJI/wfrp4e-print-sheet/refs/heads/main/Assets/tooltip.png");
+		border: 2px solid #736953;
+		border-radius: 0.4rem;
+		box-shadow: 0 0.35rem 1.2rem rgba(0, 0, 0, 0.55);
+		font-size: 0.85rem;
+		line-height: 1.35;
+		color: #1c1610;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.15s ease, visibility 0.15s ease;
+	}
+	.tooltip.active {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+	.tooltip h4 { margin: 0.35rem 0 0.25rem; text-align: center; border-bottom: 1px solid #736953; }
+	.tooltip p { margin: 0.25rem 0; }
+	.tooltip .range-table-wrap { display: flex; justify-content: center; margin: 0.3rem 0; }
+	.tooltip .range-table { border-collapse: collapse; border: 1px solid var(--color-large-border); font-size: 0.85em; }
+	.tooltip .range-table th, .tooltip .range-table td { border: 1px dashed var(--color-small-border); padding: 0.15rem 0.3rem; text-align: center; }
+	body.no-tooltips .tooltip,
+	body.mode-scale .tooltip,
+	body.mode-add .tooltip,
+	body.mode-delete .tooltip {
+		display: none !important;
+	}
+
+
+
+	@page {
+		size: A4 portrait;
+		margin: 0;
+	}
+	@media print {
+		:root {
+			--page-w: 210mm;
+			--page-h: 297mm;
+		}
+		html {
+			font-size: 9.5pt;
+			background: #fff;
+		}
+		body {
+			width: 210mm;
+			margin: 0;
+			padding: 0;
+			gap: 0;
+		}
+		.toolbar, .tooltip, #flow-pool {
+			display: none !important;
+		}
+		section.sheet-page {
+			width: 210mm;
+			height: 297mm;
+			padding: 7.5mm 8mm;
+			margin: 0;
+			box-shadow: none;
+			border-radius: 0;
+			break-after: page;
+			page-break-after: always;
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+		section.sheet-page:last-of-type {
+			break-after: auto;
+			page-break-after: auto;
+		}
+		.frame, .card { box-shadow: none; }
+	}
+</style>
+
+<div class="tooltip" id="tooltip"></div>
+
+<div class="toolbar" id="toolbar">
+	<button type="button" class="tool-btn" id="btnPrint" title="{{localize 'WFRP4E.PrintSheet.HTML.Print'}}"><i class="fas fa-print"></i></button>
+	<button type="button" class="tool-btn" id="btnSave" title="{{localize 'WFRP4E.PrintSheet.HTML.Save'}}"><i class="fas fa-save"></i></button>
+	<span class="tool-sep"></span>
+	<input type="checkbox" id="toggleTooltips">
+	<label class="tool-btn" for="toggleTooltips" title="{{localize 'WFRP4E.PrintSheet.HTML.HideTooltip'}}"><i class="fas fa-info-circle"></i></label>
+	<input type="checkbox" id="toggleMagic"{{#unless settings.showMagic}} checked{{/unless}}>
+	<label class="tool-btn" for="toggleMagic" title="{{localize 'WFRP4E.PrintSheet.HTML.HideMagics'}}"><i class="fas fa-scroll"></i></label>
+	<input type="checkbox" id="toggleSin"{{#unless settings.showSin}} checked{{/unless}}>
+	<label class="tool-btn" for="toggleSin" title="{{localize 'WFRP4E.PrintSheet.HTML.HideSin'}}"><i class="fas fa-star"></i></label>
+	<input type="checkbox" id="toggleExp"{{#unless settings.showExperience}} checked{{/unless}}>
+	<label class="tool-btn" for="toggleExp" title="{{localize 'WFRP4E.PrintSheet.HTML.HideExperience'}}"><i class="fas fa-book"></i></label>
+	<span class="tool-sep"></span>
+	<button type="button" class="tool-btn" id="btnScaleDown" title="{{localize 'WFRP4E.PrintSheet.HTML.ScaleGlobalDown'}}">A-</button>
+	<button type="button" class="tool-btn" id="btnScaleUp" title="{{localize 'WFRP4E.PrintSheet.HTML.ScaleGlobalUp'}}">A+</button>
+	<input type="checkbox" id="modeScale">
+	<label class="tool-btn" for="modeScale" title="{{localize 'WFRP4E.PrintSheet.HTML.ScaleFont'}}"><i class="fas fa-text-height"></i></label>
+	<input type="checkbox" id="modeAdd">
+	<label class="tool-btn" for="modeAdd" title="{{localize 'WFRP4E.PrintSheet.HTML.Add'}}"><i class="fas fa-plus"></i></label>
+	<input type="checkbox" id="modeDelete">
+	<label class="tool-btn" for="modeDelete" title="{{localize 'WFRP4E.PrintSheet.HTML.Delete'}}"><i class="fas fa-trash"></i></label>
+</div>
+
+<section class="sheet-page">
+	<div class="frame">
+		<div class="details-grid">
+			<div class="detail-field span-5">
+				<span>{{localize "Name"}}</span>
+				<input id="name" value="{{name}}"{{#if player}} class="tooltip-target" data-tooltip="<p>{{localize 'Owner'}}: {{player}}</p>"{{/if}}>
+			</div>
+			<div class="detail-field span-4">
+				<span>{{localize "Species"}}</span>
+				<input id="details.race" value="{{details.race}}">
+			</div>
+			<div class="detail-field span-3">
+				<span>{{localize "Gender"}}</span>
+				<input id="details.gender" value="{{details.gender}}">
+			</div>
+
+			<div class="detail-field span-4">
+				<span>{{localize "Class"}}</span>
+				<input id="career.class" value="{{career.class}}">
+			</div>
+			<div class="detail-field span-5">
+				<span>{{localize "Career"}}</span>
+				<input id="career.name" value="{{career.name}}">
+			</div>
+			<div class="detail-field span-3">
+				<span>{{localize "Career Level"}}</span>
+				<input id="career.level" value="{{career.level}}">
+			</div>
+
+			<div class="detail-field span-9">
+				<span>{{localize "WFRP4E.PrintSheet.HTML.CareerPath"}}</span>
+				<input id="career.path" value="{{career.path}}">
+			</div>
+			<div class="detail-field span-3">
+				<span>{{localize "Status"}}</span>
+				<input id="career.status" value="{{career.status}}">
+			</div>
+
+			<div class="detail-field span-2">
+				<span>{{localize "Age"}}</span>
+				<input id="details.age" value="{{details.age}}">
+			</div>
+			<div class="detail-field span-4">
+				<span>{{localize "CharacterHeight"}} ({{localize "Weight"}})</span>
+				<input id="details.height_weight" value="{{details.heightWeight}}">
+			</div>
+			<div class="detail-field span-3">
+				<span>{{localize "Hair Colour"}}</span>
+				<input id="details.haircolour" value="{{details.haircolour}}">
+			</div>
+			<div class="detail-field span-3">
+				<span>{{localize "Eye Colour"}}</span>
+				<input id="details.eyecolour" value="{{details.eyecolour}}">
+			</div>
+		</div>
+	</div>
+
+	<div class="frame">
+		<div class="status-grid">
+			<div class="card" style="grid-area: chars;">
+				<h3>{{localize "Characteristics"}}</h3>
+				<table class="char-table">
+					<thead>
+						<tr>
+							<th></th>
+							{{#each characteristicsList}}
+							<th>{{this.name}}</th>
+							{{/each}}
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{localize "Initial"}}</td>
+							{{#each characteristicsList}}
+							<td><input id="characteristics.{{this.key}}.initial" value="{{this.initial}}"></td>
+							{{/each}}
+						</tr>
+						<tr>
+							<td>{{localize "SHEET.AdvAbbrev"}}</td>
+							{{#each characteristicsList}}
+							<td><input id="characteristics.{{this.key}}.advances" value="{{this.advances}}"></td>
+							{{/each}}
+						</tr>
+						<tr>
+							<td>{{localize "WFRP4E.PrintSheet.HTML.ModifierAbbrev"}}</td>
+							{{#each characteristicsList}}
+							<td><input id="characteristics.{{this.key}}.modifier" value="{{this.modifier}}"></td>
+							{{/each}}
+						</tr>
+						<tr>
+							<td>{{localize "Current"}}</td>
+							{{#each characteristicsList}}
+							<td><input id="characteristics.{{this.key}}.current" value="{{this.current}}"></td>
+							{{/each}}
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="card" style="grid-area: fate;">
+				<h3>{{localize "Fate"}}</h3>
+				<div class="stat-row"><span>{{localize "Fate"}}</span><input id="status.fate.value" value="{{status.fate.value}}"></div>
+				<div class="stat-row"><span>{{localize "Fortune"}}</span><input id="status.fate.fortune" value="{{status.fate.fortune}}"></div>
+			</div>
+
+			<div class="card" style="grid-area: res;">
+				<h3>{{localize "Resilience"}}</h3>
+				<div class="stat-split">
+					<div class="stat-row"><span>{{localize "Resilience"}}</span><input id="status.resilience.value" value="{{status.resilience.value}}"></div>
+					<div class="stat-row"><span>{{localize "Resolve"}}</span><input id="status.resilience.resolve" value="{{status.resilience.resolve}}"></div>
+				</div>
+				<div class="stat-row"><span>{{localize "Motivation"}}</span><input id="status.resilience.motivation" value="{{status.resilience.motivation}}"></div>
+			</div>
+
+			<div class="card sin-card" style="grid-area: sin;">
+				<h3>{{localize "Sin"}}</h3>
+				<div class="stat-row"><input id="status.religion.god" value="{{status.religion.god}}" style="text-align: center;"></div>
+				<div class="stat-row"><input id="status.religion.sin" value="{{status.religion.sin}}" style="text-align: center;"></div>
+			</div>
+
+			<div class="card" style="grid-area: exp;">
+				<h3>{{localize "Experience"}}</h3>
+				<div class="stat-row"><span>{{localize "Current"}}</span><input id="status.experience.value" value="{{status.experience.value}}"></div>
+				<div class="stat-split">
+					<div class="stat-row"><span>{{localize "Spent"}}</span><input id="status.experience.spent" value="{{status.experience.spent}}"></div>
+					<div class="stat-row"><span>{{localize "Total"}}</span><input id="status.experience.total" value="{{status.experience.total}}"></div>
+				</div>
+			</div>
+
+			<div class="card" style="grid-area: move;">
+				<h3>{{localize "Move"}}</h3>
+				<div class="stat-row"><span>{{localize "Move"}}</span><input id="status.move.value" value="{{status.move.value}}"></div>
+				<div class="stat-split">
+					<div class="stat-row"><span>{{localize "Walk"}}</span><input id="status.move.walk" value="{{status.move.walk}}"></div>
+					<div class="stat-row"><span>{{localize "Run"}}</span><input id="status.move.run" value="{{status.move.run}}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="frame">
+		<div class="skills-grid">
+			<div class="card" data-add-type="skill">
+				<h3>{{localize "Basic Skills"}}</h3>
+				<div class="list-head skills">
+					<span>{{localize "Name"}}</span>
+					<span>{{localize "SHEET.CharAbbrev"}}</span>
+					<span>{{localize "SHEET.AdvAbbrev"}}</span>
+					<span>{{localize "Total"}}</span>
+				</div>
+				<div class="content">
+					{{#each skills.bscLeft as |skill|}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}">
+						<div class="row-main">
+							<input class="col-name" id="skills.bscL_{{@index}}.name" value="{{skill.name}}">
+							<select id="skills.bscL_{{@index}}.characteristic">
+								<option value="ws"{{#if (eq skill.characteristic "ws")}} selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+								<option value="bs"{{#if (eq skill.characteristic "bs")}} selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+								<option value="s"{{#if (eq skill.characteristic "s")}} selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+								<option value="t"{{#if (eq skill.characteristic "t")}} selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+								<option value="i"{{#if (eq skill.characteristic "i")}} selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+								<option value="ag"{{#if (eq skill.characteristic "ag")}} selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+								<option value="dex"{{#if (eq skill.characteristic "dex")}} selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+								<option value="int"{{#if (eq skill.characteristic "int")}} selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+								<option value="wp"{{#if (eq skill.characteristic "wp")}} selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+								<option value="fel"{{#if (eq skill.characteristic "fel")}} selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+							</select>
+							<input id="skills.bscL_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+							<input id="skills.bscL_{{@index}}.advances" value="{{skill.advances}}">
+							<input id="skills.bscL_{{@index}}.value" value="{{skill.value}}">
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" data-add-type="skill">
+				<h3>{{localize "Basic Skills"}}</h3>
+				<div class="list-head skills">
+					<span>{{localize "Name"}}</span>
+					<span>{{localize "SHEET.CharAbbrev"}}</span>
+					<span>{{localize "SHEET.AdvAbbrev"}}</span>
+					<span>{{localize "Total"}}</span>
+				</div>
+				<div class="content">
+					{{#each skills.bscRight as |skill|}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}">
+						<div class="row-main">
+							<input class="col-name" id="skills.bscR_{{@index}}.name" value="{{skill.name}}">
+							<select id="skills.bscR_{{@index}}.characteristic">
+								<option value="ws"{{#if (eq skill.characteristic "ws")}} selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+								<option value="bs"{{#if (eq skill.characteristic "bs")}} selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+								<option value="s"{{#if (eq skill.characteristic "s")}} selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+								<option value="t"{{#if (eq skill.characteristic "t")}} selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+								<option value="i"{{#if (eq skill.characteristic "i")}} selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+								<option value="ag"{{#if (eq skill.characteristic "ag")}} selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+								<option value="dex"{{#if (eq skill.characteristic "dex")}} selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+								<option value="int"{{#if (eq skill.characteristic "int")}} selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+								<option value="wp"{{#if (eq skill.characteristic "wp")}} selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+								<option value="fel"{{#if (eq skill.characteristic "fel")}} selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+							</select>
+							<input id="skills.bscR_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+							<input id="skills.bscR_{{@index}}.advances" value="{{skill.advances}}">
+							<input id="skills.bscR_{{@index}}.value" value="{{skill.value}}">
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" data-add-type="skill">
+				<h3>{{localize "Grouped & Advanced Skills"}}</h3>
+				<div class="list-head skills">
+					<span>{{localize "Name"}}</span>
+					<span>{{localize "SHEET.CharAbbrev"}}</span>
+					<span>{{localize "SHEET.AdvAbbrev"}}</span>
+					<span>{{localize "Total"}}</span>
+				</div>
+				<div class="content">
+					{{#each skills.adv as |skill|}}
+					<div class="item skills tooltip-target" data-tooltip="{{skill.description}}">
+						<div class="row-main">
+							<input class="col-name" id="skills.adv_{{@index}}.name" value="{{skill.name}}">
+							<select id="skills.adv_{{@index}}.characteristic">
+								<option value="ws"{{#if (eq skill.characteristic "ws")}} selected{{/if}}>{{localize "CHARAbbrev.WS"}}</option>
+								<option value="bs"{{#if (eq skill.characteristic "bs")}} selected{{/if}}>{{localize "CHARAbbrev.BS"}}</option>
+								<option value="s"{{#if (eq skill.characteristic "s")}} selected{{/if}}>{{localize "CHARAbbrev.S"}}</option>
+								<option value="t"{{#if (eq skill.characteristic "t")}} selected{{/if}}>{{localize "CHARAbbrev.T"}}</option>
+								<option value="i"{{#if (eq skill.characteristic "i")}} selected{{/if}}>{{localize "CHARAbbrev.I"}}</option>
+								<option value="ag"{{#if (eq skill.characteristic "ag")}} selected{{/if}}>{{localize "CHARAbbrev.Ag"}}</option>
+								<option value="dex"{{#if (eq skill.characteristic "dex")}} selected{{/if}}>{{localize "CHARAbbrev.Dex"}}</option>
+								<option value="int"{{#if (eq skill.characteristic "int")}} selected{{/if}}>{{localize "CHARAbbrev.Int"}}</option>
+								<option value="wp"{{#if (eq skill.characteristic "wp")}} selected{{/if}}>{{localize "CHARAbbrev.WP"}}</option>
+								<option value="fel"{{#if (eq skill.characteristic "fel")}} selected{{/if}}>{{localize "CHARAbbrev.Fel"}}</option>
+							</select>
+							<input id="skills.adv_{{@index}}.characteristicValue" value="{{skill.characteristicValue}}">
+							<input id="skills.adv_{{@index}}.advances" value="{{skill.advances}}">
+							<input id="skills.adv_{{@index}}.value" value="{{skill.value}}">
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="frame">
+		<div class="amb-grid">
+			<div class="card">
+				<h3>{{localize "Personal Ambitions"}}</h3>
+				<div class="amb-row"><span>{{localize "Short Term"}}</span><textarea id="status.ambitions.personal.short">{{status.ambitions.personal.short}}</textarea></div>
+				<div class="amb-row"><span>{{localize "Long Term"}}</span><textarea id="status.ambitions.personal.long">{{status.ambitions.personal.long}}</textarea></div>
+			</div>
+			<div class="card">
+				<h3>{{localize "Party Ambitions"}}</h3>
+				<div class="amb-row"><span>{{localize "Short Term"}}</span><textarea id="status.ambitions.party.short">{{status.ambitions.party.short}}</textarea></div>
+				<div class="amb-row"><span>{{localize "Long Term"}}</span><textarea id="status.ambitions.party.long">{{status.ambitions.party.long}}</textarea></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="frame grow">
+		<div class="card bio-card">
+			<h3>{{localize "Biography"}}</h3>
+			<textarea id="details.biography">{{details.biography}}</textarea>
+		</div>
+	</div>
+</section>
+
+<div id="flow-pool" hidden>
+	<div class="card" data-flow-id="talents" data-add-type="talent" data-cols="2">
+		<h3>{{localize "WFRP4E.PrintSheet.HTML.TalentsAndTraits"}}</h3>
+		<div class="talents-head-pair">
+			<div class="list-head talents">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "SHEET.AdvAbbrev"}}</span>
+				<span>{{localize "Tests"}}</span>
+			</div>
+			<div class="list-head talents">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "SHEET.AdvAbbrev"}}</span>
+				<span>{{localize "Tests"}}</span>
+			</div>
+		</div>
+		<div class="content talents-grid">
+			{{#each talents as |talent|}}
+			<div class="item talents tooltip-target" data-tooltip="{{talent.description}}">
+				<div class="row-main">
+					<div class="name-cell">
+						{{#if talent.image}}<img class="item-icon" src="{{talent.image}}" alt="">{{/if}}
+						<input id="talent.{{@index}}.name" value="{{talent.name}}">
+					</div>
+					<input id="talent.{{@index}}.advances" value="{{talent.advances}}">
+					<input id="talent.{{@index}}.tests" value="{{talent.tests}}">
+				</div>
+			</div>
+			{{/each}}
+			{{#each traits as |trait|}}
+			<div class="item traits talents tooltip-target" data-tooltip="{{trait.description}}">
+				<div class="row-main">
+					<div class="name-cell">
+						{{#if trait.image}}<img class="item-icon" src="{{trait.image}}" alt="">{{/if}}
+						<input id="trait.{{@index}}.name" value="{{trait.name}}">
+					</div>
+					<input id="trait.{{@index}}.advances" value="{{trait.advances}}">
+					<input id="trait.{{@index}}.tests" value="{{trait.tests}}">
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+
+	<div class="flow-atomic" data-flow-id="combat-top" data-atomic="1">
+		<div class="combat-top-grid">
+			<div class="card" style="grid-area: armour;" data-add-type="armour">
+				<h3>{{localize "WFRP4E.TrappingType.Armour"}}</h3>
+				<div class="list-head armours">
+					<span>{{localize "Name"}}</span>
+					<span>{{localize "Location"}} ({{localize "AP"}})</span>
+					<span>{{localize "SHEET.EncAbbrev"}}</span>
+					<span>{{localize "WFRP4E.PrintSheet.HTML.Qualities"}}</span>
+				</div>
+				<div class="content">
+					{{#each armours as |armour|}}
+					<div class="item armours tooltip-target" data-tooltip="{{armour.description}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if armour.image}}<img class="item-icon" src="{{armour.image}}" alt="">{{/if}}
+								<input id="armour.{{@index}}.name" value="{{armour.name}}">
+							</div>
+							<input id="armour.{{@index}}.locations" value="{{armour.locations}}">
+							<input class="col-enc" id="armour.{{@index}}.encumbrance" value="{{armour.encumbrance}}">
+							<input id="armour.{{@index}}.qualities" data-type="qualities" value="{{armour.qualities}}">
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card portrait-card">
+				{{#if image}}<img src="{{image}}" alt="{{name}}">{{/if}}
+			</div>
+
+			<div class="card" style="grid-area: psych;" data-add-type="simple">
+				<h3>{{localize "Psychology"}}</h3>
+				<div class="content">
+					{{#each psychologys as |psychology|}}
+					<div class="item simple psychologys tooltip-target" data-tooltip="{{psychology.description}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if psychology.image}}<img class="item-icon" src="{{psychology.image}}" alt="">{{/if}}
+								<input id="psychology.{{@index}}.name" value="{{psychology.name}}">
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" style="grid-area: mut;" data-add-type="simple">
+				<h3>{{localize "Mutations"}}</h3>
+				<div class="content">
+					{{#each mutations as |mutation|}}
+					<div class="item simple mutations tooltip-target" data-tooltip="{{mutation.description}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if mutation.image}}<img class="item-icon" src="{{mutation.image}}" alt="">{{/if}}
+								<input id="mutation.{{@index}}.name" value="{{mutation.name}}">
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="card" style="grid-area: coins;">
+				<h3>{{localize "WFRP4E.TrappingType.Money"}}</h3>
+				<div class="coin-row tooltip-target" data-tooltip="<p><strong>{{localize 'SHEET.EncAbbrev'}}</strong>: {{coins.bp.encumbrance}}</p>">
+					<input id="coins.bp" value="{{coins.bp.value}}">
+					{{#if settings.coins.bp}}<img src="{{settings.coins.bp}}" alt="{{localize 'MARKET.Abbrev.BP'}}">{{else}}<span>{{localize "MARKET.Abbrev.BP"}}</span>{{/if}}
+				</div>
+				<div class="coin-row tooltip-target" data-tooltip="<p><strong>{{localize 'SHEET.EncAbbrev'}}</strong>: {{coins.ss.encumbrance}}</p>">
+					<input id="coins.ss" value="{{coins.ss.value}}">
+					{{#if settings.coins.ss}}<img src="{{settings.coins.ss}}" alt="{{localize 'MARKET.Abbrev.SS'}}">{{else}}<span>{{localize "MARKET.Abbrev.SS"}}</span>{{/if}}
+				</div>
+				<div class="coin-row tooltip-target" data-tooltip="<p><strong>{{localize 'SHEET.EncAbbrev'}}</strong>: {{coins.gc.encumbrance}}</p>">
+					<input id="coins.gc" value="{{coins.gc.value}}">
+					{{#if settings.coins.gc}}<img src="{{settings.coins.gc}}" alt="{{localize 'MARKET.Abbrev.GC'}}">{{else}}<span>{{localize "MARKET.Abbrev.GC"}}</span>{{/if}}
+				</div>
+			</div>
+
+			<div class="card" style="grid-area: enc;">
+				<h3>{{localize "SHEET.Encumbrance"}}</h3>
+				<div class="stat-row"><span>{{localize "WFRP4E.TrappingType.Weapon"}}</span><input id="encumbrance.weapons" value="{{encumbrance.weapons}}"></div>
+				<div class="stat-row"><span>{{localize "WFRP4E.TrappingType.Armour"}}</span><input id="encumbrance.armours" value="{{encumbrance.armours}}"></div>
+				<div class="stat-row"><span>{{localize "Trapping"}}</span><input id="encumbrance.trappings" value="{{encumbrance.trappings}}"></div>
+				<div class="stat-row"><span>{{localize "Max"}}</span><input id="encumbrance.max" value="{{encumbrance.max}}"></div>
+				<div class="stat-row"><span>{{localize "Total"}}</span><input id="encumbrance.current" value="{{encumbrance.current}}"></div>
+			</div>
+
+			<div class="card" style="grid-area: wounds;" data-add-type="simple">
+				<h3>{{localize "Wounds"}}</h3>
+				<div class="wounds-header">
+					<input id="status.wounds.value" value="{{status.wounds.value}}">
+					<span>{{localize "WFRP4E.PrintSheet.HTML.OutOf"}}</span>
+					<input id="status.wounds.max" value="{{status.wounds.max}}">
+				</div>
+				<div class="content">
+					{{#each status.criticals as |critical|}}
+					<div class="item simple criticals tooltip-target" data-tooltip="{{critical.description}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if critical.image}}<img class="item-icon" src="{{critical.image}}" alt="">{{/if}}
+								<input id="critical.{{@index}}.name" value="{{critical.name}}">
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					{{#each status.effects as |effect|}}
+					<div class="item simple effects tooltip-target" data-tooltip="{{effect.description}}">
+						<div class="row-main">
+							<div class="name-cell">
+								{{#if effect.image}}<img class="item-icon" src="{{effect.image}}" alt="">{{/if}}
+								<input id="effect.{{@index}}.name" value="{{effect.name}}">
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card" data-flow-id="weapons" data-add-type="weapon">
+			<h3>{{localize "WFRP4E.TrappingType.Weapon"}}</h3>
+			<div class="list-head weapons">
+				<span>{{localize "Name"}}</span>
+				<span>{{localize "Group"}}</span>
+				<span>{{localize "SHEET.EncAbbrev"}}</span>
+				<span>{{localize "Reach"}}</span>
+				<span>{{localize "Damage"}}</span>
+				<span>{{localize "WFRP4E.PrintSheet.HTML.Qualities"}}</span>
+			</div>
+			<div class="content">
+				{{#each weapons as |weapon|}}
+				<div class="item weapons tooltip-target" data-tooltip="{{weapon.description}}">
+					<div class="row-main">
+						<div class="name-cell">
+							{{#if weapon.image}}<img class="item-icon" src="{{weapon.image}}" alt="">{{/if}}
+							<input id="weapon.{{@index}}.name" value="{{weapon.name}}">
+						</div>
+						<input id="weapon.{{@index}}.group" value="{{weapon.group}}">
+						<input class="col-enc" id="weapon.{{@index}}.encumbrance" value="{{weapon.encumbrance}}">
+						<input id="weapon.{{@index}}.reach" value="{{weapon.reach}}">
+						<input id="weapon.{{@index}}.damage" value="{{weapon.damage}}">
+						<input id="weapon.{{@index}}.qualities" data-type="qualities" value="{{weapon.qualities}}">
+					</div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+	<div class="card" data-flow-id="trappings" data-add-type="trapping">
+		<h3>{{localize "Trapping"}}</h3>
+		<div class="list-head trappings">
+			<span>{{localize "Name"}}</span>
+			<span>{{localize "SHEET.EncAbbrev"}}</span>
+		</div>
+		<div class="content">
+			{{#if trappings}}{{createTrappingsElem trappings}}{{/if}}
+		</div>
+	</div>
+
+	<div class="card" data-flow-id="magics" data-add-type="magic" data-toggle="toggleMagic">
+		<h3>{{localize "Magic"}} &amp; {{localize "Religion"}}</h3>
+		<div class="list-head magics">
+			<span>{{localize "Name"}}</span>
+			<span>{{localize "CN"}}</span>
+			<span>{{localize "Range"}}</span>
+			<span>{{localize "Target"}}</span>
+			<span>{{localize "WFRP4E.PrintSheet.HTML.Duration"}}</span>
+			<span>{{localize "Type"}}</span>
+		</div>
+		<div class="content">
+			{{#each magics as |magic|}}
+			<div class="item magics tooltip-target" data-tooltip="{{magic.description}}">
+				<div class="row-main">
+					<div class="name-cell">
+						{{#if magic.image}}<img class="item-icon" src="{{magic.image}}" alt="">{{/if}}
+						<input id="magic.{{@index}}.name" value="{{magic.name}}">
+					</div>
+					<input id="magic.{{@index}}.cn" value="{{magic.cn}}">
+					<input id="magic.{{@index}}.range" value="{{magic.range}}">
+					<input id="magic.{{@index}}.target" value="{{magic.target}}">
+					<input id="magic.{{@index}}.duration" value="{{magic.duration}}">
+					<input id="magic.{{@index}}.lore" value="{{magic.lore}}">
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+
+	<div class="card" data-flow-id="experience" data-add-type="experience" data-toggle="toggleExp">
+		<h3>{{localize "SHEET.ExperienceLog"}}</h3>
+		<div class="list-head experience">
+			<span>{{localize "Experience"}}</span>
+			<span>{{localize "Reason"}}</span>
+		</div>
+		<div class="content">
+			{{#each status.experience.log as |experience|}}
+			<div class="item experience">
+				<div class="row-main">
+					<input id="experience.{{@index}}.value" value="{{experience.value}}">
+					<input class="col-rsn" id="experience.{{@index}}.reason" value="{{experience.reason}}">
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+</div>
+
+<div id="generated-pages"></div>
+
+<script type="application/json" id="props-data">{{{settings.propsJson}}}</script>
+<script>
+(() => {
+	let debug = {{#if settings.debug}}true{{else}}false{{/if}};
+	let debugMessage = ["%cWFRP4e - Print sheet %c[debug]%c.", "font-weight: bold;", "color: orange;", ""];
+	let propsEl = document.getElementById("props-data");
+	let props = {};
+	try { props = JSON.parse(propsEl?.textContent || "{}"); } catch {};
+	let tooltip = document.getElementById("tooltip");
+	let flowPool = document.getElementById("flow-pool");
+	let pagesHost = document.getElementById("generated-pages");
+	let hoverTarget = null;
+	let showTimer = null;
+	let hideTimer = null;
+	let mouseX = 0;
+	let mouseY = 0;
+	//Автоматическая разбивка разделов по листам A4: Таланты -> Броня и статус -> Оружие -> Имущество -> Магия -> Опыт
+	function paginateFlowSections() {
+		//Возврат элементов со старых страниц обратно в пул перед пересборкой
+		pagesHost.querySelectorAll("[data-flow-id]").forEach(genEl => {
+			let id = genEl.dataset.flowId;
+			let poolEl = flowPool.querySelector(`:scope > [data-flow-id="${id}"]`);
+			if (!poolEl) { return; }
+			if (poolEl.dataset.atomic === "1") {
+				while (genEl.firstChild) { poolEl.appendChild(genEl.firstChild) };
+			} else {
+				let poolContent = poolEl.querySelector(":scope > .content");
+				genEl.querySelectorAll(":scope > .content > .item").forEach(item => poolContent.appendChild(item));
+			}
+		});
+		pagesHost.innerHTML = "";
+		let createPage = () => {
+			let sec = document.createElement("section");
+			sec.className = "sheet-page generated-page";
+			pagesHost.appendChild(sec);
+			return sec;
+		};
+		let createCardShell = (poolCard) => {
+			let frame = document.createElement("div");
+			frame.className = "frame";
+			let card = document.createElement("div");
+			card.className = "card";
+			card.dataset.flowId = poolCard.dataset.flowId;
+			if (poolCard.dataset.addType) { card.dataset.addType = poolCard.dataset.addType; }
+			for (let child of poolCard.children) {
+				if (child.classList.contains("content")) {
+					let contentDiv = document.createElement("div");
+					contentDiv.className = child.className;
+					card.appendChild(contentDiv);
+				} else {card.appendChild(child.cloneNode(true))};
+			};
+			frame.appendChild(card);
+			return { frame, card, content: card.querySelector(":scope > .content") };
+		};
+		let currentPage = null;
+		for (let poolNode of Array.from(flowPool.querySelectorAll(":scope > [data-flow-id]"))) {
+			let toggleId = poolNode.dataset.toggle;
+			if (toggleId && document.getElementById(toggleId)?.checked) { continue; }
+			if (!currentPage) { currentPage = createPage(); }
+			if (poolNode.dataset.atomic === "1") {
+				let frame = document.createElement("div");
+				frame.className = "frame";
+				frame.dataset.flowId = poolNode.dataset.flowId;
+				while (poolNode.firstChild) { frame.appendChild(poolNode.firstChild) };
+				currentPage.appendChild(frame);
+				if (currentPage.scrollHeight > currentPage.clientHeight + 2 && currentPage.children.length > 1) {
+					frame.remove();
+					currentPage = createPage();
+					currentPage.appendChild(frame);
+				};
+				continue;
+			};
+			let items = Array.from(poolNode.querySelectorAll(":scope > .content > .item"));
+			let shell = createCardShell(poolNode);
+			currentPage.appendChild(shell.frame);
+			if (currentPage.scrollHeight > currentPage.clientHeight + 2 && currentPage.children.length > 1) {
+				shell.frame.remove();
+				currentPage = createPage();
+				currentPage.appendChild(shell.frame);
+			};
+			let idx = 0;
+			while (idx < items.length) {
+				let item = items[idx];
+				shell.content.appendChild(item);
+				if (currentPage.scrollHeight > currentPage.clientHeight + 2) {
+					item.remove();
+					let placedCount = shell.content.children.length;
+					if (placedCount === 0 && currentPage.children.length > 1) {
+						shell.frame.remove();
+						currentPage = createPage();
+						currentPage.appendChild(shell.frame);
+						shell.content.appendChild(item);
+						idx++;
+					} else if (placedCount === 0) {
+						shell.content.appendChild(item);
+						idx++;
+					} else {
+						currentPage = createPage();
+						shell = createCardShell(poolNode);
+						currentPage.appendChild(shell.frame);
+					};
+				} else {idx++};
+			};
+		};
+		if (debug) {
+			console.debug(...debugMessage, "paginateFlowSections pages", pagesHost.children.length);
+		};
+	};
+	//Пересчёт веса по категориям и монетам
+	function round2(n) { return Math.round((Number(n) || 0) * 100) / 100; }
+	function recalcEncumbrance(sourceInput = null) {
+		let wEl = document.getElementById("encumbrance.weapons");
+		let aEl = document.getElementById("encumbrance.armours");
+		let tEl = document.getElementById("encumbrance.trappings");
+		let totEl = document.getElementById("encumbrance.current");
+		if (!wEl || !aEl || !tEl || !totEl) { return; }
+		if (sourceInput && [wEl, aEl, tEl].includes(sourceInput)) {
+			totEl.value = round2((parseFloat(wEl.value) || 0) + (parseFloat(aEl.value) || 0) + (parseFloat(tEl.value) || 0));
+			return;
+		};
+		let sumSel = (sel) => round2(Array.from(document.querySelectorAll(sel)).reduce((s, inp) => s + (parseFloat(inp.value) || 0), 0));
+		let wSum = sumSel(".item.weapons .col-enc");
+		let aSum = sumSel(".item.armours .col-enc");
+		let coinsTotal = (parseInt(document.getElementById("coins.gc")?.value) || 0)
+			+ (parseInt(document.getElementById("coins.ss")?.value) || 0)
+			+ (parseInt(document.getElementById("coins.bp")?.value) || 0);
+		let coinsEnc = Math.floor(Math.max(0, coinsTotal) / 100);
+		let tSum = round2(sumSel(".item.trappings:not(.layer) .col-enc") + coinsEnc);
+		wEl.value = wSum;
+		aEl.value = aSum;
+		tEl.value = tSum;
+		totEl.value = round2(wSum + aSum + tSum);
+		if (debug) {
+			console.debug(...debugMessage, "recalcEncumbrance", {weapons: wSum, armours: aSum, trappings: tSum, total: totEl.value});
+		};
+	};
+	document.addEventListener("input", (e) => {
+		if (e.target.classList.contains("col-enc") || ["coins.gc", "coins.ss", "coins.bp"].includes(e.target.id)) {recalcEncumbrance()}
+		else if (["encumbrance.weapons", "encumbrance.armours", "encumbrance.trappings"].includes(e.target.id)) {recalcEncumbrance(e.target)};
+	});
+	let syncToggles = () => {
+		document.body.classList.toggle("no-tooltips", document.getElementById("toggleTooltips").checked);
+		document.body.classList.toggle("hide-sin", document.getElementById("toggleSin").checked);
+		document.body.classList.toggle("mode-scale", document.getElementById("modeScale").checked);
+		document.body.classList.toggle("mode-add", document.getElementById("modeAdd").checked);
+		document.body.classList.toggle("mode-delete", document.getElementById("modeDelete").checked);
+	};
+	let modeIds = ["modeScale", "modeAdd", "modeDelete"];
+	for (let id of modeIds) {
+		document.getElementById(id).addEventListener("change", (e) => {
+			if (e.target.checked) {
+				for (let other of modeIds) {
+					if (other !== id) {document.getElementById(other).checked = false};
+				};
+			};
+			syncToggles();
+		});
+	}
+	for (let id of ["toggleTooltips", "toggleSin"]) {
+		document.getElementById(id).addEventListener("change", syncToggles);
+	}
+	for (let id of ["toggleMagic", "toggleExp"]) {
+		document.getElementById(id).addEventListener("change", () => {
+			syncToggles();
+			paginateFlowSections();
+		});
+	};
+	syncToggles();
+	paginateFlowSections();
+	let resizeTimer = null;
+	window.addEventListener("resize", () => {
+		clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(paginateFlowSections, 150);
+	});
+	window.addEventListener("beforeprint", paginateFlowSections);
+	//Общее масштабирование шрифта
+	let uiScale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ui-scale")) || 1;
+	document.getElementById("btnScaleDown").addEventListener("click", () => {
+		uiScale = Math.max(0.7, Math.round((uiScale - 0.05) * 100) / 100);
+		document.documentElement.style.setProperty("--ui-scale", uiScale);
+		paginateFlowSections();
+	});
+	document.getElementById("btnScaleUp").addEventListener("click", () => {
+		uiScale = Math.min(1.4, Math.round((uiScale + 0.05) * 100) / 100);
+		document.documentElement.style.setProperty("--ui-scale", uiScale);
+		paginateFlowSections();
+	});
+	document.getElementById("btnPrint").addEventListener("click", () => {
+		paginateFlowSections();
+		window.print();
+	});
+	//Всплывающие подсказки у курсора с удержанием в границах экрана
+	function buildTooltipHtml(target) {
+		let html = "";
+		let qualInput = target.querySelector("input[data-type='qualities']");
+		let qualStr = (qualInput ? qualInput.value : (target.dataset.qualities || "")).trim();
+		if (qualStr) {
+			let list = qualStr.split(/\s*,\s*/).filter(Boolean);
+			if (list.length) {
+				html += "<h4>{{localize 'Qualities'}} &amp; {{localize 'Flaws'}}</h4>";
+				for (let q of list) {
+					let base = q.replace(/\s+\d+$/, "").trim();
+					html += `<p><strong>${q}</strong>: ${props[base] || props[q] || "<em>{{localize 'WFRP4E.PrintSheet.Empty'}}</em>"}</p>`;
+				};
+			};
+		};
+		if (target.dataset.tooltip) {html += target.dataset.tooltip};
+		return html;
+	};
+	function positionTooltip(x, y) {
+		let pad = 10;
+		let offset = 14;
+		tooltip.style.left = "0px";
+		tooltip.style.top = "0px";
+		let tw = tooltip.offsetWidth;
+		let th = tooltip.offsetHeight;
+		let left = x + offset;
+		if (left + tw > window.innerWidth - pad) {left = Math.max(pad, x - tw - offset)};
+		left = Math.max(pad, Math.min(left, window.innerWidth - tw - pad));
+		let top = y + offset;
+		if (top + th > window.innerHeight - pad) {top = Math.max(pad, y - th - offset)};
+		tooltip.style.left = `${Math.round(left)}px`;
+		tooltip.style.top = `${Math.round(top)}px`;
+	};
+	document.addEventListener("mousemove", (e) => {
+		mouseX = e.clientX;
+		mouseY = e.clientY;
+	});
+	document.addEventListener("mouseover", (e) => {
+		mouseX = e.clientX;
+		mouseY = e.clientY;
+		if (document.body.classList.contains("no-tooltips") || document.body.classList.contains("mode-scale") || document.body.classList.contains("mode-add") || document.body.classList.contains("mode-delete")) { return; }
+		let target = e.target.closest(".tooltip-target");
+		if (!target || target === hoverTarget) { return; }
+		hoverTarget = target;
+		clearTimeout(hideTimer);
+		clearTimeout(showTimer);
+		showTimer = setTimeout(() => {
+			if (hoverTarget !== target) { return; }
+			let content = buildTooltipHtml(target);
+			if (!content) { return; }
+			tooltip.innerHTML = content;
+			tooltip.classList.add("active");
+			positionTooltip(mouseX, mouseY);
+		}, 350);
+	});
+	document.addEventListener("mouseout", (e) => {
+		let target = e.target.closest(".tooltip-target");
+		if (!target || target.contains(e.relatedTarget)) { return; }
+		if (e.relatedTarget && tooltip.contains(e.relatedTarget)) { return; }
+		clearTimeout(showTimer);
+		hoverTarget = null;
+		hideTimer = setTimeout(() => {
+			if (!hoverTarget) { tooltip.classList.remove("active"); }
+		}, 250);
+	});
+	tooltip.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+	tooltip.addEventListener("mouseleave", () => {
+		hoverTarget = null;
+		tooltip.classList.remove("active");
+	});
+	//Режимы масштабирования, добавления и удаления строк
+	let charOptions = `
+		<option value="ws" selected>{{localize "CHARAbbrev.WS"}}</option>
+		<option value="bs">{{localize "CHARAbbrev.BS"}}</option>
+		<option value="s">{{localize "CHARAbbrev.S"}}</option>
+		<option value="t">{{localize "CHARAbbrev.T"}}</option>
+		<option value="i">{{localize "CHARAbbrev.I"}}</option>
+		<option value="ag">{{localize "CHARAbbrev.Ag"}}</option>
+		<option value="dex">{{localize "CHARAbbrev.Dex"}}</option>
+		<option value="int">{{localize "CHARAbbrev.Int"}}</option>
+		<option value="wp">{{localize "CHARAbbrev.WP"}}</option>
+		<option value="fel">{{localize "CHARAbbrev.Fel"}}</option>`;
+	let rowTemplates = {
+		skill: () => `<div class="item skills"><div class="row-main"><input class="col-name" value=""><select>${charOptions}</select><input value="0"><input value="0"><input value="0"></div></div>`,
+		talent: () => `<div class="item talents"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input value=""></div></div>`,
+		armour: () => `<div class="item armours"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input class="col-enc" value="0"><input data-type="qualities" value=""></div></div>`,
+		weapon: () => `<div class="item weapons"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input class="col-enc" value="0"><input value=""><input value=""><input data-type="qualities" value=""></div></div>`,
+		trapping: () => `<div class="item trappings"><div class="row-main"><div class="name-cell"><input value=""></div><input class="col-enc" value="0"></div></div>`,
+		magic: () => `<div class="item magics"><div class="row-main"><div class="name-cell"><input value=""></div><input value=""><input value=""><input value=""><input value=""><input value=""></div></div>`,
+		experience: () => `<div class="item experience"><div class="row-main"><input value=""><input class="col-rsn" value=""></div></div>`,
+		simple: () => `<div class="item simple"><div class="row-main"><div class="name-cell"><input value=""></div></div></div>`
+	};
+	document.addEventListener("click", (e) => {
+		if (document.body.classList.contains("mode-scale")) {
+			let field = e.target.closest("input:not([type=checkbox]), textarea");
+			if (field) {
+				let size = parseFloat(getComputedStyle(field).fontSize) || 12;
+				field.style.fontSize = `${Math.min(28, size + 1)}px`;
+				return;
+			};
+		};
+		if (document.body.classList.contains("mode-delete")) {
+			let row = e.target.closest(".content > .item");
+			if (row) {
+				let inFlow = Boolean(row.closest(".generated-page"));
+				let affectsEnc = Boolean(row.querySelector(".col-enc"));
+				row.remove();
+				if (affectsEnc) { recalcEncumbrance(); }
+				if (inFlow) { paginateFlowSections(); }
+				return;
+			};
+		};
+		if (document.body.classList.contains("mode-add")) {
+			let heading = e.target.closest(".card[data-add-type] > h3");
+			if (heading) {
+				let card = heading.closest(".card");
+				let type = card.dataset.addType;
+				let container = card.querySelector(":scope > .content");
+				if (container && rowTemplates[type]) {
+					container.insertAdjacentHTML("beforeend", rowTemplates[type]());
+					if (card.closest(".generated-page")) { paginateFlowSections(); }
+				};
+			};
+		};
+	});
+	document.addEventListener("contextmenu", (e) => {
+		if (!document.body.classList.contains("mode-scale")) { return; }
+		let field = e.target.closest("input:not([type=checkbox]), textarea");
+		if (field) {
+			e.preventDefault();
+			let size = parseFloat(getComputedStyle(field).fontSize) || 12;
+			field.style.fontSize = `${Math.max(7, size - 1)}px`;
+		};
+	});
+	//Сохранение изменённого листа в новый HTML-файл
+	document.getElementById("btnSave").addEventListener("click", () => {
+		tooltip.classList.remove("active");
+		for (let id of modeIds) { document.getElementById(id).checked = false; }
+		syncToggles();
+		document.querySelectorAll("input").forEach(inp => {
+			if (inp.type === "checkbox" || inp.type === "radio") {
+				if (inp.checked) {inp.setAttribute("checked", "")}
+				else {inp.removeAttribute("checked")};
+			} else {inp.setAttribute("value", inp.value)};
+		});
+		document.querySelectorAll("textarea").forEach(ta => { ta.textContent = ta.value; });
+		document.querySelectorAll("select").forEach(sel => {
+			Array.from(sel.options).forEach(opt => {
+				if (opt.selected) {opt.setAttribute("selected", "")}
+				else {opt.removeAttribute("selected")};
+			});
+		});
+		let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+		let blob = new Blob([html], {type: "text/html;charset=utf-8"});
+		let filename = decodeURIComponent(window.location.pathname.split("/").pop() || "");
+		if (!filename || !filename.toLowerCase().endsWith(".html")) {
+			filename = ((document.getElementById("name")?.value || "character-sheet").replace(/[\/|\\:*?"<>]/g, "_")) + ".html";
+		};
+		let a = document.createElement("a");
+		let url = URL.createObjectURL(blob);
+		a.href = url;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 100);
+	});
+})();
+</script>

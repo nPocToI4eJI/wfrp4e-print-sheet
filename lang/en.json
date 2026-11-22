@@ -1,0 +1,76 @@
+{
+	"WFRP4E.PrintSheet": {
+		"Button": "Print Sheet",
+		"ExperienceReason": "No reason specified",
+		"Empty": "nothing",
+		"Blank": "Blank sheet",
+		"Dialog": {
+			"Title": "Export Character Sheet",
+			"Template": {
+				"Label": "Template Format",
+				"Print": "For Printing (A4)",
+				"PrintHint": "Multi-page A4 print layout. Talents, skills, trappings, and spells automatically flow onto continuation pages without clipping.",
+				"Browser": "For Browser (Interactive)",
+				"BrowserHint": "Responsive layout for any screen size with tabs, instant search, expandable descriptions, live characteristic recalculation, and saving edits."
+			},
+			"FileName": "File Name",
+			"EmbedImages": "Embed images into HTML",
+			"IncludeMagic": "Show \"Magic & Religion\" section",
+			"IncludeExperience": "Show \"Experience Log\"",
+			"IncludeSin": "Show \"Sin\"",
+			"Export": "Export"
+		},
+		"HTML": {
+			"Print": "Print sheet (Ctrl+P).",
+			"HideTooltip": "Toggle hover descriptions of elements.",
+			"ScaleFont": "Increase or decrease the font size of a clicked field.\nLMB: Increase font size.\nRMB: Decrease font size.",
+			"ScaleGlobalDown": "Decrease overall font size.",
+			"ScaleGlobalUp": "Increase overall font size.",
+			"Add": "Add rows (click the heading of the desired section).",
+			"Delete": "Delete rows (click the row to remove).",
+			"HideMagics": "Toggle visibility of \"Magic & Religion\".",
+			"HideSin": "Toggle visibility of Sin.",
+			"HideExperience": "Toggle visibility of \"Experience Log\".",
+			"Save": "Save changes to a new HTML file.",
+			"CareerPath": "Career Path",
+			"ModifierAbbrev": "Mod.",
+			"BonusAbbrev": "B",
+			"Qualities": "Qualities",
+			"OutOf": "of",
+			"Duration": "Duration",
+			"TalentsAndTraits": "Talents & Traits",
+			"SearchPlaceholder": "Search sheet...",
+			"ExpandDetails": "Show/hide description",
+			"Tabs": {
+				"All": "All Sections",
+				"Main": "Main & Skills",
+				"Talents": "Talents & Traits",
+				"Combat": "Combat & Gear",
+				"Magic": "Magic & Notes"
+			}
+		},
+		"Settings": {
+			"inputcolor": {
+				"Name": "Color of actor values",
+				"Hint": "Choose the color that will be used to color the actor’s editable data."
+			},
+			"embedimages": {
+				"Name": "Embed Images",
+				"Hint": "Embed images for each actor item, such as talents, trappings, magic, etc."
+			},
+			"defaultName": {
+				"Name": "Default File Name",
+				"Hint": "Leave empty to use the actor's name as the default file name."
+			},
+			"defaultTemplate": {
+				"Name": "Default Template",
+				"Hint": "Which template format is selected by default in the export dialog."
+			},
+			"printEmptySheet": {
+				"Name": "Get an empty sheet",
+				"Label": "Print",
+				"Hint": "Allows you to get a completely empty actor sheet in HTML format."
+			}
+		}
+	}
+}

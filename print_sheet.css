@@ -1,0 +1,17 @@
+section[data-category="wfrp4e-print-sheet"] label::before {
+	font-family: "Font Awesome 6 Pro";
+    font-weight: bold;
+    margin-right: 0.3rem;
+}
+section[data-category="wfrp4e-print-sheet"] label[for="settings-config-wfrp4e-print-sheet.inputcolor"]::before {
+    content: "\f53f";
+}
+section[data-category="wfrp4e-print-sheet"] label[for="settings-config-wfrp4e-print-sheet.defaultTemplate"]::before {
+    content: "\f03a";
+}
+section[data-category="wfrp4e-print-sheet"] label[for="settings-config-wfrp4e-print-sheet.embedimages"]::before {
+    content: "\f03e";
+}
+section[data-category="wfrp4e-print-sheet"] label[for="settings-config-wfrp4e-print-sheet.defaultName"]::before {
+    content: "\f02b";
+}
