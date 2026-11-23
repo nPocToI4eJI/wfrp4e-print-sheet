@@ -260,6 +260,54 @@ class DataMapper {
 		let num = parseFloat(val);
 		return Number.isFinite(num) ? Math.round(num * 100) / 100 : 0;
 	};
+	//Перевод и форматирование Народа и Разновидности актёра
+	static #formatSpecies(actor, details) {
+		let cfg = game.wfrp4e?.config || {};
+		let speciesMap = cfg.species || {};
+		let subspeciesMap = cfg.subspecies || {};
+		let spRaw = String(details?.species?.value || "").trim();
+		let subRaw = String(details?.species?.subspecies || "").trim();
+		if (!spRaw && actor?.Species) {spRaw = String(actor.Species).trim()};
+		//Если разновидность уже вписан в скобках внутри строки народа
+		if (!subRaw && spRaw) {
+			let m = spRaw.match(/^(.+?)\s*\((.+)\)$/);
+			if (m) {
+				spRaw = m[1].trim();
+				subRaw = m[2].trim();
+			};
+		};
+		//Поиск ключа народа (по ключу, локализованному значению или английскому названию)
+		let spLower = spRaw.toLowerCase();
+		let spKey = Object.keys(speciesMap).find(k => k.toLowerCase() === spLower)
+			|| Object.keys(speciesMap).find(k => String(speciesMap[k] || "").toLowerCase() === spLower)
+			|| {
+				"human": "human",
+				"dwarf": "dwarf",
+				"high elf": "helf",
+				"wood elf": "welf",
+				"halfling": "halfling",
+				"ogre": "ogre",
+				"gnome": "gnome"
+			}[spLower]
+			|| "";
+		let spLabel = (spKey && speciesMap[spKey]) ? speciesMap[spKey] : spRaw;
+		//Поиск перевода разновидности
+		let subLabel = subRaw;
+		if (subRaw) {
+			let subLower = subRaw.toLowerCase();
+			let subGroup = spKey ? subspeciesMap[spKey] : null;
+			if (subGroup) {
+				let subKey = Object.keys(subGroup).find(k => k.toLowerCase() === subLower);
+				if (subKey && subGroup[subKey]?.name) {subLabel = subGroup[subKey].name};
+			} else {
+				for (let grp of Object.values(subspeciesMap)) {
+					let subKey = Object.keys(grp || {}).find(k => k.toLowerCase() === subLower);
+					if (subKey && grp[subKey]?.name) {subLabel = grp[subKey].name; break};
+				};
+			};
+		};
+		return subLabel ? `${spLabel} (${subLabel})` : spLabel;
+	};
 	//Преобразование HTML-биографии в чистый текст с переносами строк
 	static #htmlToPlainText(html) {
 		if (!html) {return ""};
@@ -423,7 +471,7 @@ class DataMapper {
 			//Личные данные и биография
 			let rawBio = details.biography?.value || "";
 			data.details = {
-				race: dataActor.Species || details.species?.value || "",
+				race: DataMapper.#formatSpecies(dataActor, details),
 				gender: details.gender?.value || "",
 				age: details.age?.value || "",
 				height: details.height?.value || "",
@@ -495,10 +543,22 @@ class DataMapper {
 					value: details.experience?.current ?? 0,
 					spent: details.experience?.spent ?? 0,
 					total: details.experience?.total ?? 0,
-					log: expLogRaw.map(l => ({
-						reason: l.reason || game.i18n.localize("WFRP4E.PrintSheet.ExperienceReason"),
-						value: l.amount ? `+${l.amount}` : String((l.spent || 0) * -1)
-					})).reverse()
+					log: expLogRaw.map((l, idx) => {
+						let hasAmt = l.amount !== undefined && l.amount !== null && l.amount !== "";
+						let amt = Number(l.amount);
+						let delta = 0;
+						if (l.type === "spent") {delta = hasAmt && Number.isFinite(amt) ? -amt : -(Number(l.spent) || 0)}
+						else if (l.type === "total") {delta = hasAmt && Number.isFinite(amt) ? amt : 0}
+						else if (hasAmt && Number.isFinite(amt)) {
+							let prev = idx > 0 ? expLogRaw[idx - 1] : null;
+							let isSpend = prev && l.spent !== undefined && l.spent !== prev.spent && l.total === prev.total;
+							delta = isSpend ? -amt : amt;
+						} else {delta = -(Number(l.spent) || 0)};
+						return {
+							reason: l.reason || game.i18n.localize("WFRP4E.PrintSheet.ExperienceReason"),
+							value: delta > 0 ? `+${delta}` : (delta === 0 ? "0" : String(delta))
+						};
+					}).reverse()
 				},
 				move: {
 					value: details.move?.value ?? 0,

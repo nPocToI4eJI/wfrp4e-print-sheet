@@ -428,8 +428,10 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		align-content: start;
+		margin-bottom: -1px;
 	}
-	.content.talents-grid > .item {
+	.content.talents-grid > .item,
+	.content.talents-grid > .item:last-child {
 		border-bottom: 1px dashed var(--color-small-border);
 	}
 	.content.talents-grid > .item:nth-child(odd) {

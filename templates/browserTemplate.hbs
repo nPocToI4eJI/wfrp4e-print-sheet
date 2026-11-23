@@ -332,8 +332,9 @@
 	.list-head.skills { grid-template-columns: 1fr 26% 13% 13% 1.85rem; }
 	.item.skills > .row-main { grid-template-columns: 1fr 13% 13% 13% 13% 1.85rem; }
 	.item.skills > .row-main > .col-name { text-align: left; padding-left: 0.4rem; }
-	.talents-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr)); gap: 0 0.75rem; }
-	.talents-columns > .item { border-bottom: 1px dashed var(--color-small-border); }
+	.content.talents-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr)); gap: 0; width: calc(100% + 2px); margin-bottom: -1px; }
+	.content.talents-columns > .item,
+	.content.talents-columns > .item:last-child { border-bottom: 1px dashed var(--color-small-border); border-right: 2px solid var(--color-small-border); }
 	.list-head.talents, .item.talents > .row-main { grid-template-columns: 38% 14% 1fr 1.85rem; }
 	.list-head.armours, .item.armours > .row-main { grid-template-columns: 28% 28% 10% 1fr 1.85rem; }
 	.list-head.weapons, .item.weapons > .row-main { grid-template-columns: 25% 15% 8% 13% 9% 1fr 1.85rem; }
